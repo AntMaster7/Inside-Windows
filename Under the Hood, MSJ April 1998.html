@@ -1,0 +1,401 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0048)https://www.microsoft.com/msj/0498/hood0498.aspx -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Under the Hood, MSJ April 1998</title>
+<meta name="Description" content="You&#39;ve made a call to a function in some DLL and the linker complains that it can&#39;t find the symbol. It doesn&#39;t take too much to figure out that you need to add another library (.LIB) file to the linker&#39;s command line. But which .LIB file?">
+	<meta http-equiv="PICS-Label" content="(PICS-1.1 &quot;http://www.rsac.org/ratingsv01.html&quot; l comment &quot;RSACi North America Server&quot; by &quot;inet@microsoft.com&quot; r (n 0 s 0 v 0 l 0))">
+	<meta name="Robots" content="all">
+	<meta name="MS.LOCALE" content="en-us">
+	<link type="text/css" rel="Stylesheet" href="./Under the Hood, MSJ April 1998_files/msdnmag.css">
+	<link type="text/css" rel="Stylesheet" href="./Under the Hood, MSJ April 1998_files/msdn.css">
+	<script language="javascript" src="./Under the Hood, MSJ April 1998_files/msdnmag.js"></script>
+	<link type="text/css" rel="Stylesheet" href="./Under the Hood, MSJ April 1998_files/css.aspx">
+<script type="text/javascript" language="Javascript" src="./Under the Hood, MSJ April 1998_files/menujs"></script>
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"><link rel="stylesheet" type="text/css" href="./Under the Hood, MSJ April 1998_files/css(1).aspx"><script language="JavaScript">var doImage=doImage;var TType=TType;var defaultSearchLable;
+function mhHover(tbl,idx,cls){var t,d;if(document.getElementById)t=document.getElementById(tbl);else t=document.all(tbl);if(t==null)return;if(t.getElementsByTagName)d=t.getElementsByTagName("TD");else d=t.all.tags("TD");if(d==null)return;if(d.length<=idx)return;d[idx].className=cls;}
+function footerjs(doc){};
+var varSegmentation = 0;
+var varClickTracking = 1;
+var varCustomerTracking=1;
+document.write("<script type='text/javascript' src='" + (window.location.protocol) + "//c.microsoft.com/ms.js'"+"'><\/script>");
+
+
+var rsltextbox = 'msviLSBtbox'; var wtflag = false;
+function stripSymbols () { var objrslttextbox = getObjectById(rsltextbox); if (objrslttextbox) { var form = objrslttextbox.form; var s = objrslttextbox.value; filteredValues = "<>!@^*"; var i; var returnString = ""; for (i = 0; i < s.length; i++) { var c = s.charAt(i); if (filteredValues.indexOf(c) == -1) { returnString += c; } else { returnString += " "; } } objrslttextbox.value = returnString; } if(!wtflag) { trackLSB("Site"); } } 
+function addSubmitEvent() {
+ msviLSBtbox=document.getElementById("msviLSBtbox")
+ if(msviLSBtbox)
+ {
+    defaultSearchLable = msviLSBtbox.value;
+ }
+ var objrslttextbox = getObjectById(rsltextbox); 
+ if (objrslttextbox) 
+ { 
+    var form = objrslttextbox.form;
+     if (window.attachEvent) 
+     { 
+         form.attachEvent("onsubmit",stripSymbols); 
+     }
+     else 
+     { 
+        form.addEventListener("submit",stripSymbols,false);
+     }
+  } 
+} 
+function getObjectById(elid) 
+{ 
+    if (document.getElementById) 
+    { 
+        return document.getElementById(elid); 
+    } 
+    else if (document.all) 
+    { 
+        return document.all[elid]; 
+    } 
+    else if (document.layers) 
+    { 
+        return document.layers[elid];
+    } 
+} 
+if (window.attachEvent) { window.attachEvent("onload",addSubmitEvent); } else { window.addEventListener("load",addSubmitEvent,false); } 
+var FromWeb = false;
+function trackLSB(type)
+{
+
+  clearDefaultSearchLable();
+ 
+  if(type=="Web")
+    FromWeb = true;
+  var tmp = document.getElementById("msviLSBtbox");
+  var errorInfo = document.getElementById("errorInfo");
+  if(type=="Site" && tmp.value.length==0 && !FromWeb)
+  {
+       tmp.value=errorInfo.value;
+       tmp.style.color='#bc2b2b';
+       ajustWidth();
+  }
+  if (typeof dcsMultiTrack == "function")
+  { 
+      var qu = document.getElementById("msviLSBtbox").value;
+      var dcsuri = "results.aspx";
+      var dcssip, ti;
+      if (type == "Site")
+      {
+        dcssip = "search.microsoft.com";
+        ti = "SearchButton: OnSite"; 
+      }
+      else if (type == "Web")
+      {
+         dcssip = "bing.com";
+         ti = "SearchButton: Web";
+      }
+      dcsMultiTrack("DCS.dcsuri", dcsuri, "DCS.dcssip", dcssip, "WT.ti", ti, "WT.dl", "2", "WT.z_srch_t", qu, "DCS.dcsqry", "", "WT.ad", "", "WT.mc_id", ""); 
+      wtflag = true; DCS.dcsuri=DCS.dcssip=DCS.dcsqry=WT.ti=WT.z_srch_t="";
+  }
+}
+
+var isInputqu = false;
+var searchBoxWidthWithKievLogo = 0;
+var searchBoxWidthWithoutKievLogo = 0;
+function clearDefaultSearchLable()
+{var searchBox = document.getElementById("msviLSBtbox");
+if(!isInputqu){searchBox.value = "";}}
+var kievImageWidth = 47;
+var isAdTboxWidth = false;
+var isInitailed = false;
+function ajustWidth()
+{
+    var searchBoxInput = document.getElementById("msviLSBtbox");
+    var kievImage = document.getElementById("msviLSBlogo");
+    if(!isInitailed)
+    {
+         searchBoxWidthWithKievLogo = searchBoxInput.style.width;
+         searchBoxWidthWithoutKievLogo = searchBoxInput.clientWidth + (kievImageWidth - 1);
+         isInitailed = true;
+    }
+    var width = kievImage.clientWidth-1;
+    kievImage.style.width = '1px';
+    var tBoxAloneWidth = searchBoxInput.clientWidth + width;
+    searchBoxInput.style.width = tBoxAloneWidth;
+    isAdTboxWidth = true;
+    
+      
+    
+}
+
+function searchBoxFocused(defaultSearchLabel)
+{
+    var searchBoxInput = document.getElementById("msviLSBtbox");
+    var kievImage = document.getElementById("msviLSBlogo");
+    if(searchBoxInput.value == defaultSearchLabel || searchBoxInput.value==document.getElementById("errorInfo").value)
+    {
+        searchBoxInput.value = '';
+        searchBoxInput.style.fontStyle = '';
+        searchBoxInput.style.color='#000000';
+        kievImage.style.width = '1px';
+        if(searchBoxWidthWithKievLogo == 0 && !isAdTboxWidth &&!isInitailed)
+        {
+            searchBoxWidthWithKievLogo = searchBoxInput.style.width;
+            searchBoxWidthWithoutKievLogo = searchBoxInput.clientWidth + (kievImageWidth - 1);
+            isInitailed = true;
+        }
+        searchBoxInput.style.width = searchBoxWidthWithoutKievLogo;
+    }
+}
+
+function searchBoxBlur(defaultSearchLabel)
+{
+    var searchBoxInput = document.getElementById("msviLSBtbox");
+    var kievImage = document.getElementById("msviLSBlogo");
+    if(searchBoxInput.value.replace(/(^\s*)|(\s*$)/g, '')=='') 
+    {
+        searchBoxInput.value=defaultSearchLabel;searchBoxInput.style.fontStyle ='Italic';
+        searchBoxInput.style.color = "#a1a1a1";
+        kievImage.style.width = kievImageWidth;
+        
+        searchBoxInput.style.width = searchBoxWidthWithKievLogo;
+        isInputqu = false;
+     }
+     else
+     {
+        isInputqu = true;
+     }
+}
+
+function Test()
+{
+    var searchBox = document.getElementById(rsltextbox);
+    var go = document.getElementById("errorInfo");
+    if(searchBox.value==go.value)
+        return false;
+    return true; 
+}</script><script type="text/javascript" src="./Under the Hood, MSJ April 1998_files/ms.js" '=""></script><meta name="WT.sp" content="_msj_"><script language="JavaScript" src="./Under the Hood, MSJ April 1998_files/broker.js"></script>
+	</head>
+	<body leftmargin="0" topmargin="0" rightmargin="5" bgcolor="#ffffff">
+		
+		<!--NOINDEX_START--><script language="Javascript">
+				if (self.name == "MNPMainFrame") top.location.href = self.location.href;
+			</script><div id="msviMasthead"><table cellpadding="0" cellspacing="0" width="100%" border="0"><tbody><tr><td width="100%"><table cellpadding="0" cellspacing="0" width="100%" height="22" border="0"><tbody><tr><td id="msviMarketing" bgcolor="#FFFFFF" nowrap=""><a href="http://go.microsoft.com/fwlink/?LinkID=92799">Click Here to Install Silverlight</a></td><td width="100%" bgcolor="#3568CC"><img src="./Under the Hood, MSJ April 1998_files/gradient.aspx" width="250" height="22" alt="*" title=""></td></tr></tbody></table></td><td id="msviGlobalToolbar" bgcolor="#3568CC" height="22" nowrap="" dir="ltr" align="left"><table cellpadding="0" cellspacing="0" border="0"><tbody><tr><td id="msviRegionId" nowrap="">United States</td><td id="msviRegionSelector" nowrap=""><a href="http://www.microsoft.com/worldwide">Change</a></td><td class="gtsep">|</td><td id="msviSiteMap" nowrap=""><a href="http://www.microsoft.com/en/us/sitemap.aspx">All Microsoft Sites</a></td><td class="msviPPSpace"></td></tr></tbody></table></td></tr></tbody></table><table cellpadding="0" cellspacing="0" width="100%" border="0"><tbody><tr valign="top"><td><table cellpadding="0" cellspacing="0" width="100%" height="42" border="0" style="height:expression(parentElement.parentElement.parentElement.parentElement.offsetHeight)"><tbody><tr valign="top"><td id="msviBrandBanner" bgcolor="FFFFFF"><a href="http://msdn.microsoft.com/"><img src="./Under the Hood, MSJ April 1998_files/msdn_masthead_ltr.gif" width="225" height="42" alt="MSDN" title="" border="0"></a></td></tr></tbody></table></td><td id="msviGlobalSearch" width="100%" bgcolor="#6799FF"><div class="msviLSBsform"><form id="msviLSBForm" action="https://www.microsoft.com/library/toolbar/3.0/search.aspx" target="_top"><div id="msKiev"><input type="hidden" name="View" value="en-us"><input type="hidden" name="charset" value="iso-8859-1"><input id="msviLSBtbox" style="font-style:italic; color:#a1a1a1" onkeydown="if(event.keyCode == 13)searchBoxBlur(&#39;Search Microsoft.com&#39;)" onfocus="searchBoxFocused(&#39;Search Microsoft.com&#39;)" onblur="searchBoxBlur(&#39;Search Microsoft.com&#39;)" type="text" name="qu" value="Search Microsoft.com" autocomplete="off"><span id="msviLSBlogo" class="msviLSBlogo" title="Results by Bing"></span><input id="msviLSBssearch" title="Search Microsoft.com" type="image" name="site" src="./Under the Hood, MSJ April 1998_files/Search_icon.gif" align="absmiddle" onclick="trackLSB(&#39;Site&#39;)"></div><input id="msviLSBWeb" title="Search the Web" name="sweb" type="submit" value="" onclick="trackLSB(&#39;Web&#39;)" align="absmiddle"></form></div></td></tr></tbody></table><div id="msviLocalToolbar"><table cellpadding="0" cellspacing="0" width="100%" height="19" border="0"><tbody><tr><td nowrap="" id="msviHomePageLink"><a href="https://www.microsoft.com/isapi/gomsdn.asp?TARGET=/default.aspx">MSDN Home</a></td><td><span class="ltsep">|</span></td><td class="lt0" nowrap="" onmouseover="mhHover(&#39;msviLocalToolbar&#39;, 2, &#39;lt1&#39;)" onmouseout="mhHover(&#39;msviLocalToolbar&#39;, 2, &#39;lt0&#39;)"><a href="https://www.microsoft.com/isapi/gomsdn.asp?TARGET=/developercenters/">Developer Centers</a></td><td><span class="ltsep">|</span></td><td class="lt0" nowrap="" onmouseover="mhHover(&#39;msviLocalToolbar&#39;, 4, &#39;lt1&#39;)" onmouseout="mhHover(&#39;msviLocalToolbar&#39;, 4, &#39;lt0&#39;)"><a href="https://www.microsoft.com/isapi/gomsdn.asp?TARGET=/library/default.asp">Library</a></td><td><span class="ltsep">|</span></td><td class="lt0" nowrap="" onmouseover="mhHover(&#39;msviLocalToolbar&#39;, 6, &#39;lt1&#39;)" onmouseout="mhHover(&#39;msviLocalToolbar&#39;, 6, &#39;lt0&#39;)"><a href="https://www.microsoft.com/isapi/gomsdn.asp?TARGET=/downloads/">Downloads</a></td><td><span class="ltsep">|</span></td><td class="lt0" nowrap="" onmouseover="mhHover(&#39;msviLocalToolbar&#39;, 8, &#39;lt1&#39;)" onmouseout="mhHover(&#39;msviLocalToolbar&#39;, 8, &#39;lt0&#39;)"><a href="https://www.microsoft.com/isapi/gomsdn.asp?TARGET=/code/">Code Center</a></td><td><span class="ltsep">|</span></td><td class="lt0" nowrap="" onmouseover="mhHover(&#39;msviLocalToolbar&#39;, 10, &#39;lt1&#39;)" onmouseout="mhHover(&#39;msviLocalToolbar&#39;, 10, &#39;lt0&#39;)"><a href="https://www.microsoft.com/isapi/gomsdn.asp?TARGET=/subscriptions/">Subscriptions</a></td><td><span class="ltsep">|</span></td><td class="lt0" nowrap="" onmouseover="mhHover(&#39;msviLocalToolbar&#39;, 12, &#39;lt1&#39;)" onmouseout="mhHover(&#39;msviLocalToolbar&#39;, 12, &#39;lt0&#39;)"><a href="https://www.microsoft.com/isapi/gomsdn.asp?TARGET=/worldwide.aspx">MSDN Worldwide</a></td><td width="100%"></td></tr></tbody></table></div></div>
+			<table cellpadding="0" cellspacing="0" border="0" width="100%" dir="LTR">
+				<tbody><tr valign="top">
+		<td height="100%" style="overflow-x: hidden" width="181">
+  <table cellpadding="0" cellspacing="0" border="0" width="100%"><tbody><tr><td class="mnpQuickSearch" style="background: #CCCCCC; color: #000000" dir="LTR"><form style="margin: 0px" action="http://msdn.microsoft.com/msdn-online/shared/components/mscomsearch30.aspx"><nobr><font color="#000000">Search for</font><br><input class="mnpSearchBox" type="text" id="qu" name="qu" maxlength="255" style="width: 165px"><br><table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top: 2px"><tbody><tr><td width="100%" class="mnpQuickSearch" style="padding: 0px"><select class="mnpSearchScopes" style="width: 137px" name="SearchScope"><option value="1">All of MSDN</option><option value="2">All Library</option><option value="3">Code &amp; Downloads</option><option value="7" selected="">MSDN Magazine</option><option value="5">Support &amp; KB</option></select></td><td><input class="mnpSearchButton" type="submit" value="Go"><br></td></tr></tbody></table><a href="http://search.microsoft.com/search/search.aspx?View=msdn&amp;st=a" style="color: rgb(0, 0, 0);" onmouseover="style.color=&#39;#0033CC&#39;;" onmouseout="style.color=&#39;#000000&#39;;">Advanced Search</a></nobr></form></td></tr></tbody></table>
+  <div id="mnpMenuTop" class="mnpMenuTop" style="overflow-x: hidden; width: 181px" url="/msj/0498/hood0498.aspx" dir="LTR" parent="/msj/0498/default.aspx"><div class="mnpInherit"><div class="mnpMenuRow" style="border-color: #F1F1F1; background: #F1F1F1; width: 153px; overflow-x: hidden"><img width="4" height="7" border="0" alt="*" title="" class="mnpMenuArrow" src="./Under the Hood, MSJ April 1998_files/arrowLTR.gif" style="left: 166px; visibility: hidden"><a href="https://www.microsoft.com/msj/default.aspx">MSJ Home</a></div><div class="mnpMenuBorder" style="width: 180px"></div><div class="mnpMenuRow" style="border-color: #999999; width: 153px; overflow-x: hidden" menu="mb6d3b9426cd06f68649d6e27fe85e3ec"><img width="4" height="7" border="0" alt="*" title="" class="mnpMenuArrow" src="./Under the Hood, MSJ April 1998_files/arrowLTR.gif" style="left: 166px; visibility: hidden"><a href="https://www.microsoft.com/msj/0498/default.aspx">April 1998</a></div><div class="mnpMenuBorder" style="width: 180px"></div><div class="mnpMenuRow" style="border-color: #F1F1F1; background: #F1F1F1; width: 153px; overflow-x: hidden"><img width="4" height="7" border="0" alt="*" title="" class="mnpMenuArrow" src="./Under the Hood, MSJ April 1998_files/arrowLTR.gif" style="left: 166px; visibility: hidden"><a href="https://www.microsoft.com/isapi/gomsdn.asp?TARGET=/msdnmag/find/default.aspx">Search</a></div><div class="mnpMenuRow" style="border-color: #F1F1F1; background: #F1F1F1; width: 153px; overflow-x: hidden" menu="m3fd9abd6d4e6b1d47da1677743a69def"><img width="4" height="7" border="0" alt="*" title="" class="mnpMenuArrow" src="./Under the Hood, MSJ April 1998_files/arrowLTR.gif" style="left: 166px; visibility: hidden"><a href="https://www.microsoft.com/msj/code.aspx">Source Code</a></div><div class="mnpMenuRow" style="border-color: #F1F1F1; background: #F1F1F1; width: 153px; overflow-x: hidden" menu="m0e5c80cdf8bdd73274e5171bd96f4ed9"><img width="4" height="7" border="0" alt="*" title="" class="mnpMenuArrow" src="./Under the Hood, MSJ April 1998_files/arrowLTR.gif" style="left: 166px; visibility: hidden"><a href="https://www.microsoft.com/msj/backissues.aspx">Back Issues</a></div><div class="mnpMenuBorder" style="width: 180px"></div><div class="mnpMenuRow" style="border-color: #F1F1F1; background: #F1F1F1; width: 153px; overflow-x: hidden"><img width="4" height="7" border="0" alt="*" title="" class="mnpMenuArrow" src="./Under the Hood, MSJ April 1998_files/arrowLTR.gif" style="left: 166px; visibility: hidden"><a href="https://www.microsoft.com/isapi/gomsdn.asp?TARGET=/msdnmag/Subscribe.aspx">Subscribe</a></div><div class="mnpMenuRow" style="border-color: #F1F1F1; background: #F1F1F1; width: 153px; overflow-x: hidden"><img width="4" height="7" border="0" alt="*" title="" class="mnpMenuArrow" src="./Under the Hood, MSJ April 1998_files/arrowLTR.gif" style="left: 166px; visibility: hidden"><a href="https://www.microsoft.com/isapi/gomsdn.asp?TARGET=/msdnmag/service.aspx">Reader Services</a></div><div class="mnpMenuRow" style="border-color: #F1F1F1; background: #F1F1F1; width: 153px; overflow-x: hidden"><img width="4" height="7" border="0" alt="*" title="" class="mnpMenuArrow" src="./Under the Hood, MSJ April 1998_files/arrowLTR.gif" style="left: 166px; visibility: hidden"><a href="https://www.microsoft.com/isapi/gomsdn.asp?TARGET=/msdnmag/write.aspx">Write to Us</a></div><div class="mnpMenuBorder" style="width: 180px"></div><div class="mnpMenuRow" style="border-color: #F1F1F1; background: #F1F1F1; width: 153px; overflow-x: hidden"><img width="4" height="7" border="0" alt="*" title="" class="mnpMenuArrow" src="./Under the Hood, MSJ April 1998_files/arrowLTR.gif" style="left: 166px; visibility: hidden"><a href="https://www.microsoft.com/isapi/gomsdn.asp?TARGET=/msdnmag/default.aspx">MSDN Magazine</a></div><div class="mnpMenuRow" style="border-color: #F1F1F1; background: #F1F1F1; width: 153px; overflow-x: hidden"><img width="4" height="7" border="0" alt="*" title="" class="mnpMenuArrow" src="./Under the Hood, MSJ April 1998_files/arrowLTR.gif" style="left: 166px; visibility: hidden"><a href="https://www.microsoft.com/mind/default.asp">MIND Archive</a></div><div class="mnpMenuRow" style="border-color: #F1F1F1; background: #F1F1F1; width: 153px; overflow-x: hidden"><img width="4" height="7" border="0" alt="*" title="" class="mnpMenuArrow" src="./Under the Hood, MSJ April 1998_files/arrowLTR.gif" style="left: 166px; visibility: hidden"><a href="http://msdn.microsoft.com/newsgroups/topic.aspx?url=/msdn-files/028/201/133/topic.xml">Magazine Newsgroup</a></div><div class="mnpMenuBorder" style="width: 180px; margin-bottom: 0px"></div></div></div>
+  <div class="mnpAds" style="width: 181px; height: 100%; padding-bottom: 20px; background: #F1F1F1; border-style: solid; border-color: #999999; border-width: 0px 1px 0px 0px">
+    <center><script type="text/javascript" src=""></script></center>
+  </div>
+</td>
+          <td width="100%" dir="LTR">
+        <!--NOINDEX_STOP-->
+
+<table class="downleveleyebrow" width="100%" height="24px"><tbody><tr><td>
+<span id="ctl00_eb" style="COLOR: #003399;width: 100%;height: 24px;padding-top:4px;padding-left:14px;"><a href="https://www.microsoft.com/msj/0498/isapi/gomsdn.asp?TARGET=/">MSDN Home</a>&nbsp;&gt;&nbsp;<a href="https://www.microsoft.com/msj/">MSJ</a>&nbsp;&gt;&nbsp;<a href="https://www.microsoft.com/msj/0498/default.aspx">April 1998</a></span>
+
+</td></tr></tbody></table>
+
+	<!----------------->
+	<!--BEGIN_CONTENT-->
+	<!----------------->
+
+<!--TOOLBAR_START-->
+
+<!--TOOLBAR_EXEMPT-->
+
+<!--TOOLBAR_END-->
+
+<center><font size="3" color="000080" face="verdana, arial, helv"><b><a href="https://www.microsoft.com/msj/0498/default.aspx" alt="home"> April 1998</a></b></font></center><p>
+</p><center><a href="https://www.microsoft.com/msj/default.asp"><img border="0" src="./Under the Hood, MSJ April 1998_files/msjheader02.gif" width="399" height="33" alt="Microsoft Systems Journal Homepage"></a></center>
+<hr color="000080" width="300">
+
+<center><img src="./Under the Hood, MSJ April 1998_files/hoodlogo.gif" width="244" height="77" border="0" alt="Under the Hood"></center>
+<p>
+</p><center><font size="2">Code for this article: <a href="http://download.microsoft.com/download/0/6/7/0678184e-905e-4783-9511-d4dca1f492b4/apr98hoodcode.exe">apr98hoodcode.exe</a> (10KB)</font></center>
+<center>
+<table width="380">
+<tbody><tr><td align="center">
+<font size="2"><i>Matt Pietrek is the author of </i>Windows 95 System Programming Secrets<i> (IDG Books, 1995). He works at NuMega Technologies Inc., and can be reached at <a>mpietrek@tiac.com</a> or at 
+<a href="http://www.wheaty.net/">http://www.wheaty.net</a>. </i></font>
+</td></tr>
+</tbody></table>
+</center>
+
+
+
+
+&nbsp;
+<center>
+<table width="380">
+<tbody><tr><td>
+<font size="4" color="800080" face="verdana, arial, helv"><b>Here's a problem</b></font><font size="2">  nearly every C++ programmer has encountered. In your code, you've made a call to a function in some DLL and the linker complains that it can't find the symbol. It usually doesn't take too long to figure out that you need to add another library (.LIB) file to the linker's command line. The only problem is, which .LIB file?
+ <br><img src="./Under the Hood, MSJ April 1998_files/indent.gif" width="10" height="4">From day one, certain formats have remained relatively constant in the Microsoft</font><font size="1">®</font><font size="2"> Win32</font><font size="1">®</font><font size="2"> development tools, and many tools have sprung up around them. For example, the Microsoft DUMPBIN utility can be used to display the contents of both Portable Executable files and COFF (Common Object File Format) .OBJ files. (For users of Visual Basic</font><font size="1">®</font><font size="2"> 5.0, the command line
+<pre><font size="1"> LINK –dump
+</font></pre>
+is functionally the same as DUMPBIN.) However, when it comes to libraries, there seems to be a real dearth of tools that can intelligently tell you the contents of a COFF format .LIB file. All 32-bit Microsoft tools use COFF.
+<br><img src="./Under the Hood, MSJ April 1998_files/indent.gif" width="10" height="4">Perhaps you need to know if a function is imported by name versus ordinal value. DUMPBIN isn't much help here. Sure, DUMPBIN has a few obscure command options for .LIB files (/ARCHIVEMEMBERS and /LINKERMEMBER, for example). But they just provide raw output of portions of the .LIB file. A few gurus can cast the runes of DUMPBIN's output to figure out what they're after. However, to really see what's in a .LIB file, you need either a good understanding of .LIB file structures or a tool that displays the .LIB contents in a meaningful manner. In this column, I'll provide some relief on both counts.
+<br><img src="./Under the Hood, MSJ April 1998_files/indent.gif" width="10" height="4">While mucking about inside .LIB files might appear forbidding, they're really not complicated. Essentially, a .LIB file is just a collection of COFF format .OBJ files strung sequentially together. A table of contents at the beginning tells the linker where things are. Actually, there are two tables of contents, but this detail isn't important for the ensuing discussion.
+<br><img src="./Under the Hood, MSJ April 1998_files/indent.gif" width="10" height="4">In my <a href="https://www.microsoft.com/msj/0797/hood0797.aspx">July 1997</a> column, I described the basic principles of how a linker works. The important factoid for this column is that a linker is responsible for resolving symbols between compilation units. For example, if MyFile1.CPP calls function FooBar in another source file, the linker has to locate the .OBJ file containing FooBar's binary code and include it in the finished executable. From the linker's perspective, a .LIB file is just a collection of .OBJ files. The table of contents in a .LIB file is a list of all the symbols from all the .OBJs contained in the library. For each symbol, the table of contents also indicates which .OBJ file the symbol came from. This mapping of a symbol name to an .OBJ file allows the linker to quickly bring in just the .OBJ from the .LIB file that it needs, while ignoring the rest of the library.
+<br><img src="./Under the Hood, MSJ April 1998_files/indent.gif" width="10" height="4">You might be thinking, "What about import libraries? Aren't they special?" Under the Win32 COFF format, the answer is no. The linker resolves calls to DLL functions the same way as it does for internal (static) functions. The only real difference is that when you call a DLL function, the .OBJ file in the import library provides data for the executable's import table rather than code for the actual function.
+<br><img src="./Under the Hood, MSJ April 1998_files/indent.gif" width="10" height="4">The data that an import library provides for an imported API is kept in several sections whose names all begin with .idata (for instance, .idata$4, .idata$5, and .idata$6). The .idata$5 section contains a single DWORD that, when the executable loads, contains the address of the imported function. The .idata$6 section (if present) contains the name of the imported function. When loading the executable into memory, the Win32 loader uses this string to call GetProcAddress on the imported function effectively.
+<br><img src="./Under the Hood, MSJ April 1998_files/indent.gif" width="10" height="4">As I described in the <a href="https://www.microsoft.com/msj/0797/hood0797.aspx">July 1997</a> column, the linker lumps together sections that have the same name up to, but not including, the $. The portion after the $ is used to order 
+the sections. Thus, all the .idata$4 sections are put in the executable contiguously, followed by all the .idata$5 
+sections, and finishing with all the .idata$6 sections. The linker's combining and sorting of sections is what builds 
+the import address table (IAT) and other parts of the imports table in a finished executable. Not surprisingly, an executable's imports table is usually in a section that is named .idata.
+<br><img src="./Under the Hood, MSJ April 1998_files/indent.gif" width="10" height="4">If you've used OLE, COM, or ActiveX</font><font size="1">®</font><font size="2">, you probably remember that there are also .LIB files that are used for predefined class IDs (CLSIDs) and interface IDs (IIDs). Both CLSIDs and IIDs are forms of GUIDs, which are 16-byte unique values. If you poke around in one of these import libraries (for instance, UUID.LIB), you'll see that the GUID values are stored in a section called .rdata. The linker takes all the referenced .rdata sections in the .LIB file and creates the .rdata section in the executable. Put differently, every GUID that you reference in your program reserves 16 bytes in the final executable.
+</font><p>
+</p><center><font size="4" color="000080" face="verdana, arial, helvetica"><b> The COFF .LIB File Structure </b></font></center>
+
+<font size="2">
+<br><img src="./Under the Hood, MSJ April 1998_files/indent.gif" width="10" height="4">Before I explain how a tool can provide an intelligent display of a .LIB file's contents, it's helpful to have a basic understanding of how COFF .LIBs are constructed. The first thing you'll need to tuck away in your memory banks is that in COFF the words "archive" and "library" are used interchangeably. The second tidbit to remember is that components of a .LIB file are referred to as members. Thus, a .LIB file is really just a series of contiguous archive members. With two exceptions that I'll get to momentarily, each archive member corresponds to an .OBJ file.
+<br><img src="./Under the Hood, MSJ April 1998_files/indent.gif" width="10" height="4">All COFF .LIB files begin with an 8-byte header, which reads "!&lt;arch&gt;\n" when viewed as ASCII text. You can see this in WINNT.H as the #define for IMAGE_ARCHIVE_START. Following this header is the first of potentially many archive members. Each archive member begins with a structure called an IMAGE_ARCHIVE_MEMBER_
+HEADER, which is also defined in WINNT.H. This structure contains information such as the member's name and size. Interestingly, one of the strings in an archive member header is in the octal number format. Yes, these throwbacks to computing's infancy continue to rattle around in today's supercharged barn-burners.
+<br><img src="./Under the Hood, MSJ April 1998_files/indent.gif" width="10" height="4">The first two archive members in a COFF .LIB file are special. Instead of .OBJ files, they act 
+as a table of contents to the other archive members (that is, to the .OBJs). These are called linker members (see the IMAGE_ARCHIVE_LINKER_MEMBER #define in WINNT.H). These members map a symbol name (for instance, _CreateProcessA@40) to the offset of the archive member containing the code or data associated with that symbol. The two special linker members both contain the same information. The only difference is in how the symbol names are sorted.
+<br>
+<img src="./Under the Hood, MSJ April 1998_files/indent.gif" width="10" height="4">
+<b>Figure 1</b> shows the format of a names linker member. Following the IMAGE_ARCHIVE_MEMBER_HEADER is a DWORD with the number of symbols in the library. Next is an array of DWORD offsets to other archive members in the library. Following the DWORD array is a series of null-terminated symbol name strings. Each successive entry in the DWORD array corresponds to the next string in the string table.
+<br>
+<table align="right">
+<tbody><tr>
+<td bgcolor="ffffff">
+<img src="./Under the Hood, MSJ April 1998_files/hoodfig01.gif" height="179" width="200" alt="Figure 1  Names Linker Member"></td></tr>
+<tr>
+<td>
+<img src="./Under the Hood, MSJ April 1998_files/indent.gif" width="10" height="4"><font size="1" face="verdana, arial, helv"><b>Figure 1  Names Linker Member</b>
+</font>
+</td>
+</tr>
+<tr>
+<td bgcolor="ffffff">
+<img src="./Under the Hood, MSJ April 1998_files/hoodfig02.gif" height="159" width="200" alt="Figure 2  Archive Member"></td></tr>
+<tr>
+<td>
+<img src="./Under the Hood, MSJ April 1998_files/indent.gif" width="10" height="4"><font size="1" face="verdana, arial, helv"><b>Figure 2  Archive Member</b>
+</font>
+</td>
+</tr></tbody></table><img src="./Under the Hood, MSJ April 1998_files/indent.gif" width="10" height="4">The format of the other non-names archive members is even simpler. It's just an archive member header, followed by an .OBJ file. If you're not familiar with the layout of an .OBJ file, it consists of an IMAGE_FILE_HEADER followed by one or more IMAGE_SECTION_HEADER structures, one for each code or data section. Next comes the raw code and data for the sections. Bringing up the rear is the symbol table, which correlates symbol names to specific locations in the .OBJ's code and data. All of these data structures are the same as those used in executable files, and are described 
+in WINNT.H. <b>Figure 2</b> shows the layout of one of these .OBJ-based archive 
+members.
+<br>
+</font>
+<p>
+
+<font face="Verdana, arial, helvetica" size="4" color="#000080">
+</font></p><center><font face="Verdana, arial, helvetica" size="4" color="#000080">
+<b>Inside LibDump</b>
+</font>
+</center>
+
+<font size="2">
+<br>
+<img src="./Under the Hood, MSJ April 1998_files/indent.gif" width="10" height="4">If you really understand everything 
+I just described, you could use DUMPBIN with the /ALL option to figure out anything you might want to know about a .LIB file. For example, if you needed to know what the import ordinal for the CreateUpDownControl API is, you'd run DUMPBIN /ALL on COMCTL32.LIB. In the beginning of DUMPBIN's output, you'd find the string "CreateUpDownControl". On the same line would be the offset of the matching .OBJ file. You'd then search the dump output for the archive member at that file offset. Somewhere within the information for that .OBJ, you'd locate the raw data for .idata$5, which reads:
+</font>
+</td>
+</tr>
+</tbody></table>
+</center>
+
+<center>
+<table width="380">
+<tbody><tr>
+<td>
+<pre><font size="1">
+ RAW DATA #5
+ 00000000  10 00 00 80
+</font></pre>
+</td>
+</tr>
+</tbody></table>
+</center>
+
+<center>
+<table width="380">
+<tbody><tr>
+<td>
+<font size="2"><img src="./Under the Hood, MSJ April 1998_files/indent.gif" width="10" height="4">Converting the four bytes into a DWORD and accounting for the little Endian nature of Intel CPUs, you have a value of 0x80000010. Removing the high bit (which means the symbol is exported by ordinal only) gives an export ordinal of 0x10, or 16 decimal. What a major pain! This is where the LibDump program jumps in and does all the hard work of interpreting .LIB files for you.
+<br>
+<img src="./Under the Hood, MSJ April 1998_files/indent.gif" width="10" height="4">LibDump's mission statement is simple: for each symbol name in the .LIB file's first names member, LibDump tries to figure out what type of symbol it is and prints out all the relevant data. For example, LibDump determines if a symbol is imported by ordinal or by name. If it's by ordinal, LibDump shows you the ordinal value. If by name, LibDump shows the actual symbol name and the name that appears in the imports table (for instance, the symbol _CreateProcessA@40 is imported as CreateProcessA). If the symbol appears to be a GUID, LibDump displays the 16 bytes of GUID data as you'd expect to see it. If all else fails, LibDump just displays the symbol name. This would be the case for static functions and variables.
+<br>
+<img src="./Under the Hood, MSJ April 1998_files/indent.gif" width="10" height="4">LibDump is a console-mode program that takes one command-line argument, the name of the .LIB file to work with. Function main in LibDump.CPP (see <a target="_self" href="javascript:OpenUrl(&#39;/msj/0498/hoodtextfigs.htm#fig3&#39;);"><b>Figure 3</b></a>) opens a memory-mapped file using the command-line argument as the file name. I've wrapped all memory-mapped file code in a C++ class called MEMORY_MAPPED_FILE, which is implemented in MemoryMappedFile.H and MemoryMappedFile.CPP (see <a target="_self" href="javascript:OpenUrl(&#39;/msj/0498/hoodtextfigs.htm#fig4&#39;);"><b>Figure 4</b></a>). I'm simply reusing the MEMORY_MAPPED_FILE class from a previous column, so I won't describe the class methods here.
+<br>
+<img src="./Under the Hood, MSJ April 1998_files/indent.gif" width="10" height="4">Once function main has mapped the .LIB file into memory successfully, it verifies that the file begins with the expected string that starts an archive. Following that string is the first archive member, which (as I described earlier) contains the names of the symbols in the .LIB, along with the offset of the matching .OBJ file. The second half of function main simply locates and iterates through both the member offset array and the matching string table. For nearly every symbol, function main passes the name and archive member offset to the DisplayLibInfoForSymbol function. (I'll explain why a few symbols are excluded later.)
+<br>
+<img src="./Under the Hood, MSJ April 1998_files/indent.gif" width="10" height="4">The DisplayLibInfoForSymbol function is where all the action occurs for figuring out what type of symbol it is. The code doesn't bother with the IMAGE_ARCHIVE_MEMBER_HEADER at all. Instead, it immediately skips to the IMAGE_FILE_HEADER that begins the .OBJ. For LibDump's purposes, the important thing in the IMAGE_FILE_
+HEADER is how many IMAGE_SECTION_HEADERs follow it. LibDump uses this number to loop through each entry in the array of IMAGE_SECTION_HEADERs.
+<br>
+<img src="./Under the Hood, MSJ April 1998_files/indent.gif" width="10" height="4">As the code loops through the IMAGE_SECTION_
+HEADERs, it's looking for sections with specific names. The presence or absence of a particular section gives a good indication of what type of symbol LibDump is working with. Any .OBJ that contains .idata$5 or .idata$6 sections is probably for an imported API. In my experience, you'll always see an .idata$5 section for an imported API. If the import is via ordinal, the DWORD value in the .idata$5 section has the high bit set, and the low WORD is the ordinal value. Otherwise, the .idata$5 DWORD is zero.
+<br>
+<img src="./Under the Hood, MSJ April 1998_files/indent.gif" width="10" height="4">If the symbol is imported by name, you'll also find a .idata$6 section in the .OBJ. The first WORD of this section is the "hint" ordinal, which is essentially useless these days. Immediately following the hint ordinal is the null-terminated ASCII string with the name of the API as it will appear in the executable's import table.
+<br>
+<img src="./Under the Hood, MSJ April 1998_files/indent.gif" width="10" height="4">If the .OBJ file doesn't have any .idata$ sections, but does have an .rdata section, then the symbol may or may not be a GUID symbol (for example, _IID_IDispatch). In the LibDump code, I took the cheesy approach of checking the size of the .rdata section. If it's exactly 0x10 bytes long, and if there's only one .rdata section in the .OBJ, LibDump assumes it's a GUID symbol and displays it as such.
+<br>
+<img src="./Under the Hood, MSJ April 1998_files/indent.gif" width="10" height="4">This trick for GUID symbol detection works great for some .LIBs, including the all-important UUID.LIB. However, many COM import libraries lump multiple GUIDs into a single .rdata section. LibDump isn't smart enough to catch these cases. To make it do this would require LibDump to read the COFF symbol table at the end of the .OBJ file. While it could be done, it would add quite a bit to the LibDump code and detract from the "small is beautiful" approach I took.
+<br>
+<img src="./Under the Hood, MSJ April 1998_files/indent.gif" width="10" height="4">If you've noticed the ConvertBigEndian function, good catch! It turns out that in COFF format .LIBs and .OBJs, certain fields are stored in the big Endian format. Intel CPUs use the opposite format, known as little Endian. In a big Endian number, the most significant bytes are at lower addresses. In my conversion function, I could have used the Intel BSWAP instruction to convert from big Endian to little Endian format, but then the code wouldn't run on DEC Alpha-based systems.
+<br>
+<img src="./Under the Hood, MSJ April 1998_files/indent.gif" width="10" height="4">The IsRegularLibSymbol function is just a convenient way to filter the output so that certain symbols don't appear in the output. The brief synopsis is that the .LIB file contains some symbols that are used by the linker but have no connection to the user's code. For example, the symbol __IMPORT_DESCRIPTOR_COMCTL32 appears in COMCTL32.LIB. Rather than cluttering up the LibDump output with these symbols, the IsRegularLibSymbol function looks for certain patterns in the symbol names and returns FALSE if it looks like the symbol didn't originate from user code.
+<br>
+</font>
+<p>
+
+<font face="Verdana, arial, helvetica" size="4" color="#000080">
+</font></p><center><font face="Verdana, arial, helvetica" size="4" color="#000080">
+<b>Running LibDump</b>
+</font>
+</center>
+
+<font size="2">
+<br>
+<img src="./Under the Hood, MSJ April 1998_files/indent.gif" width="10" height="4">To wrap up, let's look at the results of running LibDump on a couple of standard .LIB files. <a target="_self" href="javascript:OpenUrl(&#39;/msj/0498/hoodtextfigs.htm#fig5&#39;);"><b>Figure 5</b></a> is a snippet of LibDump's output for COMCTL32.LIB (the common control DLL). Note in the Type column how some APIs are imported by ordinal (ORDN), like _CreateStatusWindowA@16. Other APIs are imported by name (NAME), such as _CreateToolbarEx@52. Also, note that when importing by name, LibDump shows the name that will actually appear in the imports table (using the prior example, CreateToolbarEx).
+<br>
+<img src="./Under the Hood, MSJ April 1998_files/indent.gif" width="10" height="4">
+<a target="_self" href="javascript:OpenUrl(&#39;/msj/0498/hoodtextfigs.htm#fig6&#39;);"><b>Figure 6</b></a> shows a portion of the results from running LibDump on UUID.LIB (the import library for most of 
+the standard GUIDs). Each line indicates that it's for a GUID, and then shows the GUID represented like you'd 
+see under the HKEY_CLASSES_ROOT key of the registry. In the LibDump output I've selected, you'll find category IDs (CATID_xxx), class IDs (CLSID_xxx), GUIDs, and IIDs (IID_xxx).
+<br>
+<img src="./Under the Hood, MSJ April 1998_files/indent.gif" width="10" height="4">LibDump packs quite a lot of useful functionality into a small amount of code. If you're up to it, there are several things I can think of to improve it. One idea would be to make it scan for a particular symbol across multiple .LIB files. Another would be to add a real GUI to it. If you were to add code to read the symbol table at the end of the .OBJ members, you could significantly expand the interpretation for a given symbol. Even without these features, I hope LibDump will be a welcome addition to your toolset for Win32-based programming.<br>
+<img align="right" src="./Under the Hood, MSJ April 1998_files/end.gif" width="12" height="12">
+
+<p align="left">
+<i>Have a question about programming in Windows? Send it to Matt at <a>mpietrek@tiac.com</a></i></p></font>
+<p>
+</p></td></tr></tbody></table></center>
+<!--Footer-->
+
+<center>
+<table>
+<tbody><tr><td width="380">
+<center><font size="2" color="#000000"><i>From the April 1998 issue of <a href="https://www.microsoft.com/msj/default.asp">Microsoft Systems Journal</a>.
+ Get it at your local newsstand, or better yet, </i><a href="https://www.microsoft.com/isapi/gomsdn.asp?TARGET=/msdnmag/subscribe.asp"><i>subscribe</i></a>.</font>
+</center>
+
+</td></tr>
+</tbody></table>
+</center>
+<center>
+<table>
+<tbody><tr><td width="380">
+<hr width="80%">
+<center><font size="1"><i><a href="https://www.microsoft.com/misc/info/cpyright.htm">© 1998 Microsoft Corporation. All rights reserved.<br> Terms of Use</a>.
+</i>
+</font>
+</center>
+</td>
+</tr>
+</tbody></table>
+</center>
+
+
+	<!----------------->
+	<!--END_CONTENT-->
+	<!----------------->
+		
+					</td>
+		
+				</tr>
+			</tbody></table>
+		<!--NOINDEX_START-->
+<br clear="all" style="line-height: 1px; overflow: hidden"><table id="msviFooter" width="100%" cellpadding="0" cellspacing="0"><tbody><tr valign="bottom"><td id="msviFooter2" style="filter:progid:DXImageTransform.Microsoft.Gradient(startColorStr=&#39;#FFFFFF&#39;, endColorStr=&#39;#669AFF&#39;, gradientType=&#39;1&#39;)"><div id="msviLocalFooter"><nobr><a href="http://go.microsoft.com/?linkid=317027" target="_top">Manage Your Profile</a> |</nobr><wbr><nobr><a href="https://www.microsoft.com/legal/" target="_parent">Legal</a> |</nobr><wbr><nobr><a href="http://go.microsoft.com/?linkid=2028439" target="_parent">Contact us</a> |</nobr><wbr><nobr><a href="https://www.microsoft.com/isapi/gomsdn.asp?TARGET=/flash/" target="_parent">MSDN Flash Newsletter</a></nobr></div><div id="msviGlobalFooter"><span dir="ltr">© 2016 Microsoft Corporation. All rights reserved.&nbsp;</span><nobr><a href="http://support.microsoft.com/contactus/?ws=mscom" target="_parent">Contact Us</a> |</nobr><wbr><nobr><a href="http://go.microsoft.com/?linkid=4412892" target="_parent">Terms of Use</a> |</nobr><wbr><nobr><a href="http://go.microsoft.com/?linkid=4412893" target="_parent">Trademarks</a> |</nobr><wbr><nobr><a href="http://go.microsoft.com/fwlink/?LinkId=248681" target="_parent">Privacy &amp; Cookies</a></nobr></div></td><td bgcolor="#669AFF" width="105"><img src="./Under the Hood, MSJ April 1998_files/text.aspx" width="105" height="29" alt="Microsoft" title="" border="0"></td></tr></tbody></table><div style="display:none"><script type="text/javascript">var gDomain="m.webtrends.com";var gDcsId="dcsjwb9vb00000c932fd0rjc7_5p3t";var gFpc="WT_FPC";if(document.cookie.indexOf(gFpc+"=")==-1){document.write("<SCR"+"IPT TYPE='text/javascript' SRC='"+"http"+(window.location.protocol.indexOf('https:')==0?'s':'')+"://"+gDomain+"/"+gDcsId+"/wtid.js"+"'><\/SCR"+"IPT>");}</script><script src="./Under the Hood, MSJ April 1998_files/wt.js" type="text/javascript"></script><noscript>&lt;img border="0" name="DCSIMG" width="1" height="1" src="https://m.webtrends.com/dcsjwb9vb00000c932fd0rjc7_5p3t/njs.gif?dcsuri=/nojavascript&amp;WT.js=No"/&gt;</noscript></div><layer visibility="hide"><div style="display:none"><img alt="" width="0" height="0" border="0" hspace="0" vspace="0" src="./Under the Hood, MSJ April 1998_files/trans_pixel.asp"></div></layer>
+	
+<script src="./Under the Hood, MSJ April 1998_files/broker-config_s2.js"></script></body></html>

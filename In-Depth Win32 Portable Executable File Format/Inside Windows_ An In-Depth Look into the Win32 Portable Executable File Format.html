@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<!-- saved from url=(0055)https://msdn.microsoft.com/en-us/magazine/bb985992.aspx -->
+<html dir="ltr" lang="en" data-amd-enabled="true" xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="WT.z_sitetype" content="DEV"><meta name="ms.pgtmplt" content="page"><meta name="ms.env" content="PROD"><meta name="ms.sitesec" content="dmc"><script type="text/javascript" async="" src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/ms.js"></script><script type="text/javascript" async="" src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/bk-coretag.js"></script><script src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/insight.min.js"></script><script src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/rio.ashx"></script><script src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/d4ed671ad158e58066fd8ae273631e18.js"></script><script src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/ea37a64b55f574750bc3825c02daa6af.js"></script><meta name="WT.seg_1" content="en-us"><script type="text/javascript" src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/ai.0.js" async=""></script><script type="text/javascript" async="" src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/b750347202123d4463a99b1f75658975.js"></script><script src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/serverComponent.php"></script><link rel="canonical" href="https://msdn.microsoft.com/en-us/library/bb985992.aspx">
+    <title>Inside Windows: An In-Depth Look into the Win32 Portable Executable File Format</title>
+
+
+
+
+
+<meta name="DCS.dcsuri" content="/en-us/magazine/bb985992(d=default,l=en-us,v=msdn.10).aspx">
+
+<meta name="NormalizedUrl" content="https://msdn.microsoft.com/en-us/magazine/bb985992(d=default,l=en-us,v=msdn.10).aspx">
+
+<meta name="ms.normalizedurl" content="https://msdn.microsoft.com/en-us/magazine/bb985992(d=default,l=en-us,v=msdn.10).aspx">
+
+<meta name="VotingContextUrl" content="https://msdn.microsoft.com/en-us/magazine/bb985992(d=default,l=en-us,v=msdn.10).aspx">
+
+<meta name="MN" content="9DDD8834-1:01:40 PM">
+
+<meta name="Search.ShortId" content="bb985992">
+
+<meta name="ms.shortidmsdn" content="bb985992">
+
+<meta name="Ms.Locale" content="en-us">
+
+<meta name="ms.prodver" content="MSDN.10">
+
+<meta name="ms.contentlang" content="EN">
+
+<meta name="ms.lang" content="EN">
+
+<meta name="ms.loc" content="US">
+
+<meta name="ms.sitever" content="2016.01.30.1">
+
+<meta name="ms.assetid" content="MSDN|dnmag02|~\html\pe.htm">
+
+<meta name="ms.auth" content="0">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link type="text/css" rel="stylesheet" href="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/CodeSnippet.css">
+<link type="text/css" rel="stylesheet" href="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/ProgrammingSelector.css">
+<link type="text/css" rel="stylesheet" href="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/ExpandableCollapsibleArea.css">
+<link type="text/css" rel="stylesheet" href="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/CommunityContent.css">
+<link type="text/css" rel="stylesheet" href="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/TopicNotInScope.css">
+<link type="text/css" rel="stylesheet" href="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/FeedViewerBasic.css">
+<link type="text/css" rel="stylesheet" href="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/ImageSprite.css">
+<link type="text/css" rel="stylesheet" href="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/Layout.css">
+<script type="text/javascript" src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/Magazine.js"> </script>
+    
+    <link rel="alternate" type="application/rss+xml" title="MSDN Magazine" href="http://sxp.microsoft.com/feeds/3.0/msdntn/MSDNMagazine_enus%E2%80%9D%20%20%20/%3E%20%20%20%20%3Clink%20rel=" alternate"="">
+    
+<script type="text/javascript" src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/jquery-2.1.0.min.js" data-amd-enabled="true" data-amd-define-only="true" data-amd-module="jquery" data-provides="jQuery"></script>
+    
+
+    <script type="text/javascript" src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/Bootstrap.js" data-amd-enabled="true" data-amd-shim="true" data-amd-shim-deps="jquery"></script>
+
+    <script type="text/javascript" src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/Utilities.js" data-amd-enabled="true" data-amd-define-only="true" data-requires="jQuery" data-provides="utilities"></script>
+    
+<link type="text/css" rel="stylesheet" href="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/Magazine2.css">
+<link type="text/css" rel="stylesheet" href="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/Msdn10a.css">
+
+
+    <script type="text/javascript" data-do-not-move="true">
+        //<![CDATA[
+        window.appInsightsId = '60854590-027a-4ae4-98be-2741a40f355f';
+        //]]>
+    </script>
+    <script type="text/javascript" src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/AppInsightsPerf.js" data-amd-enabled="true"></script>
+    
+    
+    
+<script src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/broker.js"></script><script type="text/javascript" src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/ms.js"></script><script type="text/javascript" src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/Impression.ashx"></script><meta name="WT.seg_1" content="en-us"><meta name="WT.z_shortid" content="bb985992"></head>
+<body class="Chrome">
+    <div id="page">
+        
+  
+
+    <link type="text/css" rel="stylesheet" href="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/Header.css">
+    <link type="text/css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/HeaderFooterSprite.css">
+        <link type="text/css" rel="stylesheet" href="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/Header.MediaQueries.css">
+        <link type="text/css" rel="stylesheet" href="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/Banner.MediaQueries.css">
+    <input type="hidden" id="isHeaderBleeding" value="true">
+    <div id="ux-header" dir="ltr" class="ltr magazine" data-device-type="desktop">
+        
+
+      <header>
+        <span id="singleCol"></span>
+        <span id="doubleCol"></span>
+        <span id="isMobile"></span>
+        <div>
+          <div class="row topRow">
+            <div class="top">
+              <div class="left">
+                <a class="msdnLogoImg" href="https://msdn.microsoft.com/en-us" title="MSDN home" ms.pgarea="header" ms.cmpgrp="Logo" ms.cmpnm="Microsoft Logo" ms.title="Microsoft" ms.index="1" ms.cmptyp="logo">
+                  <div id="msft-logo" class="msft-logo"></div>
+                </a>
+                <div class="GrayPipe"></div>
+                  <div class="MegaBladeNavigation">
+                        <div class="megaBladeToc">
+      <nav>
+        <ul class="navL1">
+          <li class="toggle inactive">
+            <a href="javascript:void(0)" title="Developer Network">Developer Network</a>
+            <ul class="navL2" style="display: none;">
+                <li class="inactive toggle">
+                  <a href="javascript:void(0)" title="Technologies">Technologies</a>
+                    <ul class="navL3" style="display: none;">
+                        <li class="inactive">
+                          <a href="http://msdn.microsoft.com/cloud-app-development-msdn" title="Cloud">Cloud</a>
+                        </li>
+                        <li class="inactive">
+                          <a href="http://msdn.microsoft.com/app-development-msdn" title="App Development">App Development</a>
+                        </li>
+                        <li class="inactive">
+                          <a href="http://msdn.microsoft.com/web-app-development-msdn" title="Web">Web</a>
+                        </li>
+                        <li class="inactive">
+                          <a href="http://msdn.microsoft.com/big-data-development-msdn" title="Data">Data</a>
+                        </li>
+                        <li class="inactive">
+                          <a href="http://msdn.microsoft.com/games-development-msdn" title="Gaming">Gaming</a>
+                        </li>
+                        <li class="inactive">
+                          <a href="http://msdn.microsoft.com/internetofthings" title="Internet of Things">Internet of Things</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="inactive toggle">
+                  <a href="javascript:void(0)" title="Downloads">Downloads</a>
+                    <ul class="navL3" style="display: none;">
+                        <li class="inactive">
+                          <a href="http://www.visualstudio.com/downloads/download-visual-studio-vs" title="Visual Studio">Visual Studio</a>
+                        </li>
+                        <li class="inactive">
+                          <a href="http://msdn.microsoft.com/subscriptions" title="MSDN subscription access">MSDN subscription access</a>
+                        </li>
+                        <li class="inactive">
+                          <a href="http://msdn.microsoft.com/microsoft-sdks-msdn" title="SDKs">SDKs</a>
+                        </li>
+                        <li class="inactive">
+                          <a href="http://msdn.microsoft.com/evalcenter" title="Trial software">Trial software</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="inactive toggle">
+                  <a href="javascript:void(0)" title="Programs">Programs</a>
+                    <ul class="navL3" style="display: none;">
+                        <li class="inactive">
+                          <a href="http://msdn.microsoft.com/msdn-subscriptions-overview" title="Visual Studio subscriptions">Visual Studio subscriptions</a>
+                        </li>
+                        <li class="inactive">
+                          <a href="http://msdn.microsoft.com/students-overview-msdn" title="Students">Students</a>
+                        </li>
+                        <li class="inactive">
+                          <a href="http://msdn.microsoft.com/architects-overview-msdn" title="Architects">Architects</a>
+                        </li>
+                        <li class="inactive">
+                          <a href="http://msdn.microsoft.com/applicationbuilder" title="ISV">ISV</a>
+                        </li>
+                        <li class="inactive">
+                          <a href="http://www.microsoft.com/bizspark" title="Startups">Startups</a>
+                        </li>
+                        <li class="inactive">
+                          <a href="https://rewards.msdn.microsoft.com/" title="TechRewards">TechRewards</a>
+                        </li>
+                        <li class="inactive">
+                          <a href="http://events.msdn.microsoft.com/" title="Events">Events</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="inactive toggle">
+                  <a href="javascript:void(0)" title="Community">Community</a>
+                    <ul class="navL3" style="display: none;">
+                        <li class="inactive">
+                          <a href="http://msdn.microsoft.com/magazine/dd767791" title="Magazine">Magazine</a>
+                        </li>
+                        <li class="inactive">
+                          <a href="https://social.msdn.microsoft.com/forums/" title="Forums">Forums</a>
+                        </li>
+                        <li class="inactive">
+                          <a href="http://blogs.msdn.com/b/developer-tools/" title="Blogs">Blogs</a>
+                        </li>
+                        <li class="inactive">
+                          <a href="http://tech-advisors.msdn.microsoft.com/en-us" title="Tech Advisors">Tech Advisors</a>
+                        </li>
+                        <li class="inactive">
+                          <a href="http://channel9.msdn.com/" title="Channel 9">Channel 9</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="inactive toggle">
+                  <a href="javascript:void(0)" title="Documentation">Documentation</a>
+                    <ul class="navL3" style="display: none;">
+                        <li class="inactive">
+                          <a href="http://msdn.microsoft.com/library" title="APIs and reference">APIs and reference</a>
+                        </li>
+                        <li class="inactive">
+                          <a href="http://msdn.microsoft.com/developer-centers-msdn" title="Dev centers">Dev centers</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="inactive">
+                  <a href="https://code.msdn.microsoft.com/" title="Samples">Samples</a>
+                </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+                  </div>
+                <a class="DevCenterFullName" href="https://msdn.microsoft.com/en-us">Developer Network</a>
+                <a class="DevCenterShortName" href="https://msdn.microsoft.com/en-us">Developer</a>
+              </div>
+              <div class="right">
+                <div id="signIn">
+
+  <img class="profileImage" src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/profile.jpg">
+
+
+
+<a class="scarabLink" href="https://login.live.com/login.srf?wa=wsignin1.0&amp;rpsnv=12&amp;ct=1455656500&amp;rver=6.0.5276.0&amp;wp=MCMBI&amp;wlcxt=MSDN%24MSDN%24MSDN&amp;wreply=https%3a%2f%2fmsdn.microsoft.com%2fen-us%2fmagazine%2fbb985992.aspx&amp;lc=1033&amp;id=254354&amp;mkt=en-US" title="Sign in" ms.pgarea="header" ms.cmpgrp="aux nav" ms.cmpnm="aux nav: link list" ms.title="Sign in" ms.index="1" ms.cmptyp="link">Sign in</a></div>
+
+
+
+
+                <div class="auxNav">
+                  <div>
+                    <div data-fragmentname="Subscriptions" id="Fragment_Subscriptions" xmlns="http://www.w3.org/1999/xhtml">
+  <a href="https://msdn.microsoft.com/subscriptions/manage/hh442900" id="Subscriptions_2153_1" xmlns="http://www.w3.org/1999/xhtml" ms.pgarea="header" ms.cmpgrp="aux nav" ms.cmpnm="aux nav: link list" ms.title="MSDN subscriptions" ms.index="1" ms.cmptyp="link">MSDN subscriptions</a>
+</div>
+                    <div data-fragmentname="GetTools" id="Fragment_GetTools" xmlns="http://www.w3.org/1999/xhtml">
+  <a href="http://go.microsoft.com/fwlink/?LinkId=309297&amp;clcid=0x409&amp;slcid=0x409&amp;campaign=o~msft~msdn~gettools-header~dn308572" id="GetTools_2153_3" xmlns="http://www.w3.org/1999/xhtml" ms.pgarea="header" ms.cmpgrp="aux nav" ms.cmpnm="aux nav: link list" ms.title="Get tools" ms.index="1" ms.cmptyp="link">Get tools</a>
+</div>
+                  </div>                    
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="row middleRow">
+            <div class="expandTop" style="display: none;">
+              <div class="left"></div>
+              <div class="right"></div>
+            </div>
+          </div>
+        </div>
+        <div id="buttomRowWrapper" class="bg_default">
+          <div class="row buttomRow bg_default">
+            <div class="bottom">
+              <div class="left">
+                <a id="grip" class="menu-icon" href="javascript:void(0)"></a>
+                <div data-fragmentname="SiteLogo" id="Fragment_SiteLogo" xmlns="http://www.w3.org/1999/xhtml">
+  <div class="LinkWithImage topImage">
+    <a id="SiteLogo_15654_1" href="https://msdn.microsoft.com/en-us/magazine/" title="MSDN Magazine" ms.pgarea="header" ms.cmpgrp="Logo" ms.cmpnm="MSDN Magazine" ms.title="MSDN Magazine" ms.index="2" ms.cmptyp="logo">
+      <span>magazine</span>
+    </a>
+  </div>
+</div>
+                <div id="drawer">
+                  <div class="toc">
+                    
+        <nav>
+            <ul class="navL1">
+                        <li class="inactive toggle">
+                            <a href="javascript:void(0)" title="Issues and downloads" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads" ms.index="1" ms.cmptyp="link">Issues and downloads</a>
+                                <ul class="navL2" style="display: none;">
+                                        <li class="inactive">
+                                            <a href="http://msdn.microsoft.com/magazine/ee310108" title="All issues" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads" ms.index="1" ms.cmptyp="link">All issues</a>
+
+                                                   
+                                        </li>
+                                        <li class="inactive toggle">
+                                            <a href="javascript:void(0)" title="2016" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads" ms.index="1" ms.cmptyp="link">2016</a>
+
+                                                <ul class="navL3" style="display: none;">
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/mt632264" title="February 2016" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2016" ms.index="1" ms.cmptyp="link">February 2016</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/mt614238" title="January 2016" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2016" ms.index="1" ms.cmptyp="link">January 2016</a>
+                                                        </li>
+                                                </ul>
+                                                   
+                                        </li>
+                                        <li class="inactive toggle">
+                                            <a href="javascript:void(0)" title="2015" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads" ms.index="1" ms.cmptyp="link">2015</a>
+
+                                                <ul class="navL3" style="display: none;">
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/mt595745" title="December 2015" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2015" ms.index="1" ms.cmptyp="link">December 2015</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/mt619983" title="November 2015" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2015" ms.index="1" ms.cmptyp="link">November 2015</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/mt590962" title="Windows 10 issue" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2015" ms.index="1" ms.cmptyp="link">Windows 10 issue</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/mt573705" title="October 2015" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2015" ms.index="1" ms.cmptyp="link">October 2015</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/mt349016" title="September 2015" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2015" ms.index="1" ms.cmptyp="link">September 2015</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/mt185509" title="August 2015" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2015" ms.index="1" ms.cmptyp="link">August 2015</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/mt238393" title="July 2015" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2015" ms.index="1" ms.cmptyp="link">July 2015</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/mt147233" title="June 2015" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2015" ms.index="1" ms.cmptyp="link">June 2015</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dn973005" title="May 2015" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2015" ms.index="1" ms.cmptyp="link">May 2015</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dn948099" title="April 2015" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2015" ms.index="1" ms.cmptyp="link">April 2015</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dn913157" title="March 2015" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2015" ms.index="1" ms.cmptyp="link">March 2015</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dn904663" title="February 2015" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2015" ms.index="1" ms.cmptyp="link">February 2015</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dn890362" title="January 2015" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2015" ms.index="1" ms.cmptyp="link">January 2015</a>
+                                                        </li>
+                                                </ul>
+                                                   
+                                        </li>
+                                        <li class="inactive toggle">
+                                            <a href="javascript:void(0)" title="2014" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads" ms.index="1" ms.cmptyp="link">2014</a>
+
+                                                <ul class="navL3" style="display: none;">
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dn879346" title="Special 2014" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2014" ms.index="1" ms.cmptyp="link">Special 2014</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dn857348" title="December 2014" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2014" ms.index="1" ms.cmptyp="link">December 2014</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dn818485" title="November 2014" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2014" ms.index="1" ms.cmptyp="link">November 2014</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dn800594" title="October 2014" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2014" ms.index="1" ms.cmptyp="link">October 2014</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dn799056" title="September 2014" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2014" ms.index="1" ms.cmptyp="link">September 2014</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dn759433" title="August 2014" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2014" ms.index="1" ms.cmptyp="link">August 2014</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dn768436" title="July 2014" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2014" ms.index="1" ms.cmptyp="link">July 2014</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dn745857" title="June 2014" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2014" ms.index="1" ms.cmptyp="link">June 2014</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dn683788" title="May 2014" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2014" ms.index="1" ms.cmptyp="link">May 2014</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dn630420" title="April 2014" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2014" ms.index="1" ms.cmptyp="link">April 2014</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dn605869" title="March 2014" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2014" ms.index="1" ms.cmptyp="link">March 2014</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dn574789" title="February 2014" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2014" ms.index="1" ms.cmptyp="link">February 2014</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dn519916" title="January 2014" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2014" ms.index="1" ms.cmptyp="link">January 2014</a>
+                                                        </li>
+                                                </ul>
+                                                   
+                                        </li>
+                                        <li class="inactive toggle">
+                                            <a href="javascript:void(0)" title="2013" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads" ms.index="1" ms.cmptyp="link">2013</a>
+
+                                                <ul class="navL3" style="display: none;">
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dn463800" title="Government 2013" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2013" ms.index="1" ms.cmptyp="link">Government 2013</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dn532197" title="December 2013" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2013" ms.index="1" ms.cmptyp="link">December 2013</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dn463766" title="November 2013" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2013" ms.index="1" ms.cmptyp="link">November 2013</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dn451433" title="October 2013" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2013" ms.index="1" ms.cmptyp="link">October 2013</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dn385701" title="September 2013" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2013" ms.index="1" ms.cmptyp="link">September 2013</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dn342861" title="August 2013" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2013" ms.index="1" ms.cmptyp="link">August 2013</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dn296502" title="July 2013" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2013" ms.index="1" ms.cmptyp="link">July 2013</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dn201737" title="June 2013" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2013" ms.index="1" ms.cmptyp="link">June 2013</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dn198231" title="May 2013" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2013" ms.index="1" ms.cmptyp="link">May 2013</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dn166920" title="April 2013" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2013" ms.index="1" ms.cmptyp="link">April 2013</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/jj991969" title="March 2013" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2013" ms.index="1" ms.cmptyp="link">March 2013</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/jj891014" title="February 2013" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2013" ms.index="1" ms.cmptyp="link">February 2013</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/jj883946" title="January 2013" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2013" ms.index="1" ms.cmptyp="link">January 2013</a>
+                                                        </li>
+                                                </ul>
+                                                   
+                                        </li>
+                                        <li class="inactive toggle">
+                                            <a href="javascript:void(0)" title="2012" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads" ms.index="1" ms.cmptyp="link">2012</a>
+
+                                                <ul class="navL3" style="display: none;">
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/jj863125" title="December 2012" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2012" ms.index="1" ms.cmptyp="link">December 2012</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/jj721585" title="November 2012" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2012" ms.index="1" ms.cmptyp="link">November 2012</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/jj660298" title="Windows 8" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2012" ms.index="1" ms.cmptyp="link">Windows 8</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/jj658963" title="October 2012" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2012" ms.index="1" ms.cmptyp="link">October 2012</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/jj599578" title="September 2012" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2012" ms.index="1" ms.cmptyp="link">September 2012</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/jj553500" title="August 2012" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2012" ms.index="1" ms.cmptyp="link">August 2012</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/jj190796" title="July 2012" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2012" ms.index="1" ms.cmptyp="link">July 2012</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/jj133811" title="June 2012" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2012" ms.index="1" ms.cmptyp="link">June 2012</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/hh975340" title="May 2012" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2012" ms.index="1" ms.cmptyp="link">May 2012</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/hh882439" title="April 2012" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2012" ms.index="1" ms.cmptyp="link">April 2012</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/hh852583" title="March 2012" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2012" ms.index="1" ms.cmptyp="link">March 2012</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/hh781007" title="February 2012" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2012" ms.index="1" ms.cmptyp="link">February 2012</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/hh708738" title="January 2012" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2012" ms.index="1" ms.cmptyp="link">January 2012</a>
+                                                        </li>
+                                                </ul>
+                                                   
+                                        </li>
+                                        <li class="inactive toggle">
+                                            <a href="javascript:void(0)" title="2011" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads" ms.index="1" ms.cmptyp="link">2011</a>
+
+                                                <ul class="navL3" style="display: none;">
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/hh580726" title="December 2011" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2011" ms.index="1" ms.cmptyp="link">December 2011</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/hh547094" title="November 2011" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2011" ms.index="1" ms.cmptyp="link">November 2011</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/hh463583" title="October 2011" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2011" ms.index="1" ms.cmptyp="link">October 2011</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/hh416747" title="September 2011" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2011" ms.index="1" ms.cmptyp="link">September 2011</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/hh339634" title="August 2011" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2011" ms.index="1" ms.cmptyp="link">August 2011</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/hh315813" title="July 2011" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2011" ms.index="1" ms.cmptyp="link">July 2011</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/hh227291" title="June 2011" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2011" ms.index="1" ms.cmptyp="link">June 2011</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/hh126799" title="May 2011" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2011" ms.index="1" ms.cmptyp="link">May 2011</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/gg749836" title="April 2011" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2011" ms.index="1" ms.cmptyp="link">April 2011</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/gg674897" title="March 2011" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2011" ms.index="1" ms.cmptyp="link">March 2011</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/gg602477" title="February 2011" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2011" ms.index="1" ms.cmptyp="link">February 2011</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/gg547373" title="January 2011" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2011" ms.index="1" ms.cmptyp="link">January 2011</a>
+                                                        </li>
+                                                </ul>
+                                                   
+                                        </li>
+                                        <li class="inactive toggle">
+                                            <a href="javascript:void(0)" title="2010" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads" ms.index="1" ms.cmptyp="link">2010</a>
+
+                                                <ul class="navL3" style="display: none;">
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/gg491225" title="December 2010" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2010" ms.index="1" ms.cmptyp="link">December 2010</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/gg412507" title="November 2010" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2010" ms.index="1" ms.cmptyp="link">November 2010</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/gg232773" title="October 2010" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2010" ms.index="1" ms.cmptyp="link">October 2010</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/ff956213" title="September 2010" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2010" ms.index="1" ms.cmptyp="link">September 2010</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/ff899321" title="August 2010" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2010" ms.index="1" ms.cmptyp="link">August 2010</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/ff799214" title="July 2010" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2010" ms.index="1" ms.cmptyp="link">July 2010</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/ff727949" title="June 2010" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2010" ms.index="1" ms.cmptyp="link">June 2010</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/ff646986" title="May 2010" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2010" ms.index="1" ms.cmptyp="link">May 2010</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/ee336306" title="April 2010" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2010" ms.index="1" ms.cmptyp="link">April 2010</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/ee336121" title="March 2010" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2010" ms.index="1" ms.cmptyp="link">March 2010</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/ff383375" title="February 2010" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2010" ms.index="1" ms.cmptyp="link">February 2010</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/ee291594" title="January 2010" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2010" ms.index="1" ms.cmptyp="link">January 2010</a>
+                                                        </li>
+                                                </ul>
+                                                   
+                                        </li>
+                                        <li class="inactive toggle">
+                                            <a href="javascript:void(0)" title="2009" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads" ms.index="1" ms.cmptyp="link">2009</a>
+
+                                                <ul class="navL3" style="display: none;">
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/ee869324" title="December 2009" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2009" ms.index="1" ms.cmptyp="link">December 2009</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/ee840128" title="November 2009" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2009" ms.index="1" ms.cmptyp="link">November 2009</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/ee532478" title="October 2009" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2009" ms.index="1" ms.cmptyp="link">October 2009</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/ee663042" title="September 2009" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2009" ms.index="1" ms.cmptyp="link">September 2009</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/ee310078" title="August 2009" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2009" ms.index="1" ms.cmptyp="link">August 2009</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dd980906" title="July 2009" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2009" ms.index="1" ms.cmptyp="link">July 2009</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dd876628" title="June 2009" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2009" ms.index="1" ms.cmptyp="link">June 2009</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dd727694" title="May 2009" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2009" ms.index="1" ms.cmptyp="link">May 2009</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dd578512" title="April 2009" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2009" ms.index="1" ms.cmptyp="link">April 2009</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dd535414" title="March 2009" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2009" ms.index="1" ms.cmptyp="link">March 2009</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dd326789" title="February 2009" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2009" ms.index="1" ms.cmptyp="link">February 2009</a>
+                                                        </li>
+                                                        <li class="inactive">
+                                                            <a href="http://msdn.microsoft.com/magazine/dd365186" title="January 2009" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Issues and downloads" ms.title="Issues and downloads: 2009" ms.index="1" ms.cmptyp="link">January 2009</a>
+                                                        </li>
+                                                </ul>
+                                                   
+                                        </li>
+                                </ul>
+                        </li>
+                        <li class="inactive">
+                            <a href="http://msdn.microsoft.com/magazine/ee358702" title="Subscribe" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Subscribe" ms.title="Subscribe" ms.index="2" ms.cmptyp="link">Subscribe</a>
+                        </li>
+                        <li class="inactive">
+                            <a href="http://msdn.microsoft.com/magazine/ee291618" title="Submit article" ms.pgarea="header" ms.cmpgrp="main nav" ms.cmpnm="Submit article" ms.title="Submit article" ms.index="3" ms.cmptyp="link">Submit article</a>
+                        </li>
+            </ul>
+        </nav>
+
+                  </div>
+                </div>
+              </div>
+              <div class="right">
+                <div data-fragmentname="SearchBox" id="Fragment_SearchBox" xmlns="http://www.w3.org/1999/xhtml">
+  <div class="SearchBox">
+    <form id="HeaderSearchForm" name="HeaderSearchForm" method="get">
+      <button id="FakeHeaderSearchButton" value="Search" type="submit" class="header-search-button" ms.interactiontype="2" ms.title="search" ms.pgarea="header" ms.searchtype="icon">
+        <div id="search-finder" class="search-finder"></div>
+      </button>
+      <button id="HeaderSearchButton" style="display:none" data-searchtype="icon" data-pgarea="header" title="" ms.interactiontype="2" ms.title="search" ms.pgarea="header" ms.searchtype="icon"></button>
+      <div id="searchSplitter"></div>
+      <div id="searchCloseIcon" class="search-clear-x"></div>
+      <div id="searchTextContainer" style="display: none; width: 0px;">
+        <input id="HeaderSearchTextBox" name="query" type="text" maxlength="200" onfocus="Epx.Controls.SearchBox.watermarkFocus(event, this.title)" onblur="Epx.Controls.SearchBox.watermarkBlur(event, this.title)" autocomplete="off" data-searchtype="searchbox" data-pgarea="header" ms.interactiontype="2" ms.title="search" ms.pgarea="header" ms.searchtype="enter-key" ms.cmpgrp="aux nav" ms.cmpnm="upper search box" ms.index="3" ms.cmptyp="input">
+      <div id="SearchFlyoutContainer" style="display: none; text-align: left; border: 1px solid buttonshadow; position: absolute; z-index: 1000; padding: 2px; color: rgb(255, 255, 255); font-family: Arial; font-size: 16px; background-color: rgb(255, 255, 255);"><div id="SuggestionContainer"><ul data-pgarea="header" data-searchtype="search dropdown" style="list-style: none; padding: 4px 2px 0px 1px; cursor: pointer; margin: 1px; white-space: nowrap;" ms.interactiontype="2" ms.title="search" ms.pgarea="header" ms.searchtype="suggested keyword"></ul></div></div></div>
+    </form>
+    <script type="text/javascript" src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/SearchBox.js" data-amd-enabled="true"></script>
+    <script type="text/javascript" src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/SearchBox.jss" data-amd-enabled="true" data-amd-module="searchBoxJss" data-amd-shim="true"></script>
+  </div>
+</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </header>
+
+    <div id="overlayMaskHeader"></div></div>
+
+    <script type="text/javascript" src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/Layout.js" data-amd-enabled="true" data-amd-define-only="true" data-requires="jQuery" data-provides="layout"></script>
+    <script type="text/javascript" src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/Header.js" data-amd-enabled="true" data-requires="jQuery" data-provides="header"></script>
+
+
+
+
+<link type="text/css" rel="stylesheet" href="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/Breadcrumbs.css">
+<link type="text/css" rel="stylesheet" href="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/Breadcrumbs(1).css">
+
+
+
+        <div id="content">
+            
+
+
+
+
+
+
+
+
+<div id="LeftContent">
+    <div class="topic" xmlns:mtps="http://msdn2.microsoft.com/mtps" xmlns="http://www.w3.org/1999/xhtml">
+  <h1 class="title">From the February 2002 issue of MSDN Magazine</h1>
+  <!--Content type: HTML. Transform: psdk2mtps.xslt.-->  <img border="0" alt="MSDN Magazine" src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/IC51339.gif"> <table border="0"> <tbody><tr><td><h3>Inside Windows</h3> <h1>An In-Depth Look into the Win32 Portable Executable File Format</h1></td></tr> <tr><td> <span class="pd">Matt Pietrek</span></td></tr> <tr> <td><span class="clsInfo">This article assumes you're familiar with C++ and Win32</span></td></tr> <tr> <td bgcolor="#336699" valign="bottom"> <span class="clsLevel"> <span style="color:#ffffff;">Level of Difficulty&nbsp; &nbsp;&nbsp;</span> <span style="color:#999999;">1</span>&nbsp;&nbsp;
+<span style="color:#999999;">2</span>&nbsp;&nbsp;
+<span style="color:#ffffff;">3</span>&nbsp;</span> </td> </tr> <tr> <td bgcolor="#99CCFF"> <span class="clsInfo">Download the code for this article: <a href="http://download.microsoft.com/download/msdnmagazine/code/Feb02/WXP/EN-US/PE.exe">PE.exe (98KB)</a> </span> </td> </tr> <tr> <td bgcolor="#ffffff"> <p><b>SUMMARY</b>
+A good understanding of the Portable Executable (PE) file format leads to a good understanding of the operating system. If you know what's in your DLLs and EXEs, you'll be a more knowledgeable programmer. This article, the first of a two-part series, looks at the changes to the PE format that have occurred over the last few years, along with an overview of the format itself.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;After this update, the author discusses how the PE format fits into applications written for .NET, PE file sections, RVAs, the DataDirectory, and the importing of functions. An appendix includes lists of the relevant image header structures and their descriptions.</p>  </td> </tr> <tr> <td class="articletext"> <img align="left" width="44" height="63" alt="A" hspace="5" src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/IC108914.gif"> long time ago, in a galaxy far away, I wrote one of my first articles for <i>Microsoft Systems Journal</i> (now <i>MSDN</i>® <i>Magazine</i>). The article, "<a href="https://msdn.microsoft.com/en-us/magazine/ms809762.aspx">Peering Inside the PE: A Tour of the Win32 Portable Executable File Format</a>," turned out to be more popular than I had expected. To this day, I still hear from people (even within Microsoft) who use that article, which is still available from the MSDN Library. Unfortunately, the problem with articles is that they're static. The world of Win32® has changed quite a bit in the intervening years, and the article is severely dated. I'll remedy that situation in a two-part article starting this month.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You might be wondering why you should care about the executable file format. The answer is the same now as it was then: an operating system's executable format and data structures reveal quite a bit about the underlying operating system. By understanding what's in your EXEs and DLLs, you'll find that you've become a better programmer all around.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sure, you could learn a lot of what I'll tell you by reading the Microsoft specification. However, like most specs, it sacrifices readability for completeness. My focus in this article will be to explain the most relevant parts of the story, while filling in the hows and whys that don't fit neatly into a formal specification. In addition, I have some goodies in this article that don't seem to appear in any official Microsoft documentation.<br> <br><h3>Bridging the Gap</h3>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let me give you just a few examples of what has changed since I wrote the article in 1994. Since 16-bit Windows® is history, there's no need to compare and contrast the format to the Win16 New Executable format. Another welcome departure from the scene is Win32s®. This was the abomination that ran Win32 binaries very shakily atop Windows 3.1.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Back then, Windows 95 (codenamed "Chicago" at the time) wasn't even released. Windows NT® was still at version 3.5, and the linker gurus at Microsoft hadn't yet started getting aggressive with their optimizations. However, there were MIPS and DEC Alpha implementations of Windows NT that added to the story.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;And what about all the new things that have come along since that article? 64-bit Windows introduces its own variation of the Portable Executable (PE) format. Windows CE adds all sorts of new processor types. Optimizations such as delay loading of DLLs, section merging, and binding were still over the horizon. There are many new things to shoehorn into the story.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;And let's not forget about Microsoft® .NET. Where does it fit in? To the operating system, .NET executables are just plain old Win32 executable files. However, the .NET runtime recognizes data within these executable files as the metadata and intermediate language that are so central to .NET. In this article, I'll knock on the door of the .NET metadata format, but save a thorough survey of its full splendor for a subsequent article.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;And if all these additions and subtractions to the world of Win32 weren't enough justification to remake the article with modern day special effects, there are also errors in the original piece that make me cringe. For example, my description of Thread Local Storage (TLS) support was way out in left field. Likewise, my description of the date/time stamp DWORD used throughout the file format is accurate only if you live in the Pacific time zone!<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In addition, many things that were true then are incorrect now. I had stated that the .rdata section wasn't really used for anything important. Today, it certainly is. I also said that the .idata section is a read/write section, which has been found to be most untrue by people trying to do API interception today.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Along with a complete update of the PE format story in this article, I've also overhauled the PEDUMP program, which displays the contents of PE files. PEDUMP can be compiled and run on both the x86 and IA-64 platforms, and can dump both 32 and 64-bit PE files. Most importantly, full source code for PEDUMP is available for download fropm the link at the top of this article, so you have a working example of the concepts and data structures described here.<br> <h3>Overview of the PE File Format</h3>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Microsoft introduced the PE File format, more commonly known as the PE format, as part of the original Win32 specifications. However, PE files are derived from the earlier Common Object File Format (COFF) found on VAX/VMS. This makes sense since much of the original Windows NT team came from Digital Equipment Corporation. It was natural for these developers to use existing code to quickly bootstrap the new Windows NT platform.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The term "Portable Executable" was chosen because the intent was to have a common file format for all flavors of Windows, on all supported CPUs. To a large extent, this goal has been achieved with the same format used on Windows NT and descendants, Windows 95 and descendants, and Windows CE.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OBJ files emitted by Microsoft compilers use the COFF format. You can get an idea of how old the COFF format is by looking at some of its fields, which use octal encoding! COFF OBJ files have many data structures and enumerations in common with PE files, and I'll mention some of them as I go along.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The addition of 64-bit Windows required just a few modifications to the PE format. This new format is called PE32+. No new fields were added, and only one field in the PE format was deleted. The remaining changes are simply the widening of certain fields from 32 bits to 64 bits. In most of these cases, you can write code that simply works with both 32 and 64-bit PE files. The Windows header files have the magic pixie dust to make the differences invisible to most C++-based code.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The distinction between EXE and DLL files is entirely one of semantics. They both use the exact same PE format. The only difference is a single bit that indicates if the file should be treated as an EXE or as a DLL. Even the DLL file extension is artificial. You can have DLLs with entirely different extensionsfor instance .OCX controls and Control Panel applets (.CPL files) are DLLs.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A very handy aspect of PE files is that the data structures on disk are the same data structures used in memory. Loading an executable into memory (for example, by calling LoadLibrary) is primarily a matter of mapping certain ranges of a PE file into the address space. Thus, a data structure like the IMAGE_NT_HEADERS (which I'll examine later) is identical on disk and in memory. The key point is that if you know how to find something in a PE file, you can almost certainly find the same information when the file is loaded in memory.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;It's important to note that PE files are not just mapped into memory as a single memory-mapped file. Instead, the Windows loader looks at the PE file and decides what portions of the file to map in. This mapping is consistent in that higher offsets in the file correspond to higher memory addresses when mapped into memory. The offset of an item in the disk file may differ from its offset once loaded into memory. However, all the information is present to allow you to make the translation from disk offset to memory offset (see <b>Figure&nbsp;1</b>).<br> <br> <img height="263" width="294" alt="Figure 1 Offsets" src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/IC41362.gif"><br> <b>Figure 1</b> <b> Offsets</b><br> <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When PE files are loaded into memory via the Windows loader, the in-memory version is known as a module. The starting address where the file mapping begins is called an HMODULE. This is a point worth remembering: given an HMODULE, you know what data structure to expect at that address, and you can use that knowledge to find all the other data structures in memory. This powerful capability can be exploited for other purposes such as API interception. (To be completely accurate, an HMODULE isn't the same as the load address under Windows CE, but that's a story for yet another day.)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A module in memory represents all the code, data, and resources from an executable file that is needed by a process. Other parts of a PE file may be read, but not mapped in (for instance, relocations). Some parts may not be mapped in at all, for example, when debug information is placed at the end of the file. A field in the PE header tells the system how much memory needs to be set aside for mapping the executable into memory. Data that won't be mapped in is placed at the end of the file, past any parts that will be mapped in.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The central location where the PE format (as well as COFF files) is described is WINNT.H. Within this header file, you'll find nearly every structure definition, enumeration, and #define needed to work with PE files or the equivalent structures in memory. Sure, there is documentation elsewhere. MSDN has the "Microsoft Portable Executable and Common Object File Format Specification," for instance (see the October 2001  MSDN CD under Specifications). But WINNT.H is the final word on what PE files look like.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;There are many tools for examining PE files. Among them are Dumpbin from Visual Studio, and Depends from the Platform SDK. I particularly like Depends because it has a very succinct way of examining a file's imports and exports. A great free PE viewer is PEBrowse Professional, from Smidgeonsoft (<a href="http://www.smidgeonsoft.com/">http://www.smidgeonsoft.com</a>). The PEDUMP program included with this article is also very comprehensive, and does almost everything Dumpbin does.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;From an API standpoint, the primary mechanism provided by Microsoft for reading and modifying PE files is IMAGEHLP.DLL.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Before I start looking at the specifics of PE files, it's worthwhile to first review a few basic concepts that thread their way through the entire subject of PE files. In the following sections, I will discuss PE file sections, relative virtual addresses (RVAs), the data directory, and how functions are imported.<h3>PE File Sections</h3>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A PE file section represents code or data of some sort. While code is just code, there are multiple types of data. Besides read/write program data (such as global variables), other types of data in sections include API import and export tables, resources, and relocations. Each section has its own set of in-memory attributes, including whether the section contains code, whether it's read-only or read/write, and whether the data in the section is shared between all processes using the executable.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Generally speaking, all the code or data in a section is logically related in some way. At a minimum, there are usually at least two sections in a PE file: one for code, the other for data. Commonly, there's at least one other type of data section in a PE file. I'll look at the various kinds of sections in Part 2 of this article next month.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Each section has a distinct name. This name is intended to convey the purpose of the section. For example, a section called .rdata indicates a read-only data section. Section names are used solely for the benefit of humans, and are insignificant to the operating system. A section named FOOBAR is just as valid as a section called .text. Microsoft typically prefixes their section names with a period, but it's not a requirement. For years, the Borland linker used section names like CODE and DATA.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;While compilers have a standard set of sections that they generate, there's nothing magical about them. You can create and name your own sections, and the linker happily includes them in the executable. In Visual C++, you can tell the compiler to insert code or data into a section that you name with #pragma statements. For instance, the statement<pre><code>#pragma data_seg( "MY_DATA" )
+</code></pre>
+causes all data emitted by Visual C++ to go into a section called MY_DATA, rather than the default .data section. Most programs are fine using the default sections emitted by the compiler, but occasionally you may have funky requirements which necessitate putting code or data into a separate section.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sections don't spring fully formed from the linker; rather, they start out in OBJ files, usually placed there by the compiler. The linker's job is to combine all the required sections from OBJ files and libraries into the appropriate final section in the PE file. For example, each OBJ file in your project probably has at least a .text section, which contains code. The linker takes all the sections named .text from the various OBJ files and combines them into a single .text section in the PE file. Likewise, all the sections named .data from the various OBJs are combined into a single .data section in the PE file. Code and data from .LIB files are also typically included in an executable, but that subject is outside the scope of this article.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;There is a rather complete set of rules that linkers follow to decide which sections to combine and how. I gave an introduction to the linker algorithms in the July 1997 <a href="http://www.microsoft.com/msj/0797/hood0797.htm">Under The Hood</a> column in <i>MSJ</i>. A section in an OBJ file may be intended for the linker's use, and not make it into the final executable. A section like this would be intended for the compiler to pass information to the linker.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sections have two alignment values, one within the disk file and the other in memory. The PE file header specifies both of these values, which can differ. Each section starts at an offset that's some multiple of the alignment value. For instance, in the PE file, a typical alignment would be 0x200. Thus, every section begins at a file offset that's a multiple of 0x200.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Once mapped into memory, sections always start on at least a page boundary. That is, when a PE section is mapped into memory, the first byte of each section corresponds to a memory page. On x86 CPUs, pages are 4KB aligned, while on the IA-64, they're 8KB aligned. The following code shows a snippet of PEDUMP output for the .text and .data section of the Windows XP KERNEL32.DLL.<pre><code>Section Table
+  01 .text     VirtSize: 00074658  VirtAddr:  00001000
+    raw data offs:   00000400  raw data size: 00074800
+•••
+  02 .data     VirtSize: 000028CA  VirtAddr:  00076000
+    raw data offs:   00074C00  raw data size: 00002400
+</code></pre>
+The .text section is at offset 0x400 in the PE file and will be 0x1000 bytes above the load address of KERNEL32 in memory. Likewise, the .data section is at file offset 0x74C00 and will be 0x76000 bytes above KERNEL32's load address in memory.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;It's possible to create PE files in which the sections start at the same offset in the file as they start from the load address in memory. This makes for larger executables, but can speed loading under Windows 9<i>x</i> or Windows Me. The default /OPT:WIN98 linker option (introduced in Visual Studio 6.0) causes PE files to be created this way. In Visual Studio® .NET, the linker may or may not use /OPT:NOWIN98, depending on whether the file is small enough.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An interesting linker feature is the ability to merge sections. If two sections have similar, compatible attributes, they can usually be combined into a single section at link time. This is done via the linker /merge switch. For instance, the following linker option combines the .rdata and .text sections into a single section called .text:<pre><code>/MERGE:.rdata=.text
+</code></pre>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The advantage to merging sections is that it saves space, both on disk and in memory. At a minimum, each section occupies one page in memory. If you can reduce the number of sections in an executable from four to three, there's a decent chance you'll use one less page of memory. Of course, this depends on whether the unused space at the end of the two merged sections adds up to a page.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Things can get interesting when you're merging sections, as there are no hard and fast rules as to what's allowed. For example, it's OK to merge .rdata into .text, but you shouldn't merge .rsrc, .reloc, or .pdata into other sections. Prior to Visual Studio .NET, you could merge .idata into other sections. In Visual Studio .NET, this is not allowed, but the linker often merges parts of the .idata into other sections, such as .rdata, when doing a release build.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Since portions of the imports data are written to by the Windows loader when they are loaded into memory, you might wonder how they can be put in a read-only section. This situation works because at load time the system can temporarily set the attributes of the pages containing the imports data to read/write. Once the imports table is initialized, the pages are then set back to their original protection attributes.<h3>Relative Virtual Addresses</h3>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In an executable file, there are many places where an in-memory address needs to be specified. For instance, the address of a global variable is needed when referencing it. PE files can load just about anywhere in the process address space. While they do have a preferred load address, you can't rely on the executable file actually loading there. For this reason, it's important to have some way of specifying addresses that are independent of where the executable file loads.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To avoid having hardcoded memory addresses in PE files, RVAs are used. An RVA is simply an offset in memory, relative to where the PE file was loaded. For instance, consider an EXE file loaded at address 0x400000, with its code section at address 0x401000. The RVA of the code section would be:<pre><code>(target address) 0x401000 - (load address)0x400000  = (RVA)0x1000.
+</code></pre>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To convert an RVA to an actual address, simply reverse the process: add the RVA to the actual load address to find the actual memory address. Incidentally, the actual memory address is called a Virtual Address (VA) in PE parlance. Another way to think of a VA is that it's an RVA with the preferred load address added in. Don't forget the earlier point I made that a load address is the same as the HMODULE.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Want to go spelunking through some arbitrary DLL's data structures in memory? Here's how. Call GetModuleHandle with the name of the DLL. The HMODULE that's returned is just a load address; you can apply your knowledge of the PE file structures to find anything you want within the module.<h3>The Data Directory</h3>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;There are many data structures within executable files that need to be quickly located. Some obvious examples are the imports, exports, resources, and base relocations. All of these well-known data structures are found in a consistent manner, and the location is known as the DataDirectory.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The DataDirectory is an array of 16 structures. Each array entry has a predefined meaning for what it refers to. The IMAGE_DIRECTORY_ENTRY_ <i>xxx</i> #defines are array indexes into the DataDirectory (from 0 to 15). <a href="https://msdn.microsoft.com/en-us/magazine/bb985997.aspx">Figure&nbsp;2</a> describes what each of the IMAGE_DATA_DIRECTORY_<i>xxx</i> values refers to. A more detailed description of many of the pointed-to data structures will be included in Part 2 of this article.<h3>Importing Functions</h3>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When you use code or data from another DLL, you're importing it. When any PE file loads, one of the jobs of the Windows loader is to locate all the imported functions and data and make those addresses available to the file being loaded. I'll save the detailed discussion of data structures used to accomplish this for Part 2 of this article, but it's worth going over the concepts here at a high level.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When you link directly against the code and data of another DLL, you're implicitly linking against the DLL. You don't have to do anything to make the addresses of the imported APIs available to your code. The loader takes care of it all. The alternative is explicit linking. This means explicitly making sure that the target DLL is loaded and then looking up the address of the APIs. This is almost always done via the LoadLibrary and GetProcAddress APIs.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When you implicitly link against an API, LoadLibrary and GetProcAddress-like code still executes, but the loader does it for you automatically. The loader also ensures that any additional DLLs needed by the PE file being loaded are also loaded. For instance, every normal program created with Visual C++® links against KERNEL32.DLL. KERNEL32.DLL in turn imports functions from NTDLL.DLL. Likewise, if you import from GDI32.DLL, it will have dependencies on the USER32, ADVAPI32, NTDLL, and KERNEL32 DLLs, which the loader makes sure are loaded and all imports resolved. (Visual Basic 6.0 and the Microsoft .NET executables directly link against a different DLL than KERNEL32, but the same principles apply.)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When implicitly linking, the resolution process for the main EXE file and all its dependent DLLs occurs when the program first starts. If there are any problems (for example, a referenced DLL that can't be found), the process is aborted.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Visual C++ 6.0 added the delayload feature, which is a hybrid between implicit linking and explicit linking. When you delayload against a DLL, the linker emits something that looks very similar to the data for a regular imported DLL. However, the operating system ignores this data. Instead, the first time a call to one of the delayloaded APIs occurs, special stubs added by the linker cause the DLL to be loaded (if it's not already in memory), followed by a call to GetProcAddress to locate the called API. Additional magic makes it so that subsequent calls to the API are just as efficient as if the API had been imported normally.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Within a PE file, there's an array of data structures, one per imported DLL. Each of these structures gives the name of the imported DLL and points to an array of function pointers. The array of function pointers is known as the import address table (IAT). Each imported API has its own reserved spot in the IAT where the address of the imported function is written by the Windows loader. This last point is particularly important: once a module is loaded, the IAT contains the address that is invoked when calling imported APIs.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The beauty of the IAT is that there's just one place in a PE file where an imported API's address is stored. No matter how many source files you scatter calls to a given API through, all the calls go through the same function pointer in the IAT.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let's examine what the call to an imported API looks like. There are two cases to consider: the efficient way and inefficient way. In the best case, a call to an imported API looks like this:<pre><code>CALL DWORD PTR [0x00405030]
+</code></pre>
+If you're not familiar with x86 assembly language, this is a call through a function pointer. Whatever DWORD-sized value is at 0x405030 is where the CALL instruction will send control. In the previous example, address 0x405030 lies within the IAT.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The less efficient call to an imported API looks like this:<pre><code>CALL 0x0040100C
+•••
+0x0040100C:
+JMP       DWORD PTR [0x00405030]
+</code></pre>
+In this situation, the CALL transfers control to a small stub. The stub is a JMP to the address whose value is at 0x405030. Again, remember that 0x405030 is an entry within the IAT. In a nutshell, the less efficient imported API call uses five bytes of additional code, and takes longer to execute because of the extra JMP.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You're probably wondering why the less efficient method would ever be used. There's a good explanation. Left to its own devices, the compiler can't distinguish between imported API calls and ordinary functions within the same module. As such, the compiler emits a CALL instruction of the form<pre><code>CALL XXXXXXXX
+</code></pre>
+where <i>XXXXXXXX</i> is an actual code address that will be filled in by the linker later. Note that this last CALL instruction isn't through a function pointer. Rather, it's an actual code address. To keep the cosmic karma in balance, the linker needs to have a chunk of code to substitute for <i>XXXXXXXX</i>. The simplest way to do this is to make the call point to a JMP stub, like you just saw.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Where does the JMP stub come from? Surprisingly, it comes from the import library for the imported function. If you were to examine an import library, and examine the code associated with the imported API name, you'd see that it's a JMP stub like the one just shown. What this means is that by default, in the absence of any intervention, imported API calls will use the less efficient form.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logically, the next question to ask is how to get the optimized form. The answer comes in the form of a hint you give to the compiler. The __declspec(dllimport) function modifier tells the compiler that the function resides in another DLL and that the compiler should generate this instruction<pre><code>CALL DWORD PTR [XXXXXXXX]
+</code></pre>
+rather than this one:<pre><code>CALL XXXXXXXX
+</code></pre>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In addition, the compiler emits information telling the linker to resolve the function pointer portion of the instruction to a symbol named __imp_functionname. For instance, if you were calling MyFunction, the symbol name would be __imp_MyFunction. Looking in an import library, you'll see that in addition to the regular symbol name, there's also a symbol with the __imp__ prefix on it. This __imp__ symbol resolves directly to the IAT entry, rather than to the JMP stub.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;So what does this mean in your everyday life? If you're writing exported functions and providing a .H file for them, remember to use the __declspec(dllimport) modifier with the function:<pre><code>__declspec(dllimport) void Foo(void);
+</code></pre>
+If you look at the Windows system header files, you'll find that they use __declspec(dllimport) for the Windows APIs. It's not easy to see this, but if you search for the DECLSPEC_IMPORT macro defined in WINNT.H, and which is used in files such as WinBase.H, you'll see how __declspec(dllimport) is prepended to the system API declarations.<h3>PE File Structure</h3>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now let's dig into the actual format of PE files. I'll start from the beginning of the file, and describe the data structures that are present in every PE file. Afterwards, I'll describe the more specialized data structures (such as imports or resources) that reside within a PE's sections. All of the data structures that I'll discuss below are defined in WINNT.H, unless otherwise noted.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In many cases, there are matching 32 and 64-bit data structuresfor example, IMAGE_NT_HEADERS32 and IMAGE_NT_HEADERS64. These structures are almost always identical, except for some widened fields in the 64-bit versions. If you're trying to write portable code, there are #defines in WINNT.H which select the appropriate 32 or 64-bit structures and alias them to a size-agnostic name (in the previous example, it would be IMAGE_NT_HEADERS). The structure selected depends on which mode you're compiling for (specifically, whether _WIN64 is defined or not). You should only need to use the 32 or 64-bit specific versions of the structures if you're working with a PE file with size characteristics that are different from those of the platform you're compiling for.<h3>The MS-DOS Header</h3>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Every PE file begins with a small MS-DOS® executable. The need for this stub executable arose in the early days of Windows, before a significant number of consumers were running it. When executed on a machine without Windows, the program could at least print out a message saying that Windows was required to run the executable.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The first bytes of a PE file begin with the traditional MS-DOS header, called an IMAGE_DOS_HEADER. The only two values of any importance are e_magic and e_lfanew. The e_lfanew field contains the file offset of the PE header. The e_magic field (a WORD) needs to be set to the value 0x5A4D. There's a #define for this value, named IMAGE_DOS_SIGNATURE. In ASCII representation, 0x5A4D is MZ, the initials of Mark Zbikowski, one of the original architects of MS-DOS.<h3>The IMAGE_NT_HEADERS Header</h3>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The IMAGE_NT_HEADERS structure is the primary location where specifics of the PE file are stored. Its offset is given by the e_lfanew field in the IMAGE_DOS_HEADER at the beginning of the file. There are actually two versions of the IMAGE_NT_HEADER structure, one for 32-bit executables and the other for 64-bit versions. The differences are so minor that I'll consider them to be the same for the purposes of this discussion. The only correct, Microsoft-approved way of differentiating between the two formats is via the value of the Magic field in the IMAGE_OPTIONAL_HEADER (described shortly).<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An IMAGE_NT_HEADER is comprised of three fields:<pre><code>typedef struct _IMAGE_NT_HEADERS {
+    DWORD Signature;
+    IMAGE_FILE_HEADER FileHeader;
+    IMAGE_OPTIONAL_HEADER32 OptionalHeader;
+} IMAGE_NT_HEADERS32, *PIMAGE_NT_HEADERS32;
+</code></pre>
+In a valid PE file, the Signature field is set to the value 0x00004550, which in ASCII is "PE00". A #define, IMAGE_NT_SIGNATURE, is defined for this value. The second field, a struct of type IMAGE_FILE_HEADER, predates PE files. It contains some basic information about the file; most importantly, a field describing the size of the optional data that follows it. In PE files, this optional data is very much required, but is still called the IMAGE_OPTIONAL_HEADER.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://msdn.microsoft.com/en-us/magazine/bb985997.aspx">Figure&nbsp;3</a> shows the fields of the IMAGE_FILE_HEADER structure, with additional notes for the fields. This structure can also be found at the very beginning of COFF OBJ files. <a href="https://msdn.microsoft.com/en-us/magazine/bb985997.aspx">Figure&nbsp;4</a> lists the common values of IMAGE_FILE_<i>xxx</i>. <a href="https://msdn.microsoft.com/en-us/magazine/bb985997.aspx">Figure&nbsp;5</a> shows the members of the IMAGE_OPTIONAL_HEADER structure.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The DataDirectory array at the end of the IMAGE_OPTIONAL_HEADERs is the address book for important locations within the executable. Each DataDirectory entry looks like this:<pre><code>typedef struct _IMAGE_DATA_DIRECTORY {
+    DWORD   VirtualAddress;     // RVA of the data
+    DWORD   Size;               // Size of the data
+};
+</code></pre> <h3>The Section Table</h3>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Immediately following the IMAGE_NT_HEADERS is the section table. The section table is an array of IMAGE_SECTION_HEADERs structures. An IMAGE_SECTION_HEADER provides information about its associated section, including location, length, and characteristics. <a href="https://msdn.microsoft.com/en-us/magazine/bb985997.aspx">Figure&nbsp;6</a> contains a description of the IMAGE_SECTION_HEADER fields. The number of IMAGE_SECTION_HEADER structures is given by the IMAGE_NT_HEADERS.FileHeader.NumberOfSections field.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The file alignment of sections in the executable file can have a significant impact on the resulting file size. In Visual Studio 6.0, the linker defaulted to a section alignment of 4KB, unless /OPT:NOWIN98 or the /ALIGN switch was used. The Visual Studio .NET linker, while still defaulting to /OPT:WIN98, determines if the executable is below a certain size and if that is the case uses 0x200-byte alignment.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Another interesting alignment comes from the .NET file specification. It says that .NET executables should have an in-memory alignment of 8KB, rather than the expected 4KB for x86 binaries. This is to ensure that .NET executables built with x86 entry point code can still run under IA-64. If the in-memory section alignment were 4KB, the IA-64 loader wouldn't be able to load the file, since pages are 8KB on 64-bit Windows.<h3>Wrap-up</h3>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;That's it for the headers of PE files. In Part 2 of this article I'll continue the tour of portable executable files by looking at commonly encountered sections. Then I'll describe the major data structures within those sections, including imports, exports, and resources. And finally, I'll go over the source for the updated and vastly improved PEDUMP.<br> </td> </tr> <tr> <td>  <b>For related articles see:</b><br> <a href="https://msdn.microsoft.com/en-us/magazine/ms809762.aspx">Peering Inside the PE: A Tour of the Win32 Portable Executable File Format</a> <b>For background information see:</b><br> <a href="http://support.microsoft.com/default.aspx?scid=kb;en-us;q121460">The Common Object File Format (COFF)</a> </td> </tr> <tr><td>  <i><b>Matt Pietrek</b> is an independent writer, consultant, and trainer. He was the lead architect for Compuware/NuMega's Bounds Checker product line for eight years and has authored three books on Windows system programming. His Web site, at <a href="http://www.wheaty.net/">http://www.wheaty.net</a>, has a FAQ page and information on previous columns and articles.</i><br>  </td> </tr> </tbody></table>    </div>
+</div>
+<div id="RightContent">
+    <p:primary pcat:primaryformat="Mtps.Xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:mtps="http://msdn2.microsoft.com/mtps" xmlns:asp="http://msdn2.microsoft.com/aspnet" xmlns:pcat="urn:mtpg-com:mtps/2004/1/primary/category" xmlns:p="urn:mtpg-com:mtps/2004/1/primary">
+  <div class="navpage">
+    <div>
+      <div style="margin-bottom:10px;">
+        <iframe frameborder="0" framespacing="0" height="250" id="4f2320cbb2378" name="4f2320cbb2378" scrolling="no" src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/afr.html" width="300">
+          &lt;a href="http://ox-d.101m3.com/w/1.0/rc?cs=4f2320cbb2378&amp;amp;cb=INSERT_RANDOM_NUMBER_HERE"&gt;
+            &lt;img alt="" border="0" src="https://ox-d.101m3.com/w/1.0/ai?auid=139281&amp;amp;cs=4f2320cbb2378&amp;amp;cb=INSERT_RANDOM_NUMBER_HERE" xmlns="http://www.w3.org/1999/xhtml" /&gt;
+          &lt;/a&gt;
+        </iframe>
+      </div>
+      <div style="margin-bottom:10px;">
+        <iframe frameborder="0" framespacing="0" height="250" id="4f2320971b57d" name="4f2320971b57d" scrolling="no" src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/afr(1).html" width="300">
+          &lt;a href="http://ox-d.101m3.com/w/1.0/rc?cs=4f2320971b57d&amp;amp;cb=INSERT_RANDOM_NUMBER_HERE"&gt;
+            &lt;img alt="" border="0" src="http://ox-d.101m3.com/w/1.0/ai?auid=139280&amp;amp;cs=4f2320971b57d&amp;amp;cb=INSERT_RANDOM_NUMBER_HERE" xmlns="http://www.w3.org/1999/xhtml" /&gt;
+          &lt;/a&gt;
+        </iframe>
+      </div>
+      <div style="margin-bottom:10px;">
+        <iframe frameborder="0" framespacing="0" height="250" id="d364f7da2e" name="d364f7da2e" scrolling="no" src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/afr(2).html" width="300">
+          &lt;a href="http://ox-d.101m3.com/w/1.0/rc?cs=d364f7da2e&amp;amp;cb=INSERT_RANDOM_NUMBER_HERE"&gt;
+            &lt;img alt="" border="0" src="https://ox-d.101m3.com/w/1.0/ai?auid=538012782&amp;amp;cs=d364f7da2e&amp;amp;cb=INSERT_RANDOM_NUMBER_HERE" xmlns="http://www.w3.org/1999/xhtml" /&gt;
+          &lt;/a&gt;
+        </iframe>
+      </div>
+      <div id="sidebarBox" style="border-width:5px;border-color:black;border-style:solid;">
+        <div style="margin-left:5px; margin-right:5px;">
+          <h3>
+            <a href="http://blogs.msdn.com/msdnmagazine/">MSDN Magazine Blog</a>
+          </h3>
+          <p>
+            </p><div class="FVB_Basic">
+              <div class="FVB_link">
+                <a href="http://blogs.msdn.com/b/msdnmagazine/archive/2015/01/07/10584893.aspx">14 Top Features of Visual Basic 14: The Q&amp;A</a>
+              </div>
+              <div class="FVB_date">Wednesday, Jan 7 by <span class="FVB_author">Michael Desmond - MSDN Magazine</span></div>
+              <div class="FVB_link">
+                <a href="http://blogs.msdn.com/b/msdnmagazine/archive/2015/01/02/10583956.aspx">Big Start to the New Year at MSDN Magazine</a>
+              </div>
+              <div class="FVB_date">Friday, Jan 2 by <span class="FVB_author">Michael Desmond - MSDN Magazine</span></div>
+            </div>
+          <p></p>
+          <p>
+            <a href="http://blogs.msdn.com/msdnmagazine/">More MSDN Magazine Blog entries &gt;</a>
+          </p>
+        </div>
+        <div class="sidebarLine" style="margin-left:5px; margin-right:5px; background-color:#5b6871;height:12px">
+          <!--PublishThis!: An empty tag was encountered. This comment was inserted to prevent a self-closing tag.-->
+        </div>
+        <div style="margin-left:5px; margin-right:5px;">
+          <p>
+            <br>
+          </p>
+          <div style="text-align:left;font-family:Segoe UI;font-size:12pt;">Current Issue</div>
+          <div style="text-align:center;display:block;height:260px">
+            <p>
+              <a href="http://msdn.microsoft.com/en-us/magazine/0216mag">
+                <br xmlns="http://www.w3.org/1999/xhtml">
+                <img align="Middle" alt="February 2016 issue" height="239" src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/IC840337.jpg" title="February 2016 issue" width="179" xmlns="http://www.w3.org/1999/xhtml">
+              </a>
+            </p>
+          </div>
+          <div style="text-align:right;">
+            <p>
+              <a href="https://msdn.microsoft.com/en-us/magazine/ee310108.aspx">Browse All MSDN Magazines</a>
+              <br>
+            </p>
+          </div>
+          <div class="sidebarLine" style="background-color:#5b6871;height:12px">
+            <!--PublishThis!: An empty tag was encountered. This comment was inserted to prevent a self-closing tag.-->
+          </div>
+        </div>
+        <div style="margin-left:5px; margin-right:5px;">
+          <div style="text-align:Right;font-family:Segoe UI;font-size:12pt;">
+            <p>
+              <br>
+              <a href="https://msdn.microsoft.com/en-US/aa570311.aspx?ocid=msdn_magazine">
+                <img align="Left" alt="Subscribe to the MSDN Flash newsletter" src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/IC609321.png" title="Subscribe to the MSDN Flash newsletter" xmlns="http://www.w3.org/1999/xhtml"> Subscribe to MSDN Flash newsletter</a>
+            </p>
+          </div>
+          <div style="text-align:left;">
+            <p>
+              <br>Receive the MSDN Flash e-mail newsletter every other week, with news and information personalized to your interests and areas of focus.</p>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:10px;">
+        <iframe frameborder="0" framespacing="0" height="250" id="e4360aeffd" name="e4360aeffd" scrolling="no" src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/afr(3).html" width="300">
+          &lt;a href="http://ox-d.101m3.com/w/1.0/rc?cs=e4360aeffd&amp;amp;cb=INSERT_RANDOM_NUMBER_HERE"&gt;
+            &lt;img alt="" border="0" src="https://ox-d.101m3.com/w/1.0/ai?auid=538012781&amp;amp;cs=e4360aeffd&amp;amp;cb=INSERT_RANDOM_NUMBER_HERE" xmlns="http://www.w3.org/1999/xhtml" /&gt;
+          &lt;/a&gt;
+        </iframe>
+      </div>
+    </div>
+  </div>
+</p:primary>
+</div>
+
+        </div>
+        
+  
+<input name="__RequestVerificationToken" type="hidden" value="oVnHN3-ovgIssj4t7gO_2GT2GIIz6u6nxWPC8grjshRIMiVcyaFuaGy57du6VCK8IHeTzg8ADCWkc28B1kUJ_bJD4A41">
+<input id="ratingSubmitUrl" type="hidden" value="https://msdn.microsoft.com/en-us/library/feedback/add/bb985992.aspx">
+<input id="isTopicRated" type="hidden" value="false">
+<script type="text/javascript" src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/Utilities.js" data-requires="jQuery" data-provides="utilities"></script>
+
+  
+
+    <link type="text/css" rel="stylesheet" href="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/Footer.css">
+    <link type="text/css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/HeaderFooterSprite.css">
+        <link type="text/css" rel="stylesheet" href="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/Footer.MediaQueries.css">
+    <div id="ux-footer" class="" style="" dir="ltr">
+        <link type="text/css" rel="stylesheet" href="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/NewFooterSock.css">
+            <link type="text/css" rel="stylesheet" href="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/NewFooterSock.MediaQueries.css">
+        <div id="footerSock" class="">
+            <div id="footerSockInner">
+                             
+                    <div class="footerSockLeft"><div data-fragmentname="SocialLinks" id="Fragment_SocialLinks" xmlns="http://www.w3.org/1999/xhtml">
+  <link rel="stylesheet" type="text/css" href="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/LinkList.css">
+  <div class="linkList">
+    <div class="linkListTitle">Follow us</div>
+    <ul class="links">
+      <li>
+        <a href="http://www.facebook.com/microsoftdeveloper" target="_blank" id="SocialLinks_15653_18" class="facebook" xmlns="http://www.w3.org/1999/xhtml" ms.pgarea="footer" ms.cmpgrp="footer sock" ms.cmpnm="social links" ms.title="facebook" ms.index="1" ms.cmptyp="link">http://www.facebook.com/microsoftdeveloper</a>
+      </li>
+      <li>
+        <a href="https://twitter.com/msdev" target="_blank" id="SocialLinks_15653_19" class="twitter" xmlns="http://www.w3.org/1999/xhtml" ms.pgarea="footer" ms.cmpgrp="footer sock" ms.cmpnm="social links" ms.title="twitter" ms.index="1" ms.cmptyp="link">https://twitter.com/msdev</a>
+      </li>
+      <li>
+        <a href="http://plus.google.com/111221966647232053570/" id="SocialLinks_15653_20" class="googlePlus" xmlns="http://www.w3.org/1999/xhtml" ms.pgarea="footer" ms.cmpgrp="footer sock" ms.cmpnm="social links" ms.title="googlePlus" ms.index="1" ms.cmptyp="link">http://plus.google.com/111221966647232053570/</a>
+      </li>
+    </ul>
+  </div>
+</div></div>
+                        
+                    <div class="footerSockRight"><div data-fragmentname="Newsletter" id="Fragment_Newsletter" xmlns="http://www.w3.org/1999/xhtml">
+  <a href="https://msdn.microsoft.com/flashnewsletter" title="Sign up for the MSDN Newsletter" id="Newsletter_2148_19" xmlns="http://www.w3.org/1999/xhtml" ms.pgarea="footer" ms.cmpgrp="footer sock" ms.cmpnm="newsletter" ms.title="newsletter signup" ms.index="3" ms.cmptyp="link">Sign up for the MSDN Newsletter</a>
+</div></div>
+                <div class="footerSockCenter">
+                        <a name="feedback" ms.pgarea="footer" ms.cmpgrp="footer sock" ms.cmpnm="social links" ms.title="" ms.index="1" ms.cmptyp="link"></a>
+
+<div class="rating">
+    <div id="ratingSection1">
+        <div class="title">
+            Was this page helpful?
+        </div>
+        <div class="description">
+            Your feedback about this content is important.<br>Let us know what you think.
+        </div>
+        <div class="buttons">
+            <button class="button" id="ratingYes" aria-label="Yes, this page was helpful">Yes</button>
+            <button class="button" id="ratingNo" aria-label="No, this page was not helpful">No</button>
+        </div>
+        <input id="ratingValue" type="hidden" value="">
+    </div>
+    <div id="ratingSection2">
+        <div class="title left">
+            Additional feedback?
+        </div>
+        <textarea id="ratingText" rows="6" cols="" maxlength="1500"></textarea>
+        <div class="right">
+            <div class="counter">
+                <span id="feedbackTextCounter">1500</span> characters remaining
+            </div>
+            <div class="buttons">
+                <button class="button" id="ratingSubmit" aria-label="Submit my additional feedback">Submit</button>
+                <button class="button" id="ratingSkipThis" aria-label="Skip additional feedback">Skip this</button>
+            </div>
+        </div>
+    </div>
+    <div id="ratingSection3">
+        <div class="title">
+            Thank you!
+        </div>
+        <div class="description">
+            We appreciate your feedback.
+        </div>
+    </div>
+    
+    
+    <div id="contentFeedbackQAContainer" style="display: none;"></div>
+</div>
+    <script type="text/javascript" src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/Rating.js" data-amd-enabled="true" data-requires="utilities"></script>
+                                    </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+
+        <footer class="top">
+            <div data-fragmentname="LeftLinks" id="Fragment_LeftLinks" xmlns="http://www.w3.org/1999/xhtml">
+  <link rel="stylesheet" type="text/css" href="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/LinkList.css">
+  <div class="linkList">
+    <div class="linkListTitle">Dev centers</div>
+    <ul class="links">
+      <li>
+        <a href="http://dev.windows.com/" id="LeftLinks_2148_1" class="windowsBlue" xmlns="http://www.w3.org/1999/xhtml" ms.pgarea="footer" ms.cmpgrp="fat footer" ms.cmpnm="Dev centers" ms.index="1" ms.cmptyp="link">Windows</a>
+      </li>
+      <li>
+        <a href="http://dev.office.com/" id="LeftLinks_2148_3" class="office" xmlns="http://www.w3.org/1999/xhtml" ms.pgarea="footer" ms.cmpgrp="fat footer" ms.cmpnm="Dev centers" ms.index="1" ms.cmptyp="link">Office</a>
+      </li>
+      <li>
+        <a href="http://msdn.microsoft.com/vstudio" id="LeftLinks_2148_4" class="visualStudio" xmlns="http://www.w3.org/1999/xhtml" ms.pgarea="footer" ms.cmpgrp="fat footer" ms.cmpnm="Dev centers" ms.index="1" ms.cmptyp="link">Visual Studio</a>
+      </li>
+      <li>
+        <a href="http://azure.microsoft.com/en-us/documentation/" target="_blank" id="LeftLinks_2148_12" xmlns="http://www.w3.org/1999/xhtml" ms.pgarea="footer" ms.cmpgrp="fat footer" ms.cmpnm="Dev centers" ms.index="1" ms.cmptyp="link">Microsoft Azure</a>
+      </li>
+      <li>
+        <a href="https://msdn.microsoft.com/developer-centers-msdn" id="LeftLinks_2148_5" xmlns="http://www.w3.org/1999/xhtml" ms.pgarea="footer" ms.cmpgrp="fat footer" ms.cmpnm="Dev centers" ms.index="1" ms.cmptyp="link">More...</a>
+      </li>
+    </ul>
+  </div>
+</div>
+            <div id="rightLinks">
+                <div data-fragmentname="CenterLinks1" id="Fragment_CenterLinks1" xmlns="http://www.w3.org/1999/xhtml">
+  <link rel="stylesheet" type="text/css" href="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/LinkList.css">
+  <div class="linkList">
+    <div class="linkListTitle">Learning resources</div>
+    <ul class="links">
+      <li>
+        <a href="http://www.microsoftvirtualacademy.com/" id="CenterLinks1_15653_4" xmlns="http://www.w3.org/1999/xhtml" ms.pgarea="footer" ms.cmpgrp="fat footer" ms.cmpnm="Learning resources" ms.index="2" ms.cmptyp="link">Microsoft Virtual Academy</a>
+      </li>
+      <li>
+        <a href="http://channel9.msdn.com/" id="CenterLinks1_15653_5" xmlns="http://www.w3.org/1999/xhtml" ms.pgarea="footer" ms.cmpgrp="fat footer" ms.cmpnm="Learning resources" ms.index="2" ms.cmptyp="link">Channel 9</a>
+      </li>
+      <li>
+        <a href="http://www.interoperabilitybridges.com/" id="CenterLinks1_15653_6" xmlns="http://www.w3.org/1999/xhtml" ms.pgarea="footer" ms.cmpgrp="fat footer" ms.cmpnm="Learning resources" ms.index="2" ms.cmptyp="link">Interoperability Bridges</a>
+      </li>
+      <li>
+        <a href="http://msdn.microsoft.com/magazine/" id="CenterLinks1_15653_7" xmlns="http://www.w3.org/1999/xhtml" ms.pgarea="footer" ms.cmpgrp="fat footer" ms.cmpnm="Learning resources" ms.index="2" ms.cmptyp="link">MSDN Magazine</a>
+      </li>
+    </ul>
+  </div>
+</div>
+                <div data-fragmentname="CenterLinks2" id="Fragment_CenterLinks2" xmlns="http://www.w3.org/1999/xhtml">
+  <link rel="stylesheet" type="text/css" href="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/LinkList.css">
+  <div class="linkList">
+    <div class="linkListTitle">Community</div>
+    <ul class="links">
+      <li>
+        <a href="http://social.msdn.microsoft.com/forums/en-us/home" id="CenterLinks2_15653_8" xmlns="http://www.w3.org/1999/xhtml" ms.pgarea="footer" ms.cmpgrp="fat footer" ms.cmpnm="Community" ms.index="3" ms.cmptyp="link">Forums</a>
+      </li>
+      <li>
+        <a href="http://blogs.msdn.com/b/developer-tools/" id="CenterLinks2_15653_9" xmlns="http://www.w3.org/1999/xhtml" ms.pgarea="footer" ms.cmpgrp="fat footer" ms.cmpnm="Community" ms.index="3" ms.cmptyp="link">Blogs</a>
+      </li>
+      <li>
+        <a href="http://www.codeplex.com/" id="CenterLinks2_15653_10" xmlns="http://www.w3.org/1999/xhtml" ms.pgarea="footer" ms.cmpgrp="fat footer" ms.cmpnm="Community" ms.index="3" ms.cmptyp="link">Codeplex</a>
+      </li>
+    </ul>
+  </div>
+</div>
+                <div data-fragmentname="CenterLinks3" id="Fragment_CenterLinks3" xmlns="http://www.w3.org/1999/xhtml">
+  <link rel="stylesheet" type="text/css" href="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/LinkList.css">
+  <div class="linkList">
+    <div class="linkListTitle">Support</div>
+    <ul class="links">
+      <li>
+        <a href="http://msdn.microsoft.com/hh361695" id="CenterLinks3_15653_11" xmlns="http://www.w3.org/1999/xhtml" ms.pgarea="footer" ms.cmpgrp="fat footer" ms.cmpnm="Support" ms.index="4" ms.cmptyp="link">Self support</a>
+      </li>
+    </ul>
+  </div>
+</div>
+                <div data-fragmentname="CenterLinks4" id="Fragment_CenterLinks4" xmlns="http://www.w3.org/1999/xhtml" class="nth-child-4n">
+  <link rel="stylesheet" type="text/css" href="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/LinkList.css">
+  <div class="linkList">
+    <div class="linkListTitle">Programs</div>
+    <ul class="links">
+      <li>
+        <a href="http://www.microsoft.com/bizspark/" id="CenterLinks4_15653_13" xmlns="http://www.w3.org/1999/xhtml" ms.pgarea="footer" ms.cmpgrp="fat footer" ms.cmpnm="Programs" ms.index="5" ms.cmptyp="link">BizSpark (for startups)</a>
+      </li>
+      <li>
+        <a href="https://www.dreamspark.com/" id="CenterLinks4_15653_14" xmlns="http://www.w3.org/1999/xhtml" ms.pgarea="footer" ms.cmpgrp="fat footer" ms.cmpnm="Programs" ms.index="5" ms.cmptyp="link">DreamSpark</a>
+      </li>
+      <li>
+        <a href="http://www.imaginecup.com/" id="CenterLinks4_15653_15" xmlns="http://www.w3.org/1999/xhtml" ms.pgarea="footer" ms.cmpgrp="fat footer" ms.cmpnm="Programs" ms.index="5" ms.cmptyp="link">Imagine Cup</a>
+      </li>
+    </ul>
+  </div>
+</div>
+            </div>
+        </footer>
+
+        <footer class="bottom">
+            <span class="localeContainer">
+                
+    <form class="selectLocale" id="selectLocaleForm" action="https://msdn.microsoft.com/en-us/selectlocale-dmc">
+        <input type="hidden" name="fromPage" value="https%3a%2f%2fmsdn.microsoft.com%2fen-us%2fmagazine%2fbb985992.aspx">
+        <a href="https://msdn.microsoft.com/en-us/magazine/bb985992.aspx#" onclick="$(&#39;#selectLocaleForm&#39;).submit();return false;" title="Change your language" ms.pgarea="footer" ms.cmpgrp="base footer" ms.cmpnm="lang select" ms.index="1" ms.cmptyp="link">United States (English)</a>
+    </form>
+
+
+            </span>
+
+            <div data-fragmentname="BottomLinks" id="Fragment_BottomLinks" xmlns="http://www.w3.org/1999/xhtml">
+  <link rel="stylesheet" type="text/css" href="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/LinkList.css">
+  <div class="linkList">
+    <ul class="links horizontal">
+      <li>
+        <a href="http://msdn.microsoft.com/newsletter.aspx" id="BottomLinks_2148_7" xmlns="http://www.w3.org/1999/xhtml" ms.pgarea="footer" ms.cmpgrp="base footer" ms.cmpnm="base footer: link list" ms.index="2" ms.cmptyp="link">Newsletter</a>
+      </li>
+      <li>
+        <a href="http://msdn.microsoft.com/dn529288" id="BottomLinks_2148_8" xmlns="http://www.w3.org/1999/xhtml" ms.pgarea="footer" ms.cmpgrp="base footer" ms.cmpnm="base footer: link list" ms.index="2" ms.cmptyp="link">Privacy &amp; cookies</a>
+      </li>
+      <li>
+        <a href="http://msdn.microsoft.com/cc300389" id="BottomLinks_2148_9" xmlns="http://www.w3.org/1999/xhtml" ms.pgarea="footer" ms.cmpgrp="base footer" ms.cmpnm="base footer: link list" ms.index="2" ms.cmptyp="link">Terms of use</a>
+      </li>
+      <li>
+        <a href="http://www.microsoft.com/en-us/legal/intellectualproperty/Trademarks/EN-US.aspx" id="BottomLinks_2148_10" xmlns="http://www.w3.org/1999/xhtml" ms.pgarea="footer" ms.cmpgrp="base footer" ms.cmpnm="base footer: link list" ms.index="2" ms.cmptyp="link">Trademarks</a>
+      </li>
+    </ul>
+  </div>
+</div>
+            <span class="logoLegal">
+                <span class="logo"></span>
+                <span class="copyright">© 2016 Microsoft</span>
+            </span>
+        </footer>
+    </div>
+    <script type="text/javascript" src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/Footer.js" data-amd-enabled="true" data-requires="jQuery" data-provides="footer"></script>
+
+
+
+    </div>
+
+    
+
+
+<!--[CDATA[ Third party scripts and code linked to or referenced from this website are licensed to you by the parties that own such code, not by Microsoft.  See ASP.NET Ajax CDN Terms of Use – http://www.asp.net/ajaxlibrary/CDN.ashx. ]]-->
+
+<!-- Webtrends Start -->
+<script type="text/javascript" data-provides="webtrends-vars">
+//<![CDATA[
+  var literalNormalizedUrl = '/en-us/magazine/bb985992(l=en-us,v=msdn.10).aspx';
+  var wt_nvr_ru = 'WT_NVR_RU';
+  var wt_fpcdom = '.microsoft.com';
+  var wt_domlist = 'msdn.microsoft.com';
+  var wt_pathlist = '';
+  var wt_paramlist = 'DCSext.mtps_devcenter';
+  var wt_siteid = 'MSDN';
+  var gDomain = 'm.webtrends.com';
+  var gDcsId = 'dcsmgru7m99k7mqmgrhudo0k8_8c6m';
+  var gFpc = 'WT_FPC';
+
+
+
+  if (document.cookie.indexOf(gFpc + "=") == -1) {
+    var wtidJs = document.createElement("script");
+    wtidJs.src = "//" + gDomain + "/" + gDcsId + "/wtid.js";
+    document.getElementsByTagName("head")[0].appendChild(wtidJs);
+  }
+
+
+
+  var detectedLocale = 'en-us';
+  var wtsp = '_msdnmag_';
+  var gTrackEvents = '1';
+/*]]>*/
+</script>
+
+
+<noscript>&lt;div&gt;&lt;img alt="DCSIMG" id="Img1" width="1" height="1" src="https://m.webtrends.com/dcsmgru7m99k7mqmgrhudo0k8_8c6m/njs.gif?dcsuri=/nojavascript&amp;amp;WT.js=No"/&gt;&lt;/div&gt;</noscript>
+<script type="text/javascript" src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/webtrendsscript.js" data-requires="webtrends-vars"></script>
+
+
+<!-- Webtrends End -->
+<script type="text/javascript" src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/WEDCS.js" data-requires="jQuery,ABTest" data-provides="WEDCS"></script>
+
+<script type="text/javascript" src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/SurveyBroker.js"></script>
+
+
+    <script type="text/javascript" src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/CodeSnippet.js"> </script>
+    <script type="text/javascript" src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/CollapsibleArea.js"> </script>
+
+
+<div id="overlayMask"></div><script src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/broker-config.js"></script><iframe name="__bkframe" src="javascript:void(0)" height="0" width="0" frameborder="0" scrolling="No" marginheight="0" marginwidth="0" style="display: none;"></iframe><script src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/saved_resource" type="text/javascript"></script><img src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/seg" width="1" height="1" border="0" alt="" style="display: none;"><img src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/seg(1)" width="1" height="1" border="0" alt="" style="display: none;"><img src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/seg(2)" width="1" height="1" border="0" alt="" style="display: none;"><img src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/seg(3)" width="1" height="1" border="0" alt="" style="display: none;"><img src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/seg(4)" width="1" height="1" border="0" alt="" style="display: none;"><img src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/seg(5)" width="1" height="1" border="0" alt="" style="display: none;"><img src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/seg(6)" width="1" height="1" border="0" alt="" style="display: none;"><img src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/seg(7)" width="1" height="1" border="0" alt="" style="display: none;"><img src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/seg(8)" width="1" height="1" border="0" alt="" style="display: none;"><img src="./Inside Windows_ An In-Depth Look into the Win32 Portable Executable File Format_files/l" width="1" height="1" border="0" alt="" style="display: none;"></body></html>

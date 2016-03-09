@@ -1,0 +1,1 @@
+function WatermarkFocus(control,defaultValue,cssValue){control.value==defaultValue&&(control.value="",control.className=cssValue);document.onkeydown=""}function WatermarkBlur(control,defaultValue,cssValue){control.value==""&&(control.value=defaultValue,control.className=cssValue);typeof Presskey!="undefined"&&Presskey&&(document.onkeydown=Presskey)}

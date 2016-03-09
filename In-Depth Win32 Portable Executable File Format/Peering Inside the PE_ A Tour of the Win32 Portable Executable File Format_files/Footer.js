@@ -1,0 +1,1 @@
+(function(){var footerModule=function($){function fixNthChild(){$("div#ux-footer footer.top div#rightLinks > div:nth-child(4n)").addClass("nth-child-4n")}$(document).ready(function(){fixNthChild()})};typeof define=="function"&&window.mtpsAmd?define("footer",["jquery"],function($){return footerModule($)}):footerModule($)})();

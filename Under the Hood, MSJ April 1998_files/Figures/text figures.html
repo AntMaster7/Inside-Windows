@@ -1,0 +1,613 @@
+
+<!-- saved from url=(0056)https://www.microsoft.com/msj/0498/hoodtextfigs.htm#fig3 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><title> text figures</title><meta name="robots" content="noindex">
+
+
+</head>
+
+
+
+
+<body bgcolor="ffffff" background="./text figures_files/msjwatermark.gif" link="000080" vlink="800000">
+
+<!--TOOLBAR_START-->
+
+<!--TOOLBAR_EXEMPT-->
+
+<!--TOOLBAR_END-->
+
+
+<b><font size="4" color="#800000" face="verdana, arial, helv"><a name="fig3">Figure 3&nbsp; </a></font>
+<font size="4" color="#FFFFFF" face="verdana, arial, helv">&nbsp;</font>
+<font size="4" color="#000080" face="verdana, arial, helv">LibDump.CPP</font></b>
+<p></p><pre><font size="1">
+ //==========================================
+ // Matt Pietrek
+ // Microsoft Systems Journal, April 1998
+ // Program: LibDump
+ // FILE: LibDump.CPP
+ //==========================================
+ #include &lt;windows.h&gt;
+ #include &lt;stdio.h&gt;
+ #include &lt;string.h&gt;
+ #include "MemoryMappedFile.h"
+ 
+ //=============================================================================
+ // Forward prototypes for functions in this file.
+ //=============================================================================
+ 
+ DWORD ConvertBigEndian(DWORD bigEndian);
+ 
+ void DisplayLibInfoForSymbol(
+         PSTR pszSymbol,
+         PVOID pFileBase,
+         DWORD archiveMemberOffset );
+ 
+ BOOL IsRegularLibSymbol( PSTR pszSymbolName );
+ 
+ //=============================================================================
+ // Other miscellaneous variables and macros
+ //=============================================================================
+ 
+ char szHelpString[] = 
+     "LibDump - Matt Pietrek 1998 for Microsoft Systems Journal\n"
+     "  syntax: LibDump &lt;library filename&gt;\n";
+ 
+ // MakePtr is a macro that allows you to easily add to values (including
+ // pointers) together without dealing with C's pointer arithmetic.  It
+ // essentially treats the last two parameters as DWORDs.  The first
+ // parameter is used to typecast the result to the appropriate pointer type.
+ #define MakePtr( cast, ptr, addValue ) (cast)( (DWORD)(ptr) + (DWORD)(addValue))
+     
+ //=============================================================================
+ // Start of program code
+ //=============================================================================
+                                 
+ int main( int argc, char *argv[] )
+ {
+     if ( argc != 2 )    // Valid command line is "LibDump &lt;filename&gt;"
+     {
+         printf( szHelpString );
+         return 0;   
+     }
+ 
+     PSTR pszLibFileName = argv[1];  // argv[1] is the first cmd line arg
+ 
+     //
+     // Map the file into memory so that we can access it as a region of bytes
+     //      
+     MEMORY_MAPPED_FILE libFile( pszLibFileName );
+     
+     // Ensure that the file mapping worked
+     if ( FALSE == libFile.IsValid() )
+     {
+         printf( "Unable to access file %s\n", pszLibFileName );
+         return 0;
+     }
+ 
+     // All COFF libraries start with the string "!&lt;arch&gt;\n".  Verify that this
+     // string is at the beginning of the mapped file
+     PSTR pArchiveStartString = (PSTR)libFile.GetBase();
+     if ( 0 != strncmp( pArchiveStartString, IMAGE_ARCHIVE_START,
+                        IMAGE_ARCHIVE_START_SIZE )  )
+     {
+         printf( "Not a valid COFF LIB file\n" );
+         return 0;
+     }
+ 
+     // Point to the first archive member.  This entry contains the LIB symbols,
+     // and immediately follows the archive start string ("!&lt;arch&gt;\n")
+     PIMAGE_ARCHIVE_MEMBER_HEADER pMbrHdr;
+     pMbrHdr = MakePtr( PIMAGE_ARCHIVE_MEMBER_HEADER, pArchiveStartString,
+                         IMAGE_ARCHIVE_START_SIZE );
+ 
+     // First DWORD after this member header is a symbol count
+     PDWORD pcbSymbols = (PDWORD)(pMbrHdr + 1);  // Pointer math!
+ 
+     // The symbol count is stored in big endian format, so adjust as
+     // appropriate for the target architecture
+     DWORD cSymbols = ConvertBigEndian( *pcbSymbols );
+ 
+     // Following the symbol count is an array of offsets to archive members
+     // (essentially, embedded .OBJ files)
+     PDWORD pMemberOffsets = pcbSymbols + 1;     // Pointer math!
+ 
+     // Following the array of member offsets is an array of offsets to symbol
+     // names.
+     PSTR pszSymbolName = MakePtr( PSTR, pMemberOffsets, 4 * cSymbols );
+ 
+     // Print out a standard header consisting of the .LIB file name and column
+     // headers for the output that will follow
+     printf( "Library: %s\n", pszLibFileName );
+     printf( "Ord/Hnt  Type  Symbol Information\n" );
+     printf( "=======  ====  ==================\n" );
+ 
+     //
+     // Loop through every symbol in the first archive member
+     //      
+     for ( unsigned i = 0; i &lt; cSymbols; i++ )
+     {
+         DWORD offset;
+ 
+         // The offsets to the archive member that contains the symbol is stored
+         // in big endian format, so convert it appropriately.        
+         offset = ConvertBigEndian( *pMemberOffsets );
+ 
+         // Call DisplayLibInfoForSymbol, which figures out what kind of symbol
+         // it is.  The "IsRegularLibSymbol" filters out symbols that are
+         // internal to the linking process
+         if ( IsRegularLibSymbol( pszSymbolName ) )
+             DisplayLibInfoForSymbol(pszSymbolName, libFile.GetBase(), offset);
+                 
+         // Advanced to the next symbol offset and name.  The MemberOffsets
+         // array has fixed length entries, while the symbol names are
+         // sequential null-terminated strings
+         pMemberOffsets++;
+         pszSymbolName += strlen(pszSymbolName) + 1;
+     }
+ 
+             
+     return 0;
+ }
+ 
+ //=============================================================================
+ // Function: DisplayLibInfoForSymbol
+ //
+ // Parameters:
+ //      PSTR  pszSymbol           - The symbol name
+ //      PVOID FileBase            - Base address of the memory mapped file
+ //      DWORD archiveMemberOffset - Offset of archive member containing symbol
+ //
+ // Description:
+ //
+ // Given a symbol name, and the offset to the archive member that contains it,
+ // the routine determines what kind of symbol it is (import by name, import by
+ // ordinal, a GUID), and displays it accordingly.  If the symbol isn't one of
+ // these types (e.g., it's a regular staticly linked symbol), the routine just
+ // displays the symbol name.
+ //=============================================================================
+ void DisplayLibInfoForSymbol(
+         PSTR pszSymbol,
+         PVOID pFileBase,
+         DWORD archiveMemberOffset )
+ {
+     //
+     // Make a pointer to the archive member containing the symbol.  The
+     // archive member is just an embedded .OBJ preceded by a standard archive
+     // member header
+     //
+     PIMAGE_ARCHIVE_MEMBER_HEADER pMbrHdr
+         = MakePtr(PIMAGE_ARCHIVE_MEMBER_HEADER, pFileBase, archiveMemberOffset);
+ 
+     // Get a pointer to the start of the embedded .OBJ file that follows the
+     // archive member header.  COFF .OBJ files begin with an IMAGE_FILE_HEADER
+     // structure, which is defined in WINNT.H
+     PIMAGE_FILE_HEADER pImgFileHdr = (PIMAGE_FILE_HEADER)(pMbrHdr + 1);
+ 
+     // Following the IMAGE_FILE_HEADER is the IMAGE_SECTION_HEADER array.
+     PIMAGE_SECTION_HEADER pSectHdr = (PIMAGE_SECTION_HEADER)(pImgFileHdr + 1);
+ 
+     PDWORD pIdata5 = 0;     // Pointers to sections that we'll be looking for
+     PWORD  pIdata6 = 0;     // in this .OBJ file.  The presence or absence of
+     PBYTE  pRdata  = 0;     // certain sections gives hints what kind of symbol
+     PVOID  pText   = 0;     // it is.
+ 
+     BOOL fSaw_rdata = FALSE;
+     
+     // Loop through all of the IMAGE_SECTION_HEADERS, looking for .idata$5,
+     // .idata$6, and .rdata.  As we find them, create a pointer to the raw
+     // data for that section.            
+     for ( unsigned i = 0; i &lt; pImgFileHdr-&gt;NumberOfSections; i++ )
+     {
+         if ( 0 == strnicmp( (char *)pSectHdr-&gt;Name, ".idata$5",
+                             IMAGE_SIZEOF_SHORT_NAME) )
+         {
+             pIdata5 = MakePtr(PDWORD, pImgFileHdr, pSectHdr-&gt;PointerToRawData);
+         }
+         else if ( 0 == strnicmp( (char *)pSectHdr-&gt;Name, ".idata$6",
+                                  IMAGE_SIZEOF_SHORT_NAME) )
+         {
+             pIdata6 = MakePtr(PWORD, pImgFileHdr, pSectHdr-&gt;PointerToRawData);
+         }
+         else if ( 0 == strnicmp( (char *)pSectHdr-&gt;Name, ".text",
+                                  IMAGE_SIZEOF_SHORT_NAME) )
+         {
+             pText = MakePtr(PVOID, pImgFileHdr, pSectHdr-&gt;PointerToRawData);
+         }
+         else if ( 0 == strnicmp( (char *)pSectHdr-&gt;Name, ".rdata",
+                                  IMAGE_SIZEOF_SHORT_NAME) )
+         {           
+             // Hack!  We'll assume that if the .rdata section is the size of
+             // a GUID (0x10 bytes) that it's really a GUID.  There's an obvious
+             // flaw here, since sometimes multiple GUIDs are contained within
+             // a single .rdata section.
+             if ( !fSaw_rdata &amp;&amp; (sizeof(GUID) == pSectHdr-&gt;SizeOfRawData) )
+             {
+                 pRdata = MakePtr(PBYTE, pImgFileHdr,pSectHdr-&gt;PointerToRawData);
+             }
+             else    // If we've already seen an .rdata section, then we're
+             {       // probably not looking at a GUID, so set pRdata to NULL
+                 pRdata = 0;
+             }
+             
+             fSaw_rdata = TRUE;
+         }
+         
+         pSectHdr++;     // Advance to the next section
+     }   
+ 
+     if ( !pIdata5 ) // If no .idata$5 section, it's not an import symbol
+     {
+         // If an .rdata section is found, but no .text section, assume it's
+         // a GUID symbol
+         if ( pRdata &amp;&amp; !pText)
+         {
+             // Funky code to break apart the 0x10 bytes of a GUID into its
+             // component parts for display
+             DWORD part1 = *(PDWORD)pRdata;
+             WORD  part2 = *(PWORD)(pRdata+4);
+             WORD  part3 = *(PWORD)(pRdata+6);
+             
+             printf( "         GUID  "
+                     "{%08X-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X} %s\n",
+                     part1, part2, part3,
+                     pRdata[8],  pRdata[9],  pRdata[10], pRdata[11], 
+                     pRdata[12], pRdata[13], pRdata[14], pRdata[15],
+                     pszSymbol );
+         }
+         else    // No .rdata section, so just display the symbol name.  This
+         {       // will be the case for staticly linked symbols (e.g., the
+                 // C++ runtime library functions)
+                 
+             printf( "               %s\n", pszSymbol );
+         }
+         
+         return;
+     }
+ 
+     //
+     // If we get here, and .idata$5 section was found, indicating that it's
+     // an import symbol
+     //
+     WORD ordinal = 0xFFFF;
+     BOOL fOrdinal = FALSE;
+     PSTR pszExportName = 0;
+ 
+     // If the first DWORD in the .idata$5 section has the high bit set, it's
+     // an import by ordinal symbol, and the low WORD is the ordinal.  If it's
+     // not an ordinal import, this DWORD is zero.
+     if ( *pIdata5 &amp; IMAGE_ORDINAL_FLAG )
+     {
+         ordinal = (WORD)(*pIdata5 &amp; ~IMAGE_ORDINAL_FLAG);
+         fOrdinal = TRUE;
+     }
+ 
+     // If the .idata$6 section is found, the symbol is imported by name
+     if ( pIdata6 )
+     {
+         // The first WORD is a "hint" ordinal value.  Immediately following
+         // that is the name of the function that will appear in the EXE/DLLs
+         // imports table.  Note that this name can be (and often is) different
+         // from the name of the symbol that the linker actually references.
+         // For example, "_TlsGetValue@4" becomes "TlsGetValue"
+         pszExportName = (PSTR)(pIdata6 + 1);    // Pointer math
+ 
+         if ( FALSE == fOrdinal )
+             ordinal = *pIdata6;     // Get the hint ordinal
+     }
+ 
+     // Emit the import (or hint) ordinal, what type of import it is
+     // (ORDN, NAME), and the name of the referenced symbol.
+     printf( "%7u  %s  %s",
+             ordinal, fOrdinal ? "ORDN" : "NAME", pszSymbol );
+ 
+     // If the symbol is imported by name, append the name that will appear
+     // in the imports section of the EXE/DLL.
+     if ( pszExportName )
+         printf( " imported as %s", pszExportName );
+         
+     printf( "\n" );
+ }
+ 
+ //=============================================================================
+ // Filters out symbols that are internal to the linking process, and which
+ // the programmer never explicitly sees.
+ //=============================================================================
+ 
+ BOOL IsRegularLibSymbol( PSTR pszSymbolName )
+ {
+     if ( 0 == strncmp( pszSymbolName, "__IMPORT_DESCRIPTOR_", 20 ) )
+         return FALSE;
+ 
+     if ( 0 == strncmp( pszSymbolName, "__NULL_IMPORT_DESCRIPTOR", 24 ) )
+         return FALSE;
+         
+     if ( strstr( pszSymbolName, "_NULL_THUNK_DATA" ) )
+         return FALSE;
+         
+     return TRUE;
+ }
+ 
+ //=============================================================================
+ // Converts from big endian to little endian numbers.
+ //=============================================================================
+ DWORD ConvertBigEndian(DWORD bigEndian)
+ {
+     DWORD temp = 0;
+ 
+     temp |= bigEndian &gt;&gt; 24;
+     temp |= ((bigEndian &amp; 0x00FF0000) &gt;&gt; 8);
+     temp |= ((bigEndian &amp; 0x0000FF00) &lt;&lt; 8);
+     temp |= ((bigEndian &amp; 0x000000FF) &lt;&lt; 24);
+ 
+     return temp;
+ }
+</font></pre>
+
+<hr color="000080" align="left" width="200">
+
+<p>
+<b><font size="4" color="#800000" face="verdana, arial, helv"><a name="fig4">Figure 4  </a></font>
+<font size="4" color="#FFFFFF" face="verdana, arial, helv">&nbsp;</font>
+<font size="4" color="#000080" face="verdana, arial, helv">MemoryMappedFile</font></b>
+</p><p>
+<font face="verdana, arial, helv" color="000080" size="3"><b>MemoryMappedFile.H</b></font>
+</p><pre><font size="1">
+ #ifndef __MEMMAPFL_H__
+ #define __MEMMAPFL_H__
+ 
+ enum errMMF {   errMMF_NoError, errMMF_FileOpen,
+                 errMMF_FileMapping, errMMF_MapView };
+ 
+ class MEMORY_MAPPED_FILE
+ {
+     public:
+     
+     MEMORY_MAPPED_FILE( PSTR pszFileName );
+     ~MEMORY_MAPPED_FILE(void);
+     
+     PVOID   GetBase( void ){ return m_pMemoryMappedFileBase; }
+     DWORD   GetFileSize( void ){ return m_cbFile; }
+     BOOL    IsValid( void ) { return errMMF_NoError == m_errCode; } 
+     errMMF  GetErrorType(){ return m_errCode; }
+ 
+     private:
+ 
+     HANDLE      m_hFile;
+     HANDLE      m_hFileMapping; // Handle of memory mapped file
+     PVOID       m_pMemoryMappedFileBase;
+     DWORD       m_cbFile;
+     errMMF      m_errCode;  
+ };
+ 
+ typedef MEMORY_MAPPED_FILE *PMEMORY_MAPPED_FILE;
+ 
+ #endif
+</font></pre>
+<p>
+<font face="verdana, arial, helv" color="000080" size="3"><b>MemoryMappedFile.CPP</b></font>
+</p><pre><font size="1">
+ //==========================================
+ // Matt Pietrek
+ // Microsoft Systems Journal, April 1998
+ // Program: LibDump
+ // FILE: MemoryMappedFile.CPP
+ //==========================================
+ #include &lt;windows.h&gt;
+ #pragma hdrstop
+ #include "memorymappedfile.h"
+ 
+ MEMORY_MAPPED_FILE::MEMORY_MAPPED_FILE( PSTR pszFileName )
+ {
+     //
+     // Given a file name, the constructor opens a file handle, creates a file
+     // mapping, and maps the entire file into memory.
+     //
+     m_hFile = INVALID_HANDLE_VALUE;
+     m_hFileMapping = 0;
+     m_pMemoryMappedFileBase = 0;
+     m_cbFile = 0;
+     m_errCode = errMMF_FileOpen;    // Initial error code: not found
+ 
+     // First get a file handle      
+     m_hFile = CreateFile(pszFileName, GENERIC_READ, FILE_SHARE_READ, NULL,
+                         OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, (HANDLE)0);
+                     
+     if ( m_hFile == INVALID_HANDLE_VALUE )
+     {
+         m_errCode = errMMF_FileOpen;
+         return;
+     }
+ 
+     m_cbFile = ::GetFileSize( m_hFile, 0 );
+ 
+     // Now, create a file mapping   
+     m_hFileMapping = CreateFileMapping(m_hFile,NULL, PAGE_READONLY, 0, 0,NULL);
+     if ( m_hFileMapping == 0 )
+     {
+         // Oops.  Something went wrong.  Clean up.
+         CloseHandle(m_hFile);
+         m_hFile = INVALID_HANDLE_VALUE;
+         m_errCode = errMMF_FileMapping;
+         return;
+     }
+ 
+     m_pMemoryMappedFileBase = (PCHAR)MapViewOfFile( m_hFileMapping,
+                                                     FILE_MAP_READ,
+                                                     0, 0, 0);
+ 
+     if ( m_pMemoryMappedFileBase == 0 )
+     {
+         // Oops.  Something went wrong.  Clean up.
+         CloseHandle(m_hFileMapping);
+         m_hFileMapping = 0;
+         CloseHandle(m_hFile);
+         m_hFile = INVALID_HANDLE_VALUE;
+         m_errCode = errMMF_MapView;
+         return;
+     }
+ 
+     m_errCode = errMMF_NoError;
+ }
+ 
+ MEMORY_MAPPED_FILE::~MEMORY_MAPPED_FILE(void)
+ {
+     // Clean up everything that was created by the constructor
+     if ( m_pMemoryMappedFileBase )
+         UnmapViewOfFile( m_pMemoryMappedFileBase );
+ 
+     if ( m_hFileMapping )
+         CloseHandle( m_hFileMapping );
+ 
+     if ( m_hFile != INVALID_HANDLE_VALUE )
+         CloseHandle( m_hFile ); 
+ 
+     m_errCode = errMMF_FileOpen;
+ }
+</font></pre>
+
+<hr color="000080" align="left" width="200">
+
+
+<p>
+<b><font size="4" color="#800000" face="verdana, arial, helv"><a name="fig5">Figure 5  </a></font>
+<font size="4" color="#FFFFFF" face="verdana, arial, helv">&nbsp;</font>
+<font size="4" color="#000080" face="verdana, arial, helv">LibDump of COMCTL32.lib</font></b>
+</p><p></p><pre><font size="1">
+ Library: COMCTL32.LIB
+ Ord/Hnt  Type  Symbol Information
+ =======  ====  ==================
+     167  ORDN  _AddMRUData@12
+     153  ORDN  _AddMRUStringA@8
+     401  ORDN  _AddMRUStringW@8
+      71  ORDN  _Alloc@4
+     151  ORDN  _CreateMRUListA@4
+     400  ORDN  _CreateMRUListW@4
+       8  ORDN  _CreateMappedBitmap@20
+     163  ORDN  _CreatePage@8
+       1  NAME  _CreatePropertySheetPage@4 imported as CreatePropertySheetPage
+       2  NAME  _CreatePropertySheetPageA@4 imported as CreatePropertySheetPageA
+       3  NAME  _CreatePropertySheetPageW@4 imported as CreatePropertySheetPageW
+     164  ORDN  _CreateProxyPage@8
+       4  NAME  _CreateStatusWindow@16 imported as CreateStatusWindow
+       6  ORDN  _CreateStatusWindowA@16
+       6  NAME  _CreateStatusWindowW@16 imported as CreateStatusWindowW
+       7  ORDN  _CreateToolbar@32
+       8  NAME  _CreateToolbarEx@52 imported as CreateToolbarEx
+      16  ORDN  _CreateUpDownControl@48
+     331  ORDN  _DPA_Clone@8
+     328  ORDN  _DPA_Create@4
+     340  ORDN  _DPA_CreateEx@8
+     337  ORDN  _DPA_DeleteAllPtrs@4
+     336  ORDN  _DPA_DeletePtr@8
+     329  ORDN  _DPA_Destroy@4
+     332  ORDN  _DPA_GetPtr@8
+     333  ORDN  _DPA_GetPtrIndex@8
+     330  ORDN  _DPA_Grow@8
+     334  ORDN  _DPA_InsertPtr@12
+     339  ORDN  _DPA_Search@24
+     335  ORDN  _DPA_SetPtr@12
+     338  ORDN  _DPA_Sort@12
+     320  ORDN  _DSA_Create@8
+     327  ORDN  _DSA_DeleteAllItems@4
+     326  ORDN  _DSA_DeleteItem@8
+     321  ORDN  _DSA_Destroy@4
+     322  ORDN  _DSA_GetItem@12
+     323  ORDN  _DSA_GetItemPtr@8
+     324  ORDN  _DSA_InsertItem@12
+     325  ORDN  _DSA_SetItem@12
+     156  ORDN  _DelMRUString@8
+      10  NAME  _DestroyPropertySheetPage@4 imported as DestroyPropertySheetPage
+      11  NAME  _DllGetVersion@4 imported as DllGetVersion
+</font></pre>
+<hr color="000080" align="left" width="200">
+
+<p>
+<b><font size="4" color="#800000" face="verdana, arial, helv"><a name="fig6">Figure 6  </a></font>
+<font size="4" color="#FFFFFF" face="verdana, arial, helv">&nbsp;</font>
+<font size="4" color="#000080" face="verdana, arial, helv">LibDump of UUID.LIB</font></b>
+</p><p></p><pre><font size="1">
+ Library: d:\mstools\lib\UUID.LIB
+ Ord/Hnt  Type  Symbol Information
+ =======  ====  ==================
+ •
+ •
+ •
+          GUID  {7DD95802-9882-11CF-9FA9-00AA006C42C4} _CATID_SafeForInitializing
+          GUID  {7DD95801-9882-11CF-9FA9-00AA006C42C4} _CATID_SafeForScripting
+          GUID  {00000330-0000-0000-C000-000000000046} _CLSID_AllClasses
+          GUID  {0BE35201-8F91-11CE-9DE3-00AA004BB851} _CLSID_CColorPropPage
+          GUID  {0BE35200-8F91-11CE-9DE3-00AA004BB851} _CLSID_CFontPropPage
+          GUID  {0BE35202-8F91-11CE-9DE3-00AA004BB851} _CLSID_CPicturePropPage
+          GUID  {FB8F0822-0164-101B-84ED-08002B2EC713} _CLSID_ConvertVBX
+          GUID  {00000332-0000-0000-C000-000000000046} _CLSID_CurrentUserClasses
+          GUID  {0000031D-0000-0000-C000-000000000046} _CLSID_DCOMAccessControl
+          GUID  {79EAC9E5-BAF9-11CE-8C82-00AA004BA90B} _CLSID_FileProtocol
+          GUID  {79EAC9E3-BAF9-11CE-8C82-00AA004BA90B} _CLSID_FtpProtocol
+          GUID  {79EAC9E4-BAF9-11CE-8C82-00AA004BA90B} _CLSID_GopherProtocol
+          GUID  {79EAC9E2-BAF9-11CE-8C82-00AA004BA90B} _CLSID_HttpProtocol
+          GUID  {79EAC9E5-BAF9-11CE-8C82-00AA004BA90B} _CLSID_HttpSProtocol
+          GUID  {0000001B-0000-0000-C000-000000000046} _CLSID_IdentityUnmarshal
+          GUID  {0000001C-0000-0000-C000-000000000046} _CLSID_InProcFreeMarshaler
+          GUID  {00000331-0000-0000-C000-000000000046} _CLSID_LocalMachineClasses
+          GUID  {79EAC9E6-BAF9-11CE-8C82-00AA004BA90B} _CLSID_MkProtocol
+          GUID  {00000312-0000-0000-C000-000000000046} _CLSID_PSBindCtx
+          GUID  {0000030E-0000-0000-C000-000000000046} _CLSID_PSClassObject
+          GUID  {0000030D-0000-0000-C000-000000000046} _CLSID_PSClientSite
+          GUID  {00000311-0000-0000-C000-000000000046} _CLSID_PSDragDrop
+          GUID  {00000313-0000-0000-C000-000000000046} _CLSID_PSEnumerators
+          GUID  {0000030C-0000-0000-C000-000000000046} _CLSID_PSGenObject
+          GUID  {0000030F-0000-0000-C000-000000000046} _CLSID_PSInPlaceActive
+          GUID  {00000310-0000-0000-C000-000000000046} _CLSID_PSInPlaceFrame
+          GUID  {79EAC9F1-BAF9-11CE-8C82-00AA004BA90B} _CLSID_PSUrlMonProxy
+          GUID  {FB8F0821-0164-101B-84ED-08002B2EC713} _CLSID_PersistPropset
+          GUID  {00000316-0000-0000-C000-000000000046} _CLSID_Picture_Dib
+          GUID  {00000319-0000-0000-C000-000000000046} _CLSID_Picture_EnhMetafile
+          GUID  {00000315-0000-0000-C000-000000000046} _CLSID_Picture_Metafile
+          GUID  {00000316-0000-0000-C000-000000000046} _CLSID_StaticDib
+          GUID  {00000315-0000-0000-C000-000000000046} _CLSID_StaticMetafile
+          GUID  {0002E005-0000-0000-C000-000000000046} _CLSID_StdComponentCategoriesMgr
+          GUID  {0BE35203-8F91-11CE-9DE3-00AA004BB851} _CLSID_StdFont
+          GUID  {00000323-0000-0000-C000-000000000046} _CLSID_StdGlobalInterfaceTable
+          GUID  {79EAC9D0-BAF9-11CE-8C82-00AA004BA90B} _CLSID_StdHlink
+          GUID  {79EAC9D1-BAF9-11CE-8C82-00AA004BA90B} _CLSID_StdHlinkBrowseContext
+          GUID  {00000017-0000-0000-C000-000000000046} _CLSID_StdMarshal
+          GUID  {0BE35204-8F91-11CE-9DE3-00AA004BB851} _CLSID_StdPicture
+ •
+ •
+ •
+          GUID  {66504306-BE0F-101A-8BBB-00AA00300CAB} _GUID_XPOS
+          GUID  {66504302-BE0F-101A-8BBB-00AA00300CAB} _GUID_XPOSPIXEL
+          GUID  {66504308-BE0F-101A-8BBB-00AA00300CAB} _GUID_XSIZE
+          GUID  {66504304-BE0F-101A-8BBB-00AA00300CAB} _GUID_XSIZEPIXEL
+          GUID  {66504307-BE0F-101A-8BBB-00AA00300CAB} _GUID_YPOS
+          GUID  {66504303-BE0F-101A-8BBB-00AA00300CAB} _GUID_YPOSPIXEL
+          GUID  {66504309-BE0F-101A-8BBB-00AA00300CAB} _GUID_YSIZE
+          GUID  {66504305-BE0F-101A-8BBB-00AA00300CAB} _GUID_YSIZEPIXEL
+          GUID  {BB1A2AE1-A4F9-11CF-8F20-00805F2CD064} _IID_IActiveScript
+          GUID  {EAE1BA61-A4ED-11CF-8F20-00805F2CD064} _IID_IActiveScriptError
+          GUID  {BB1A2AE2-A4F9-11CF-8F20-00805F2CD064} _IID_IActiveScriptParse
+          GUID  {DB01A1E3-A42B-11CF-8F20-00805F2CD064} _IID_IActiveScriptSite
+          GUID  {D10F6761-83E9-11CF-8F20-00805F2CD064} _IID_IActiveScriptSiteWindow 
+          GUID  {0000010F-0000-0000-C000-000000000046} _IID_IAdviseSink
+          GUID  {00000125-0000-0000-C000-000000000046} _IID_IAdviseSink2
+          GUID  {3AF24290-0C96-11CE-A0CF-00AA00600AB8} _IID_IAdviseSinkEx
+          GUID  {79EAC9D3-BAF9-11CE-8C82-00AA004BA90B} _IID_IAsyncMoniker
+          GUID  {79EAC9D0-BAF9-11CE-8C82-00AA004BA90B} _IID_IAuthenticate
+          GUID  {0000000E-0000-0000-C000-000000000046} _IID_IBindCtx
+          GUID  {FC4801A1-2BA9-11CF-A229-00AA003D7352} _IID_IBindHost
+          GUID  {79EAC9CD-BAF9-11CE-8C82-00AA004BA90B} _IID_IBindProtocol
+          GUID  {79EAC9C1-BAF9-11CE-8C82-00AA004BA90B} _IID_IBindStatusCallback
+          GUID  {79EAC9C0-BAF9-11CE-8C82-00AA004BA90B} _IID_IBinding
+          GUID  {0002E013-0000-0000-C000-000000000046} _IID_ICatInformation
+          GUID  {0002E012-0000-0000-C000-000000000046} _IID_ICatRegister
+          GUID  {1008C4A0-7613-11CF-9AF1-0020AF6E72F4} _IID_IChannelHook
+          GUID  {00000140-0000-0000-C000-000000000046} _IID_IClassActivator
+          GUID  {00000001-0000-0000-C000-000000000046} _IID_IClassFactory
+          GUID  {B196B28F-BAB4-101A-B69C-00AA00341D07} _IID_IClassFactory2
+</font></pre>
+<hr color="000080" align="left" width="200">
+
+
+
+</body></html>

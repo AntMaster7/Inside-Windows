@@ -1,0 +1,1007 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0115)http://www.delphibasics.info/home/delphibasicsarticles/anin-depthlookintothewin32portableexecutablefileformat-part2 -->
+<html xmlns="http://www.w3.org/1999/xhtml" itemscope="" itemtype="http://schema.org/WebPage"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="chrome=1">
+<script src="./An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics_files/cb=gapi.loaded_2" async=""></script><script src="./An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics_files/cb=gapi.loaded_1" async=""></script><script src="./An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics_files/cb=gapi.loaded_0" async=""></script><script async="" src="./An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics_files/analytics.js"></script><script type="text/javascript">/* Copyright 2008 Google. */ (function() { var e="wtsrt_",g="tbsd_",h="tbnd_",k="start",l="_wtsrt",m="_tbnd",n="CSI/";(function(){function f(a){this.t={};this.tick=function(a,c,b){this.t[a]=[void 0!=b?b:(new Date).getTime(),c];if(void 0==b)try{window.console.timeStamp(n+a)}catch(d){}};this.tick(k,null,a)}var a;window.performance&&(a=window.performance.timing);var p=a?new f(a.responseStart):new f;window.jstiming={Timer:f,load:p};if(a){var c=a.navigationStart,d=a.responseStart;0<c&&d>=c&&(window.jstiming.srt=d-c)}if(a){var b=window.jstiming.load;0<c&&d>=c&&(b.tick(l,void 0,c),b.tick(e,l,d),b.tick(g,e))}try{a=null,
+window.chrome&&window.chrome.csi&&(a=Math.floor(window.chrome.csi().pageT),b&&0<c&&(b.tick(m,void 0,window.chrome.csi().startE),b.tick(h,m,c))),null==a&&window.gtbExternal&&(a=window.gtbExternal.pageT()),null==a&&window.external&&(a=window.external.pageT,b&&0<c&&(b.tick(m,void 0,window.external.startE),b.tick(h,m,c))),a&&(window.jstiming.pt=a)}catch(q){}})(); })()
+</script>
+<link rel="shortcut icon" href="http://www.delphibasics.info/_/rsrc/1258127733180/favicon.ico" type="image/x-icon">
+<link rel="apple-touch-icon" href="http://www.gstatic.com/sites/p/77c5f6/system/app/images/apple-touch-icon.png" type="image/png">
+<script type="text/javascript">/* Copyright 2008 Google. */ (function() { var d="",g="__duration__",h="function";function k(c){return document.getElementById(c)}window.byId=k;function l(c){return c.replace(/^\s+|\s+$/g,d)}window.trim=l;var m=[],n=0;window.JOT_addListener=function(c,a,b){var e=new String(n++);c={eventName:c,handler:a,compId:b,key:e};m.push(c);return e};window.JOT_removeListenerByKey=function(c){for(var a=0;a<m.length;a++)if(m[a].key==c){m.splice(a,1);break}};
+window.JOT_removeAllListenersForName=function(c){for(var a=0;a<m.length;a++)m[a].eventName==c&&m.splice(a,1)};window.JOT_postEvent=function(c,a,b){var e={eventName:c,eventSrc:a||{},payload:b||{}};if(window.JOT_fullyLoaded)for(a=m.length,b=0;b<a&&b<m.length;b++){var f=m[b];f&&f.eventName==c&&(e.listenerCompId=f.compId||d,(f=typeof f.handler==h?f.handler:window[f.handler])&&f(e))}else window.JOT_delayedEvents.push({eventName:c,eventSrc:a,payload:b})};window.JOT_delayedEvents=[];
+window.JOT_fullyLoaded=!1;window.JOT_formatRelativeToNow=function(c,a){var b=((new Date).getTime()-c)/6E4;if(1440<=b||0>b)return null;var e=0;60<=b&&(b/=60,e=2);2<=b&&e++;return a?window.JOT_siteRelTimeStrs[e].replace(g,Math.floor(b)):window.JOT_userRelTimeStrs[e].replace(g,Math.floor(b))}; })()
+</script>
+<link rel="stylesheet" type="text/css" href="./An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics_files/announcements.css">
+<script>
+
+  
+
+  var breadcrumbs = [{"path":"/home","deleted":false,"title":"Delphi Basics  - Free Delphi Source Code - Ultimate Programming Resource","dir":"ltr"},{"path":"/home/delphibasicsarticles","deleted":false,"title":"Delphi Basics Articles","dir":"ltr"},{"path":"/home/delphibasicsarticles/anin-depthlookintothewin32portableexecutablefileformat-part2","deleted":false,"title":"An In-Depth Look into the Win32 Portable Executable File Format - Part 2","dir":"ltr"}];
+  var JOT_clearDotPath = 'http://www.gstatic.com/sites/p/77c5f6/system/app/images/cleardot.gif';
+
+  
+  var JOT_userRelTimeStrs = ["a minute ago","__duration__ minutes ago","an hour ago","__duration__ hours ago"];
+
+  
+  
+
+  
+
+  var webspace = {"enableAnalytics":true,"pageSharingId":"jotspot_page","enableUniversalAnalytics":false,"sharingPolicy":"OPENED","siteTitle":"DelphiBasics","isStartPageEnabled":false,"adsensePublisherId":"ca-pub-8945771519807722","features":{"validateClientGvizDataSourceUrls":true,"contactStoreMigrationPollForGapi":true,"gapiLoaderUtil":true,"moreMobileStyleImprovements":true,"gadgetsInStratus":false,"accumulativeBubblePanelCreation":true,"domainAnalyticsInGAOnly":true,"noCaptcha":true,"enableNewImageSlider":false,"templatesInStratus":false,"fileCabinetScreenReaderFix":true,"updatedTosAndPrivacyLinks":null,"useTitleAsTemplateIndicator":false,"pageDrafts":false,"mobileOrientationFix":true,"plusBadge":false,"pdfEmbedSupport":false,"jsClickFix":true,"updatedReportAbuseForm":false},"isPublic":true,"isConsumer":true,"serverFlags":{"cajaBaseUrl":"//www.gstatic.com/caja","cajaDebugMode":false},"onepickBaseUrl":"https://docs.google.com","domainAnalyticsAccountId":"","plusPageId":"","signInUrl":"https://www.google.com/a/SelectSession?continue\u003dhttp://sites.google.com/site/delphibasics/home/delphibasicsarticles/anin-depthlookintothewin32portableexecutablefileformat-part2\u0026service\u003djotspot","analyticsAccountId":"UA-4930081-5","scottyUrl":"/_/upload","homePath":"/","siteNoticeUrlEnabled":null,"plusPageUrl":"","adsensePromoClickedOrSiteIneligible":true,"csiReportUri":"http://csi.gstatic.com/csi","sharingId":"jotspot","termsUrl":"//www.google.com/intl/en/policies/terms/","gvizVersion":1,"editorResources":{"sitelayout":["http://www.gstatic.com/sites/p/77c5f6/system/app/css/sitelayouteditor.css"],"text":["http://www.gstatic.com/sites/p/77c5f6/system/js/codemirror.js","http://www.gstatic.com/sites/p/77c5f6/system/app/css/codemirror_css.css","http://www.gstatic.com/sites/p/77c5f6/system/js/trog_edit__en_gb.js","http://www.gstatic.com/sites/p/77c5f6/system/app/css/trogedit.css","/_/rsrc/1454889826000/system/app/css/editor.css","http://www.gstatic.com/sites/p/77c5f6/system/app/css/codeeditor.css","/_/rsrc/1454889826000/system/app/css/camelot/editor-jfk.css"]},"sharingUrlPrefix":"/_/sharing","isAdsenseEnabled":true,"domain":"defaultdomain","baseUri":"","name":"delphibasics","siteTemplateId":false,"siteNoticeRevision":null,"siteNoticeUrlAddress":null,"siteNoticeMessage":null,"page":{"isRtlLocale":false,"canDeleteWebspace":null,"isPageDraft":null,"parentPath":"/home/delphibasicsarticles","parentWuid":"wuid:gx:2be64731196420c7","siteLocale":"en_GB","timeZone":"America/Los_Angeles","type":"announcements","title":"An In-Depth Look into the Win32 Portable Executable File Format - Part 2","locale":"en_GB","wuid":"wuid:gx:12cf45f99d9434a0","revision":5,"path":"/home/delphibasicsarticles/anin-depthlookintothewin32portableexecutablefileformat-part2","isSiteRtlLocale":false,"pageInheritsPermissions":null,"name":"anin-depthlookintothewin32portableexecutablefileformat-part2","canChangePath":true,"state":"","properties":{},"bidiEnabled":false,"currentTemplate":{"path":"/system/app/pagetemplates/announcements","title":"Announcements"}},"canPublishScriptToAnyone":true,"user":{"keyboardShortcuts":true,"sessionIndex":"","guest_":true,"displayNameOrEmail":"guest","userName":"guest","uid":"","renderMobile":false,"domain":"","namespace":"","hasWriteAccess":false,"namespaceUser":false,"primaryEmail":"guest","hasAdminAccess":false},"gadgets":{"baseUri":"/system/app/pages/gadgets"}};
+  webspace.page.breadcrumbs = breadcrumbs;
+
+  
+  var JOT_siteRelTimeStrs = ["a minute ago","__duration__ minutes ago","an hour ago","__duration__ hours ago"];
+
+</script>
+<script type="text/javascript">
+                window.jstiming.load.tick('scl');
+              </script>
+<link rel="canonical" href="http://www.delphibasics.info/home/delphibasicsarticles/anin-depthlookintothewin32portableexecutablefileformat-part2">
+<meta name="google-site-verification" content="CGsJEHr0PxtasEO_bede9SZbcC9b8DPX0ete0kwQzsI">
+<meta name="title" content="An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics">
+<meta itemprop="name" content="An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics">
+<meta property="og:title" content="An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics">
+<meta name="description" content="Ultimate Delphi Resource from DelphiBasics. 
+Delphi tips and tricks. 
+Project Tutorials. 
+Delphi and Pascal source code samples. 
+Free applications and components with source code.">
+<meta itemprop="description" content="Ultimate Delphi Resource from DelphiBasics. 
+Delphi tips and tricks. 
+Project Tutorials. 
+Delphi and Pascal source code samples. 
+Free applications and components with source code.">
+<meta id="meta-tag-description" property="og:description" content="Ultimate Delphi Resource from DelphiBasics. 
+Delphi tips and tricks. 
+Project Tutorials. 
+Delphi and Pascal source code samples. 
+Free applications and components with source code.">
+<style type="text/css">
+</style>
+<link rel="stylesheet" type="text/css" href="./An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics_files/standard-css-lavenderpanel-ltr-ltr.css">
+<link rel="stylesheet" type="text/css" href="./An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics_files/overlay.css">
+<link rel="stylesheet" type="text/css" href="./An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics_files/allthemes-view.css">
+<!--[if IE]>
+          <link rel="stylesheet" type="text/css" href="/system/app/css/camelot/allthemes%2die.css" />
+        <![endif]-->
+<title>An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics</title>
+<meta itemprop="image" content="http://www.delphibasics.info/_/rsrc/1287098060244/home/delphibasicsarticles/anin-depthlookintothewin32portableexecutablefileformat-part2/Figure3.png">
+<meta property="og:image" content="http://www.delphibasics.info/_/rsrc/1287098060244/home/delphibasicsarticles/anin-depthlookintothewin32portableexecutablefileformat-part2/Figure3.png">
+<script type="text/javascript">
+                window.jstiming.load.tick('cl');
+              </script>
+<script type="text/javascript" charset="UTF-8" src="./An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics_files/platform.js" gapi_processed="true"></script><script type="text/javascript" charset="UTF-8" src="./An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics_files/js"></script><style>.dcs-qb-dcs-hh-dcs-ih{position:relative;display:-moz-inline-box;display:inline-block}* html .dcs-qb-dcs-hh-dcs-ih{display:inline}*:first-child+html .dcs-qb-dcs-hh-dcs-ih{display:inline}.dcs-h-dcs-ob{-webkit-border-radius:2px;-moz-border-radius:2px;border-radius:2px;cursor:default;font-size:11px;font-weight:bold;text-align:center;white-space:nowrap;margin-right:16px;height:27px;line-height:27px;min-width:54px;outline:0px;padding:0 8px}.dcs-h-dcs-ob-dcs-hf{-webkit-box-shadow:0 1px 1px rgba(0,0,0,.1);-moz-box-shadow:0 1px 1px rgba(0,0,0,.1);box-shadow:0 1px 1px rgba(0,0,0,.1)}.dcs-h-dcs-ob-dcs-ee{-webkit-box-shadow:inset 0px 1px 2px rgba(0,0,0,0.1);-moz-box-shadow:inset 0px 1px 2px rgba(0,0,0,0.1);box-shadow:inset 0px 1px 2px rgba(0,0,0,0.1)}.dcs-h-dcs-ob .dcs-h-dcs-ob-dcs-cd{margin-top:-3px;vertical-align:middle}.dcs-h-dcs-ob-dcs-od{margin-left:5px}.dcs-h-dcs-ob-dcs-tc{min-width:34px;padding:0}.dcs-h-dcs-ob-dcs-wf-dcs-cb,.dcs-h-dcs-ob-dcs-wf-dcs-xf{z-index:1}.dcs-h-dcs-ob-dcs-wf-dcs-cb.dcs-h-dcs-ob-dcs-kd{z-index:0}.dcs-h-dcs-ob-dcs-yd.dcs-h-dcs-ob-dcs-wf-dcs-cb,.dcs-h-dcs-ob-dcs-yd.dcs-h-dcs-ob-dcs-wf-dcs-xf{z-index:2}.dcs-h-dcs-ob-dcs-wf-dcs-cb:focus,.dcs-h-dcs-ob-dcs-wf-dcs-xf:focus,.dcs-h-dcs-ob-dcs-hf.dcs-h-dcs-ob-dcs-wf-dcs-cb,.dcs-h-dcs-ob-dcs-hf.dcs-h-dcs-ob-dcs-wf-dcs-xf{z-index:3}.dcs-h-dcs-ob-dcs-wf-dcs-cb{margin-left:-1px;-moz-border-radius-bottomleft:0;-moz-border-radius-topleft:0;-webkit-border-bottom-left-radius:0;-webkit-border-top-left-radius:0;border-bottom-left-radius:0;border-top-left-radius:0}.dcs-h-dcs-ob-dcs-wf-dcs-xf{margin-right:0px;-moz-border-radius-topright:0;-moz-border-radius-bottomright:0;-webkit-border-top-right-radius:0;-webkit-border-bottom-right-radius:0;border-top-right-radius:0;border-bottom-right-radius:0}.dcs-h-dcs-ob.dcs-h-dcs-ob-dcs-kd:active{-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none}.dcs-h-dcs-ob-dcs-dc{-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;background-color:#4d90fe;background-image:-webkit-linear-gradient(top,#4d90fe,#4787ed);background-image:-moz-linear-gradient(top,#4d90fe,#4787ed);background-image:-ms-linear-gradient(top,#4d90fe,#4787ed);background-image:-o-linear-gradient(top,#4d90fe,#4787ed);background-image:linear-gradient(top,#4d90fe,#4787ed);border:1px solid #3079ed;color:#fff}.dcs-h-dcs-ob-dcs-dc.dcs-h-dcs-ob-dcs-hf{-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;background-color:#357ae8;background-image:-webkit-linear-gradient(top,#4d90fe,#357ae8);background-image:-moz-linear-gradient(top,#4d90fe,#357ae8);background-image:-ms-linear-gradient(top,#4d90fe,#357ae8);background-image:-o-linear-gradient(top,#4d90fe,#357ae8);background-image:linear-gradient(top,#4d90fe,#357ae8);border:1px solid #2f5bb7;border-bottom-color:#2f5bb7}.dcs-h-dcs-ob-dcs-dc:focus{-webkit-box-shadow:inset 0 0 0 1px #fff;-moz-box-shadow:inset 0 0 0 1px #fff;box-shadow:inset 0 0 0 1px #fff;border:1px solid #fff;border:rgba(0,0,0,0) solid 1px;outline:1px solid #4d90fe;outline:rgba(0,0,0,0) 0}.dcs-h-dcs-ob-dcs-dc.dcs-h-dcs-ob-dcs-k-dcs-l{-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;outline:none}.dcs-h-dcs-ob-dcs-dc:active{-webkit-box-shadow:inset 0 1px 2px rgba(0,0,0,0.3);-moz-box-shadow:inset 0 1px 2px rgba(0,0,0,0.3);box-shadow:inset 0 1px 2px rgba(0,0,0,0.3);background:#357ae8;border:1px solid #2f5bb7;border-top:1px solid #2f5bb7}.dcs-h-dcs-ob-dcs-dc.dcs-h-dcs-ob-dcs-kd{background:#4d90fe;filter:alpha(opacity=50);opacity:0.5}.dcs-h-dcs-ob-dcs-nd{-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;background-color:#f5f5f5;background-image:-webkit-linear-gradient(top,#f5f5f5,#f1f1f1);background-image:-moz-linear-gradient(top,#f5f5f5,#f1f1f1);background-image:-ms-linear-gradient(top,#f5f5f5,#f1f1f1);background-image:-o-linear-gradient(top,#f5f5f5,#f1f1f1);background-image:linear-gradient(top,#f5f5f5,#f1f1f1);color:#444;border:1px solid #dcdcdc;border:1px solid rgba(0,0,0,0.1)}.dcs-h-dcs-ob-dcs-nd.dcs-h-dcs-ob-dcs-hf,.dcs-h-dcs-ob-dcs-nd.dcs-h-dcs-ob-dcs-k-dcs-l.dcs-h-dcs-ob-dcs-hf{-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;background-color:#f8f8f8;background-image:-webkit-linear-gradient(top,#f8f8f8,#f1f1f1);background-image:-moz-linear-gradient(top,#f8f8f8,#f1f1f1);background-image:-ms-linear-gradient(top,#f8f8f8,#f1f1f1);background-image:-o-linear-gradient(top,#f8f8f8,#f1f1f1);background-image:linear-gradient(top,#f8f8f8,#f1f1f1);border:1px solid #c6c6c6;color:#333}.dcs-h-dcs-ob-dcs-nd:active,.dcs-h-dcs-ob-dcs-nd.dcs-h-dcs-ob-dcs-hf:active{-webkit-box-shadow:inset 0 1px 2px rgba(0,0,0,.1);-moz-box-shadow:inset 0 1px 2px rgba(0,0,0,.1);box-shadow:inset 0 1px 2px rgba(0,0,0,.1);background:#f8f8f8;color:#333}.dcs-h-dcs-ob-dcs-nd.dcs-h-dcs-ob-dcs-ee,.dcs-h-dcs-ob-dcs-nd.dcs-h-dcs-ob-dcs-k-dcs-l.dcs-h-dcs-ob-dcs-ee{background-color:#eee;background-image:-webkit-linear-gradient(top,#f8f8f8,#f1f1f1);background-image:-moz-linear-gradient(top,#f8f8f8,#f1f1f1);background-image:-ms-linear-gradient(top,#f8f8f8,#f1f1f1);background-image:-o-linear-gradient(top,#f8f8f8,#f1f1f1);background-image:linear-gradient(top,#f8f8f8,#f1f1f1);border:1px solid #ccc;color:#333}.dcs-h-dcs-ob-dcs-nd.dcs-h-dcs-ob-dcs-yd,.dcs-h-dcs-ob-dcs-nd.dcs-h-dcs-ob-dcs-k-dcs-l.dcs-h-dcs-ob-dcs-yd{-webkit-box-shadow:inset 0 1px 2px rgba(0,0,0,.1);-moz-box-shadow:inset 0 1px 2px rgba(0,0,0,.1);box-shadow:inset 0 1px 2px rgba(0,0,0,.1);background-color:#eee;background-image:-webkit-linear-gradient(top,#eee,#e0e0e0);background-image:-moz-linear-gradient(top,#eee,#e0e0e0);background-image:-ms-linear-gradient(top,#eee,#e0e0e0);background-image:-o-linear-gradient(top,#eee,#e0e0e0);background-image:linear-gradient(top,#eee,#e0e0e0);border:1px solid #ccc;color:#333}.dcs-h-dcs-ob-dcs-nd:focus{border:1px solid #4d90fe;outline:none}.dcs-h-dcs-ob-dcs-nd.dcs-h-dcs-ob-dcs-k-dcs-l{border:1px solid #dcdcdc;border:1px solid rgba(0,0,0,0.1);outline:none}.dcs-h-dcs-ob-dcs-nd.dcs-h-dcs-ob-dcs-kd{background:#fff;border:1px solid #f3f3f3;border:1px solid rgba(0,0,0,0.05);color:#b8b8b8}.dcs-h-dcs-ob-dcs-nd .dcs-h-dcs-ob-dcs-cd{opacity:.55}.dcs-h-dcs-ob-dcs-nd.dcs-h-dcs-ob-dcs-yd .dcs-h-dcs-ob-dcs-cd,.dcs-h-dcs-ob-dcs-nd.dcs-h-dcs-ob-dcs-ee .dcs-h-dcs-ob-dcs-cd,.dcs-h-dcs-ob-dcs-nd.dcs-h-dcs-ob-dcs-hf .dcs-h-dcs-ob-dcs-cd{opacity:0.9}.dcs-h-dcs-ob-dcs-nd.dcs-h-dcs-ob-dcs-kd .dcs-h-dcs-ob-dcs-cd{filter:alpha(opacity=33);opacity:0.333}.dcs-qb-dcs-ri,.dcs-ab-dcs-bb{-webkit-box-shadow:0 4px 16px rgba(0,0,0,.2);-moz-box-shadow:0 4px 16px rgba(0,0,0,.2);box-shadow:0 4px 16px rgba(0,0,0,.2);background:#fff;background-clip:padding-box;border:1px solid #acacac;border:1px solid rgba(0,0,0,.333);outline:0;position:absolute}.dcs-qb-dcs-ri-dcs-wc,.dcs-ab-dcs-bb-dcs-wc{background:#fff;left:0;position:absolute;top:0}div.dcs-qb-dcs-ri-dcs-wc,div.dcs-ab-dcs-bb-dcs-wc{filter:alpha(opacity=75);-moz-opacity:.75;opacity:.75}.dcs-ab-dcs-bb{color:#000;padding:30px 42px}.dcs-ab-dcs-bb-dcs-m{background-color:#fff;color:#000;cursor:default;font-size:16px;font-weight:normal;line-height:24px;margin:0 0 16px}.dcs-ab-dcs-bb-dcs-m-dcs-yg{height:11px;opacity:0.7;padding:17px;position:absolute;right:0px;top:0px;width:11px}.dcs-ab-dcs-bb-dcs-m-dcs-yg:after{content:'';background:url(//ssl.gstatic.com/ui/v1/dialog/close-x.png);position:absolute;height:11px;width:11px;right:17px}.dcs-ab-dcs-bb-dcs-m-dcs-yg:hover{opacity:1}.dcs-ab-dcs-bb-dcs-g{background-color:#fff;line-height:1.4em;word-wrap:break-word}.dcs-ab-dcs-bb-dcs-lh{margin-top:16px}.dcs-ab-dcs-bb-dcs-lh button{-webkit-border-radius:2px;-moz-border-radius:2px;border-radius:2px;background-color:#f5f5f5;background-image:-webkit-linear-gradient(top,#f5f5f5,#f1f1f1);background-image:-moz-linear-gradient(top,#f5f5f5,#f1f1f1);background-image:-ms-linear-gradient(top,#f5f5f5,#f1f1f1);background-image:-o-linear-gradient(top,#f5f5f5,#f1f1f1);background-image:linear-gradient(top,#f5f5f5,#f1f1f1);border:1px solid #dcdcdc;border:1px solid rgba(0,0,0,0.1);color:#444;cursor:default;font-family:inherit;font-size:11px;font-weight:bold;height:29px;line-height:27px;margin:0 16px 0 0;min-width:72px;outline:0;padding:0 8px}.dcs-ab-dcs-bb-dcs-lh button:hover,.dcs-ab-dcs-bb-dcs-lh button:active{-webkit-box-shadow:0px 1px 1px rgba(0,0,0,0.1);-moz-box-shadow:0px 1px 1px rgba(0,0,0,0.1);box-shadow:0px 1px 1px rgba(0,0,0,0.1);background-color:#f8f8f8;background-image:-webkit-linear-gradient(top,#f8f8f8,#f1f1f1);background-image:-moz-linear-gradient(top,#f8f8f8,#f1f1f1);background-image:-ms-linear-gradient(top,#f8f8f8,#f1f1f1);background-image:-o-linear-gradient(top,#f8f8f8,#f1f1f1);background-image:linear-gradient(top,#f8f8f8,#f1f1f1);border:1px solid #c6c6c6;color:#333}.dcs-ab-dcs-bb-dcs-lh button:active{-webkit-box-shadow:inset 0 1px 2px rgba(0,0,0,.1);-moz-box-shadow:inset 0 1px 2px rgba(0,0,0,.1);box-shadow:inset 0 1px 2px rgba(0,0,0,.1)}.dcs-ab-dcs-bb-dcs-lh button:focus{border:1px solid #4d90fe}.dcs-ab-dcs-bb-dcs-lh button[disabled]{-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;background:#fff;background-image:none;border:1px solid #f3f3f3;border:1px solid rgba(0,0,0,0.05);color:#b8b8b8}.dcs-ab-dcs-bb-dcs-lh .dcs-qb-dcs-wg-dcs-dc{background-color:#4d90fe;background-image:-webkit-linear-gradient(top,#4d90fe,#4787ed);background-image:-moz-linear-gradient(top,#4d90fe,#4787ed);background-image:-ms-linear-gradient(top,#4d90fe,#4787ed);background-image:-o-linear-gradient(top,#4d90fe,#4787ed);background-image:linear-gradient(top,#4d90fe,#4787ed);border:1px solid #3079ed;color:#fff}.dcs-ab-dcs-bb-dcs-lh .dcs-qb-dcs-wg-dcs-dc:hover,.dcs-ab-dcs-bb-dcs-lh .dcs-qb-dcs-wg-dcs-dc:active{background-color:#357ae8;background-image:-webkit-linear-gradient(top,#4d90fe,#357ae8);background-image:-moz-linear-gradient(top,#4d90fe,#357ae8);background-image:-ms-linear-gradient(top,#4d90fe,#357ae8);background-image:-o-linear-gradient(top,#4d90fe,#357ae8);background-image:linear-gradient(top,#4d90fe,#357ae8);border:1px solid #2f5bb7;color:#fff}.dcs-ab-dcs-bb-dcs-lh .dcs-qb-dcs-wg-dcs-dc:active{-webkit-box-shadow:inset 0 1px 2px rgba(0,0,0,0.3);-moz-box-shadow:inset 0 1px 2px rgba(0,0,0,0.3);box-shadow:inset 0 1px 2px rgba(0,0,0,0.3)}.dcs-ab-dcs-bb-dcs-lh .dcs-qb-dcs-wg-dcs-dc:focus{-webkit-box-shadow:inset 0 0 0 1px #fff;-moz-box-shadow:inset 0 0 0 1px #fff;box-shadow:inset 0 0 0 1px #fff;border:1px solid #fff;border:rgba(0,0,0,0) solid 1px;outline:1px solid #4d90fe;outline:rgba(0,0,0,0) 0}.dcs-ab-dcs-bb-dcs-lh .dcs-qb-dcs-wg-dcs-dc[disabled]{-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;background:#4d90fe;color:#fff;filter:alpha(opacity=50);opacity:0.5}.dcs-h-dcs-sb,.dcs-h-dcs-zd,.dcs-h-dcs-ke{width:512px}.dcs-qb-dcs-tb{-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;-webkit-box-shadow:0 2px 4px rgba(0,0,0,0.2);-moz-box-shadow:0 2px 4px rgba(0,0,0,0.2);box-shadow:0 2px 4px rgba(0,0,0,0.2);-webkit-transition:opacity 0.218s;-moz-transition:opacity 0.218s;-o-transition:opacity 0.218s;transition:opacity 0.218s;background:#fff;border:1px solid #ccc;border:1px solid rgba(0,0,0,.2);cursor:default;font-size:13px;margin:0;outline:none;padding:6px 0;position:absolute}.dcs-qb-dcs-rb-dcs-tb-dcs-ob{-webkit-border-radius:2px;-moz-border-radius:2px;border-radius:2px;background-color:#f5f5f5;background-image:-webkit-linear-gradient(top,#f5f5f5,#f1f1f1);background-image:-moz-linear-gradient(top,#f5f5f5,#f1f1f1);background-image:-ms-linear-gradient(top,#f5f5f5,#f1f1f1);background-image:-o-linear-gradient(top,#f5f5f5,#f1f1f1);background-image:linear-gradient(top,#f5f5f5,#f1f1f1);border:1px solid #dcdcdc;color:#444;cursor:default;font-size:11px;font-weight:bold;line-height:27px;list-style:none;margin:0 2px;min-width:46px;outline:none;padding:0 18px 0 6px;text-align:center;text-decoration:none}.dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-kd{background-color:#fff;border-color:#f3f3f3;color:#b8b8b8}.dcs-qb-dcs-rb-dcs-tb-dcs-ob.dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-hf{background-color:#f8f8f8;background-image:-webkit-linear-gradient(top,#f8f8f8,#f1f1f1);background-image:-moz-linear-gradient(top,#f8f8f8,#f1f1f1);background-image:-ms-linear-gradient(top,#f8f8f8,#f1f1f1);background-image:-o-linear-gradient(top,#f8f8f8,#f1f1f1);background-image:linear-gradient(top,#f8f8f8,#f1f1f1);-webkit-box-shadow:0 1px 1px rgba(0,0,0,.1);-moz-box-shadow:0 1px 1px rgba(0,0,0,.1);box-shadow:0 1px 1px rgba(0,0,0,.1);border-color:#c6c6c6;color:#333}.dcs-qb-dcs-rb-dcs-tb-dcs-ob.dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-ai{border-color:#4d90fe}.dcs-qb-dcs-rb-dcs-tb-dcs-ob.dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-ce,.dcs-qb-dcs-rb-dcs-tb-dcs-ob.dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-zb{-webkit-box-shadow:inset 0 1px 2px rgba(0,0,0,.1);-moz-box-shadow:inset 0 1px 2px rgba(0,0,0,.1);box-shadow:inset 0 1px 2px rgba(0,0,0,.1);background-color:#eee;background-image:-webkit-linear-gradient(top,#eee,#e0e0e0);background-image:-moz-linear-gradient(top,#eee,#e0e0e0);background-image:-ms-linear-gradient(top,#eee,#e0e0e0);background-image:-o-linear-gradient(top,#eee,#e0e0e0);background-image:linear-gradient(top,#eee,#e0e0e0);border:1px solid #ccc;color:#333;z-index:2}.dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-r{vertical-align:top;white-space:nowrap}.dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-v{border-color:#777 transparent;border-style:solid;border-width:4px 4px 0 4px;height:0;width:0;position:absolute;right:5px;top:12px}.dcs-qb-dcs-rb-dcs-tb-dcs-ob .dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-cd{margin-top:-3px;opacity:.55;vertical-align:middle}.dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-zb .dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-cd,.dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-ce .dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-cd,.dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-ee .dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-cd,.dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-hf .dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-cd{opacity:0.9}.dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-zb .dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-v,.dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-ce .dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-v,.dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-ee .dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-v,.dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-hf .dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-v{border-color:#595959 transparent}.dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-cb,.dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-xf{z-index:1}.dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-cb.dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-kd{z-index:0}.dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-xf:focus,.dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-hf.dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-wf-dcs-xf{z-index:2}.dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-cb:focus,.dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-hf.dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-wf-dcs-cb{z-index:2}.dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-wf-dcs-cb{margin-left:-1px;-moz-border-radius-bottomleft:0;-moz-border-radius-topleft:0;-webkit-border-bottom-left-radius:0;-webkit-border-top-left-radius:0;border-bottom-left-radius:0;border-top-left-radius:0;min-width:0;padding-left:0;vertical-align:top}.dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-wf-dcs-xf{margin-right:0px;-moz-border-radius-topright:0;-moz-border-radius-bottomright:0;-webkit-border-top-right-radius:0;-webkit-border-bottom-right-radius:0;border-top-right-radius:0;border-bottom-right-radius:0}.dcs-qb-dcs-kf,.dcs-qb-dcs-xi,.dcs-qb-dcs-yi{position:relative;color:#333;cursor:pointer;list-style:none;margin:0;padding:6px 8em 6px 30px;white-space:nowrap}.dcs-qb-dcs-tb-dcs-zi .dcs-qb-dcs-kf,.dcs-qb-dcs-tb-dcs-aj .dcs-qb-dcs-kf{padding-left:16px;vertical-align:middle}.dcs-qb-dcs-tb-dcs-bj .dcs-qb-dcs-kf{padding-right:44px}.dcs-qb-dcs-kf-dcs-kd{cursor:default}.dcs-qb-dcs-kf-dcs-kd .dcs-qb-dcs-kf-dcs-wi,.dcs-qb-dcs-kf-dcs-kd .dcs-qb-dcs-kf-dcs-g{color:#ccc!important}.dcs-qb-dcs-kf-dcs-kd .dcs-qb-dcs-kf-dcs-hb{filter:alpha(opacity=30);opacity:0.3}.dcs-qb-dcs-kf-dcs-mf,.dcs-qb-dcs-kf-dcs-hf{background-color:#eee;border-color:#eee;border-style:dotted;border-width:1px 0;padding-top:5px;padding-bottom:5px}.dcs-qb-dcs-kf-dcs-mf .dcs-qb-dcs-kf-dcs-g,.dcs-qb-dcs-kf-dcs-hf .dcs-qb-dcs-kf-dcs-g{color:#333}.dcs-qb-dcs-kf-dcs-id,.dcs-qb-dcs-kf-dcs-hb{background-repeat:no-repeat;height:21px;left:3px;position:absolute;right:auto;top:3px;vertical-align:middle;width:21px}.dcs-qb-dcs-de-dcs-ee{background-image:url(//ssl.gstatic.com/ui/v1/menu/checkmark.png);background-repeat:no-repeat;background-position:left center}.dcs-qb-dcs-de-dcs-ee .dcs-qb-dcs-kf-dcs-g{color:#333}.dcs-qb-dcs-kf-dcs-wi{color:#777;direction:ltr;left:auto;padding:0 6px;position:absolute;right:0;text-align:right}.dcs-qb-dcs-kf-dcs-ki-dcs-cj{text-decoration:underline}.dcs-qb-dcs-kf-dcs-ki-dcs-li{color:#777;font-size:12px;padding-left:4px}.dcs-qb-dcs-pi-dcs-ob,.dcs-qb-dcs-pi-dcs-tb-dcs-ob{-webkit-border-radius:2px;-moz-border-radius:2px;border-radius:2px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;background:0;border-color:transparent;border-style:solid;border-width:1px;outline:none;padding:0;height:24px;color:#444;line-height:24px;list-style:none;font-size:11px;font-weight:bold;text-decoration:none;vertical-align:middle;cursor:default}.dcs-qb-dcs-pi-dcs-ob-dcs-bc-dcs-cf,.dcs-qb-dcs-pi-dcs-ob-dcs-qe-dcs-cf .dcs-qb-dcs-pi-dcs-tb-dcs-ob-dcs-bc-dcs-cf,.dcs-qb-dcs-pi-dcs-tb-dcs-ob-dcs-qe-dcs-cf{border:0;vertical-align:top}.dcs-qb-dcs-pi-dcs-ob-dcs-bc-dcs-cf,.dcs-qb-dcs-pi-dcs-tb-dcs-ob-dcs-bc-dcs-cf{margin:0;padding:0}.dcs-qb-dcs-pi-dcs-ob-dcs-qe-dcs-cf,.dcs-qb-dcs-pi-dcs-tb-dcs-ob-dcs-qe-dcs-cf{padding:0 2px}.dcs-qb-dcs-pi-dcs-ob-dcs-hf,.dcs-qb-dcs-pi-dcs-ob-dcs-zb,.dcs-qb-dcs-pi-dcs-ob-dcs-yd,.dcs-qb-dcs-pi-dcs-ob-dcs-ee{color:#222;padding:0}.dcs-qb-dcs-pi-dcs-ob-dcs-hf,.dcs-qb-dcs-pi-dcs-tb-dcs-ob-dcs-hf{border-color:#c6c6c6!important;color:#222}.dcs-qb-dcs-pi-dcs-tb-dcs-ob-dcs-ce{color:#222}.dcs-qb-dcs-pi-dcs-ob-dcs-hf,.dcs-qb-dcs-pi-dcs-tb-dcs-ob-dcs-hf{-webkit-box-shadow:0 1px 1px rgba(0,0,0,.1);-moz-box-shadow:0 1px 1px rgba(0,0,0,.1);box-shadow:0 1px 1px rgba(0,0,0,.1);background-color:#f8f8f8;background-image:-webkit-linear-gradient(top,#f8f8f8,#f1f1f1);background-image:-moz-linear-gradient(top,#f8f8f8,#f1f1f1);background-image:-ms-linear-gradient(top,#f8f8f8,#f1f1f1);background-image:-o-linear-gradient(top,#f8f8f8,#f1f1f1);background-image:linear-gradient(top,#f8f8f8,#f1f1f1)}.dcs-qb-dcs-pi-dcs-ob-dcs-zb,.dcs-qb-dcs-pi-dcs-tb-dcs-ob-dcs-zb{-webkit-box-shadow:inset 0 1px 2px rgba(0,0,0,.1);-moz-box-shadow:inset 0 1px 2px rgba(0,0,0,.1);box-shadow:inset 0 1px 2px rgba(0,0,0,.1);background-color:#f6f6f6;background-image:-webkit-linear-gradient(top,#f6f6f6,#f1f1f1);background-image:-moz-linear-gradient(top,#f6f6f6,#f1f1f1);background-image:-ms-linear-gradient(top,#f6f6f6,#f1f1f1);background-image:-o-linear-gradient(top,#f6f6f6,#f1f1f1);background-image:linear-gradient(top,#f6f6f6,#f1f1f1);border-color:#c6c6c6}.dcs-qb-dcs-pi-dcs-ob-dcs-ee,.dcs-qb-dcs-pi-dcs-ob-dcs-yd,.dcs-qb-dcs-pi-dcs-tb-dcs-ob-dcs-ce{-webkit-box-shadow:inset 0 1px 2px rgba(0,0,0,.1);-moz-box-shadow:inset 0 1px 2px rgba(0,0,0,.1);box-shadow:inset 0 1px 2px rgba(0,0,0,.1);background-color:#eee;background-image:-webkit-linear-gradient(top,#eee,#e0e0e0);background-image:-moz-linear-gradient(top,#eee,#e0e0e0);background-image:-ms-linear-gradient(top,#eee,#e0e0e0);background-image:-o-linear-gradient(top,#eee,#e0e0e0);background-image:linear-gradient(top,#eee,#e0e0e0);border-color:#ccc}.dcs-qb-dcs-pi-dcs-ob-dcs-kd,.dcs-qb-dcs-pi-dcs-tb-dcs-ob-dcs-kd{color:#222!important;opacity:0.3;filter:alpha(opacity=30)}.dcs-qb-dcs-pi-dcs-ob-dcs-wf-dcs-xf,.dcs-qb-dcs-pi-dcs-ob-dcs-wf-dcs-xf .dcs-qb-dcs-pi-dcs-ob-dcs-bc-dcs-cf,.dcs-qb-dcs-pi-dcs-ob-dcs-wf-dcs-xf .dcs-qb-dcs-pi-dcs-ob-dcs-qe-dcs-cf{margin-right:0}.dcs-qb-dcs-pi-dcs-ob-dcs-wf-dcs-cb,.dcs-qb-dcs-pi-dcs-ob-dcs-wf-dcs-cb .dcs-qb-dcs-pi-dcs-ob-dcs-bc-dcs-cf,.dcs-qb-dcs-pi-dcs-ob-dcs-wf-dcs-cb .dcs-qb-dcs-pi-dcs-ob-dcs-qe-dcs-cf{margin-left:0}.dcs-qb-dcs-pi-dcs-tb-dcs-ob-dcs-v{background:url(//ssl.gstatic.com/ui/v1/disclosure/small-grey-disclosure-arrow-down.png) center no-repeat;float:right;margin:10px 2px 0 3px;padding:0;opacity:.8;vertical-align:middle;width:5px;height:7px;*float:none;*position:relative;*top:-3px}.dcs-qb-dcs-pi-dcs-li{border-left:1px solid #ccc;height:17px;line-height:normal;list-style:none;margin:0 2px;outline:none;overflow:hidden;padding:0;text-decoration:none;vertical-align:middle;width:0}.dcs-qb-dcs-pi-dcs-dj .dcs-qb-dcs-pi-dcs-tb-dcs-ob-dcs-v{background:url(//ssl.gstatic.com/ui/v1/disclosure/small-grey-disclosure-arrow-down.png) center no-repeat;height:11px;margin-top:7px;width:7px;-webkit-transform:none;-moz-transform:none;transform:none;filter:none}.dcs-qb-dcs-pi-dcs-tb-dcs-ob-dcs-r{padding:0;margin:0}.dcs-h-dcs-rf::-webkit-scrollbar{height:16px;overflow:visible;width:16px}.dcs-h-dcs-rf::-webkit-scrollbar-button{height:0;width:0}.dcs-h-dcs-rf::-webkit-scrollbar-track{background-clip:padding-box;border:solid transparent;border-width:0 0 0 4px}.dcs-h-dcs-rf::-webkit-scrollbar-track:horizontal{border-width:4px 0 0}.dcs-h-dcs-rf::-webkit-scrollbar-track:hover{background-color:rgba(0,0,0,.05);box-shadow:inset 1px 0 0 rgba(0,0,0,.1)}.dcs-h-dcs-rf::-webkit-scrollbar-track:horizontal:hover{box-shadow:inset 0 1px 0 rgba(0,0,0,.1)}.dcs-h-dcs-rf::-webkit-scrollbar-track:active{background-color:rgba(0,0,0,.05);box-shadow:inset 1px 0 0 rgba(0,0,0,.14),inset -1px 0 0 rgba(0,0,0,.07)}.dcs-h-dcs-rf::-webkit-scrollbar-track:horizontal:active{box-shadow:inset 0 1px 0 rgba(0,0,0,.14),inset 0 -1px 0 rgba(0,0,0,.07)}.dcs-h-dcs-rf-dcs-ej.dcs-h-dcs-rf::-webkit-scrollbar-track:hover{background-color:rgba(255,255,255,.1);box-shadow:inset 1px 0 0 rgba(255,255,255,.2)}.dcs-h-dcs-rf-dcs-ej.dcs-h-dcs-rf::-webkit-scrollbar-track:horizontal:hover{box-shadow:inset 0 1px 0 rgba(255,255,255,.2)}.dcs-h-dcs-rf-dcs-ej.dcs-h-dcs-rf::-webkit-scrollbar-track:active{background-color:rgba(255,255,255,.1);box-shadow:inset 1px 0 0 rgba(255,255,255,.25),inset -1px 0 0 rgba(255,255,255,.15)}.dcs-h-dcs-rf-dcs-ej.dcs-h-dcs-rf::-webkit-scrollbar-track:horizontal:active{box-shadow:inset 0 1px 0 rgba(255,255,255,.25),inset 0 -1px 0 rgba(255,255,255,.15)}.dcs-h-dcs-rf::-webkit-scrollbar-thumb{background-color:rgba(0,0,0,.2);background-clip:padding-box;border:solid transparent;border-width:1px 1px 1px 6px;min-height:28px;padding:100px 0 0;box-shadow:inset 1px 1px 0 rgba(0,0,0,.1),inset 0 -1px 0 rgba(0,0,0,.07)}.dcs-h-dcs-rf::-webkit-scrollbar-thumb:horizontal{border-width:6px 1px 1px;padding:0 0 0 100px;box-shadow:inset 1px 1px 0 rgba(0,0,0,.1),inset -1px 0 0 rgba(0,0,0,.07)}.dcs-h-dcs-rf::-webkit-scrollbar-thumb:hover{background-color:rgba(0,0,0,.4);box-shadow:inset 1px 1px 1px rgba(0,0,0,.25)}.dcs-h-dcs-rf::-webkit-scrollbar-thumb:active{background-color:rgba(0,0,0,0.5);box-shadow:inset 1px 1px 3px rgba(0,0,0,0.35)}.dcs-h-dcs-rf-dcs-ej.dcs-h-dcs-rf::-webkit-scrollbar-thumb{background-color:rgba(255,255,255,.3);box-shadow:inset 1px 1px 0 rgba(255,255,255,.15),inset 0 -1px 0 rgba(255,255,255,.1)}.dcs-h-dcs-rf-dcs-ej.dcs-h-dcs-rf::-webkit-scrollbar-thumb:horizontal{box-shadow:inset 1px 1px 0 rgba(255,255,255,.15),inset -1px 0 0 rgba(255,255,255,.1)}.dcs-h-dcs-rf-dcs-ej.dcs-h-dcs-rf::-webkit-scrollbar-thumb:hover{background-color:rgba(255,255,255,.6);box-shadow:inset 1px 1px 1px rgba(255,255,255,.37)}.dcs-h-dcs-rf-dcs-ej.dcs-h-dcs-rf::-webkit-scrollbar-thumb:active{background-color:rgba(255,255,255,.75);box-shadow:inset 1px 1px 3px rgba(255,255,255,.5)}.dcs-h-dcs-rf-dcs-fj.dcs-h-dcs-rf::-webkit-scrollbar-track{border-width:0 1px 0 6px}.dcs-h-dcs-rf-dcs-fj.dcs-h-dcs-rf::-webkit-scrollbar-track:horizontal{border-width:6px 0 1px}.dcs-h-dcs-rf-dcs-fj.dcs-h-dcs-rf::-webkit-scrollbar-track:hover{background-color:rgba(0,0,0,.035);box-shadow:inset 1px 1px 0 rgba(0,0,0,.14),inset -1px -1px 0 rgba(0,0,0,.07)}.dcs-h-dcs-rf-dcs-fj.dcs-h-dcs-rf-dcs-ej.dcs-h-dcs-rf::-webkit-scrollbar-track:hover{background-color:rgba(255,255,255,.07);box-shadow:inset 1px 1px 0 rgba(255,255,255,.25),inset -1px -1px 0 rgba(255,255,255,.15)}.dcs-h-dcs-rf-dcs-fj.dcs-h-dcs-rf::-webkit-scrollbar-thumb{border-width:0 1px 0 6px}.dcs-h-dcs-rf-dcs-fj.dcs-h-dcs-rf::-webkit-scrollbar-thumb:horizontal{border-width:6px 0 1px}.dcs-h-dcs-rf::-webkit-scrollbar-corner{background:transparent}body.dcs-h-dcs-rf::-webkit-scrollbar-track-piece{background-clip:padding-box;background-color:#f5f5f5;border:solid #fff;border-width:0 0 0 3px;box-shadow:inset 1px 0 0 rgba(0,0,0,.14),inset -1px 0 0 rgba(0,0,0,.07)}body.dcs-h-dcs-rf::-webkit-scrollbar-track-piece:horizontal{border-width:3px 0 0;box-shadow:inset 0 1px 0 rgba(0,0,0,.14),inset 0 -1px 0 rgba(0,0,0,.07)}body.dcs-h-dcs-rf::-webkit-scrollbar-thumb{border-width:1px 1px 1px 5px}body.dcs-h-dcs-rf::-webkit-scrollbar-thumb:horizontal{border-width:5px 1px 1px}body.dcs-h-dcs-rf::-webkit-scrollbar-corner{background-clip:padding-box;background-color:#f5f5f5;border:solid #fff;border-width:3px 0 0 3px;box-shadow:inset 1px 1px 0 rgba(0,0,0,.14)}.dcs-h-dcs-mb{-webkit-box-shadow:0 1px 3px rgba(0,0,0,.2);-moz-box-shadow:0 1px 3px rgba(0,0,0,.2);box-shadow:0 1px 3px rgba(0,0,0,.2);background-color:#fff;border:1px solid;border-color:#bbb #bbb #a8a8a8;padding:16px;position:absolute;z-index:1201!important}.dcs-h-dcs-mb-dcs-gj{background:url("//ssl.gstatic.com/ui/v1/icons/common/x_8px.png") no-repeat;border:1px solid transparent;height:21px;opacity:.4;outline:0;position:absolute;right:2px;top:2px;width:21px}.dcs-h-dcs-mb-dcs-gj:focus{border:1px solid #4d90fe;opacity:.8}.dcs-h-dcs-mb-dcs-ac{position:absolute}.dcs-h-dcs-mb-dcs-ac .dcs-h-dcs-mb-dcs-og,.dcs-h-dcs-mb-dcs-ac .dcs-h-dcs-mb-dcs-je{display:block;height:0;position:absolute;width:0}.dcs-h-dcs-mb-dcs-ac .dcs-h-dcs-mb-dcs-og{border:9px solid}.dcs-h-dcs-mb-dcs-ac .dcs-h-dcs-mb-dcs-je{border:8px solid}.dcs-h-dcs-mb-dcs-gf{bottom:0}.dcs-h-dcs-mb-dcs-ld{top:-9px}.dcs-h-dcs-mb-dcs-oh{left:-9px}.dcs-h-dcs-mb-dcs-md{right:0}.dcs-h-dcs-mb-dcs-gf .dcs-h-dcs-mb-dcs-og,.dcs-h-dcs-mb-dcs-ld .dcs-h-dcs-mb-dcs-og{border-color:#bbb transparent;left:-9px}.dcs-h-dcs-mb-dcs-gf .dcs-h-dcs-mb-dcs-og{border-color:#a8a8a8 transparent}.dcs-h-dcs-mb-dcs-gf .dcs-h-dcs-mb-dcs-je,.dcs-h-dcs-mb-dcs-ld .dcs-h-dcs-mb-dcs-je{border-color:#fff transparent;left:-8px}.dcs-h-dcs-mb-dcs-gf .dcs-h-dcs-mb-dcs-og{border-bottom-width:0}.dcs-h-dcs-mb-dcs-gf .dcs-h-dcs-mb-dcs-je{border-bottom-width:0}.dcs-h-dcs-mb-dcs-ld .dcs-h-dcs-mb-dcs-og{border-top-width:0}.dcs-h-dcs-mb-dcs-ld .dcs-h-dcs-mb-dcs-je{border-top-width:0;top:1px}.dcs-h-dcs-mb-dcs-oh .dcs-h-dcs-mb-dcs-og,.dcs-h-dcs-mb-dcs-md .dcs-h-dcs-mb-dcs-og{border-color:transparent #bbb;top:-9px}.dcs-h-dcs-mb-dcs-oh .dcs-h-dcs-mb-dcs-je,.dcs-h-dcs-mb-dcs-md .dcs-h-dcs-mb-dcs-je{border-color:transparent #fff;top:-8px}.dcs-h-dcs-mb-dcs-oh .dcs-h-dcs-mb-dcs-og{border-left-width:0}.dcs-h-dcs-mb-dcs-oh .dcs-h-dcs-mb-dcs-je{border-left-width:0;left:1px}.dcs-h-dcs-mb-dcs-md .dcs-h-dcs-mb-dcs-og{border-right-width:0}.dcs-h-dcs-mb-dcs-md .dcs-h-dcs-mb-dcs-je{border-right-width:0}.dcs-h-dcs-i{-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;-webkit-transition:visibility 0,opacity .13s ease-in;-moz-transition:visibility 0,opacity .13s ease-in;-o-transition:visibility 0,opacity .13s ease-in;transition:visibility 0,opacity .13s ease-in;background-color:#2a2a2a;border:1px solid #fff;color:#fff;cursor:default;display:block;font-size:11px;font-weight:bold;margin-left:-1px;opacity:1;padding:7px 9px;position:absolute;visibility:visible;word-break:break-all;word-break:break-word}.dcs-h-dcs-i-dcs-j{-webkit-transition:visibility .13s,opacity .13s ease-out,left 0 linear .13s,top 0 linear .13s;-moz-transition:visibility .13s,opacity .13s ease-out,left 0 linear .13s,top 0 linear .13s;-o-transition:visibility .13s,opacity .13s ease-out,left 0 linear .13s,top 0 linear .13s;transition:visibility .13s,opacity .13s ease-out,left 0 linear .13s,top 0 linear .13s;opacity:0;left:20px!important;top:20px!important;visibility:hidden}.dcs-h-dcs-i-dcs-ze{display:none}.dcs-h-dcs-i-dcs-ac{pointer-events:none;position:absolute}.dcs-h-dcs-i-dcs-ac .dcs-h-dcs-i-dcs-og,.dcs-h-dcs-i-dcs-ac .dcs-h-dcs-i-dcs-je{content:'';display:block;height:0;position:absolute;width:0}.dcs-h-dcs-i-dcs-ac .dcs-h-dcs-i-dcs-og{border:6px solid}.dcs-h-dcs-i-dcs-ac .dcs-h-dcs-i-dcs-je{border:5px solid}.dcs-h-dcs-i-dcs-gf{bottom:0}.dcs-h-dcs-i-dcs-ld{top:-6px}.dcs-h-dcs-i-dcs-oh{left:-6px}.dcs-h-dcs-i-dcs-md{right:0}.dcs-h-dcs-i-dcs-gf .dcs-h-dcs-i-dcs-og,.dcs-h-dcs-i-dcs-ld .dcs-h-dcs-i-dcs-og{border-color:#fff transparent;left:-6px}.dcs-h-dcs-i-dcs-gf .dcs-h-dcs-i-dcs-je,.dcs-h-dcs-i-dcs-ld .dcs-h-dcs-i-dcs-je{border-color:#2a2a2a transparent;left:-5px}.dcs-h-dcs-i-dcs-gf .dcs-h-dcs-i-dcs-og{border-bottom-width:0}.dcs-h-dcs-i-dcs-gf .dcs-h-dcs-i-dcs-je{border-bottom-width:0}.dcs-h-dcs-i-dcs-ld .dcs-h-dcs-i-dcs-og{border-top-width:0}.dcs-h-dcs-i-dcs-ld .dcs-h-dcs-i-dcs-je{border-top-width:0;top:1px}.dcs-h-dcs-i-dcs-oh .dcs-h-dcs-i-dcs-og,.dcs-h-dcs-i-dcs-md .dcs-h-dcs-i-dcs-og{border-color:transparent #fff;top:-6px}.dcs-h-dcs-i-dcs-oh .dcs-h-dcs-i-dcs-je,.dcs-h-dcs-i-dcs-md .dcs-h-dcs-i-dcs-je{border-color:transparent #2a2a2a;top:-5px}.dcs-h-dcs-i-dcs-oh .dcs-h-dcs-i-dcs-og{border-left-width:0}.dcs-h-dcs-i-dcs-oh .dcs-h-dcs-i-dcs-je{border-left-width:0;left:1px}.dcs-h-dcs-i-dcs-md .dcs-h-dcs-i-dcs-og{border-right-width:0}.dcs-h-dcs-i-dcs-md .dcs-h-dcs-i-dcs-je{border-right-width:0}.dcs-ab-dcs-bb{z-index:1001}.dcs-ab-dcs-bb-dcs-wc{z-index:1000}.dcs-ab-dcs-bb-dcs-m-dcs-yg{background-image:none}.dcs-qb-dcs-tb{z-index:1001}.dcs-a-dcs-ci-dcs-bc{width:11px;height:11px}.dcs-a-dcs-ci-dcs-bc>.dcs-a-dcs-u-dcs-v{width:11px;height:11px;margin:auto;vertical-align:top;cursor:pointer}.dcs-a-dcs-ci-dcs-bc .dcs-qb-dcs-pi-dcs-tb-dcs-ob-dcs-v{width:11px;height:11px;margin:0;padding:0}.dcs-a-dcs-ci-dcs-bc .dcs-qb-dcs-pi-dcs-tb-dcs-ob-dcs-qe-dcs-cf,.dcs-a-dcs-ci-dcs-bc .dcs-qb-dcs-pi-dcs-tb-dcs-ob-dcs-bc-dcs-cf{width:11px;min-width:11px;height:11px;min-height:11px}.dcs-a-dcs-ci>.dcs-qb-dcs-kf{padding-left:10px;padding-right:10px}.dcs-a-dcs-y{background-color:#f5f5f5;cursor:pointer;direction:ltr;position:relative;width:240px;border:none;box-shadow:0 1px 3px rgba(0,0,0,0.3);border-radius:2px}.dcs-a-dcs-b-dcs-zb.dcs-a-dcs-y{cursor:default}.dcs-a-dcs-y:focus,.dcs-a-dcs-y:active{outline:0}.dcs-a-dcs-y-dcs-ac-dcs-qe,.dcs-a-dcs-y-dcs-ac-dcs-bc{display:none}.dcs-a-dcs-y-dcs-vc{max-height:inherit;overflow-y:auto;overflow-x:hidden}.dcs-a-dcs-y-dcs-g{overflow-y:auto;overflow-x:hidden}.dcs-a-dcs-y .dcs-a-dcs-y-dcs-db-dcs-pb{border:none;display:none;padding:8px}.dcs-a-dcs-y .dcs-a-dcs-di-dcs-db-dcs-pb{background:#fff}.dcs-a-dcs-b-dcs-zb.dcs-a-dcs-y .dcs-a-dcs-y-dcs-db-dcs-pb{display:block}.dcs-a-dcs-y-dcs-db-dcs-pb .dcs-a-dcs-db-dcs-sf{display:block;height:26px}.dcs-a-dcs-y-dcs-db-dcs-pb .dcs-a-dcs-db-dcs-lh{text-align:left}.dcs-a-dcs-di-dcs-db-dcs-pb{border-top:none!important;padding-top:0}.dcs-a-dcs-y .dcs-a-dcs-db-dcs-eb-dcs-fb-dcs-gb,.dcs-a-dcs-y .dcs-a-dcs-db-dcs-gi-dcs-hi-dcs-gb{color:#999;font-size:11px}.dcs-a-dcs-y .dcs-a-dcs-y-dcs-z{border-top:1px solid #feef9c;bottom:0;left:0;padding-top:6px;position:relative;width:100%}.dcs-a-dcs-y .dcs-a-dcs-z-dcs-mc{font-weight:bold;margin-right:6px;padding:2px 0}.dcs-a-dcs-pg-dcs-qg .dcs-a-dcs-y{position:absolute;-webkit-user-select:text;-moz-user-select:text;-ms-user-select:text;z-index:500}.dcs-a-dcs-pg-dcs-qg .dcs-a-dcs-u-dcs-uf.dcs-a-dcs-y,.dcs-a-dcs-pg-dcs-qg .dcs-a-dcs-b-dcs-zb.dcs-a-dcs-y{z-index:501}.dcs-a-dcs-pg-dcs-qg-dcs-zg .dcs-a-dcs-y{box-shadow:0 2px 4px rgba(0,0,0,0.2)}.dcs-a-dcs-pg-dcs-ff .dcs-a-dcs-y-dcs-ac-dcs-qe,.dcs-a-dcs-y-dcs-ac-dcs-bc{height:0;position:absolute;width:0}.dcs-a-dcs-pg-dcs-ff .dcs-a-dcs-y .dcs-a-dcs-y-dcs-ac-dcs-qe{border-top:none;border-bottom:18px solid transparent;border-left:none;left:-13px;top:0}.dcs-a-dcs-pg-dcs-ff .dcs-a-dcs-y .dcs-a-dcs-y-dcs-ac-dcs-bc{border-top:none;border-bottom:24px solid transparent;border-left:none;border-right:24px solid #ddd;left:-15px;top:-1px;z-index:-1}.dcs-a-dcs-pg-dcs-ff .dcs-a-dcs-b-dcs-zb.dcs-a-dcs-y>.dcs-a-dcs-y-dcs-ac-dcs-qe,.dcs-a-dcs-pg-dcs-ff .dcs-a-dcs-b-dcs-zb.dcs-a-dcs-y>.dcs-a-dcs-y-dcs-ac-dcs-bc{display:block}.dcs-a-dcs-y .dcs-a-dcs-db-dcs-mh{margin-right:10px}.dcs-a-dcs-pg-dcs-ff .dcs-a-dcs-y .dcs-a-dcs-y-dcs-ac-dcs-qe.dcs-a-dcs-yc-dcs-xg{border-right:18px solid #fff}.dcs-a-dcs-pg-dcs-ff .dcs-a-dcs-y .dcs-a-dcs-y-dcs-ac-dcs-qe.dcs-a-dcs-yc-dcs-lg{border-right:18px solid #f2f2f2}.dcs-a-dcs-pg-dcs-ff .dcs-a-dcs-y .dcs-a-dcs-y-dcs-ac-dcs-qe.dcs-a-dcs-yc-dcs-zc{border-right:18px solid #4285f4}.dcs-a-dcs-td,.dcs-a-dcs-sh{border:none;border-bottom:1px solid #e5e5e5;padding:3px 8px 5px 8px;zoom:1;background:#f5f5f5;position:static}.dcs-a-dcs-y.dcs-a-dcs-b-dcs-zb{box-shadow:0px 3px 6px rgba(0,0,0,0.2)}.dcs-a-dcs-y .dcs-a-dcs-td:last-of-type{padding-bottom:12px}.dcs-a-dcs-y .dcs-a-dcs-nb-dcs-ye.dcs-a-dcs-td{padding:8px;border-bottom:1px solid #ddd;background:#fff;min-height:36px}.dcs-a-dcs-y .dcs-a-dcs-y-dcs-si .dcs-a-dcs-nb-dcs-ye.dcs-a-dcs-td{border:none}.dcs-a-dcs-td .dcs-a-dcs-td-dcs-jd{left:0!important;display:block}.dcs-a-dcs-td.dcs-a-dcs-nb-dcs-ye{border-top:none!important}.dcs-a-dcs-td-dcs-mc .dcs-a-dcs-td-dcs-nc{margin:0;margin-top:2px;color:#333;font-size:13px;font-weight:normal;height:18px}.dcs-a-dcs-y .dcs-a-dcs-y-dcs-db-dcs-pb .dcs-a-dcs-db-dcs-sf,.dcs-a-dcs-td .dcs-a-dcs-td-dcs-of .dcs-a-dcs-td-dcs-xd{line-height:1.4}.dcs-a-dcs-td .dcs-a-dcs-td-dcs-of{word-wrap:break-word;color:#333;padding:0}.dcs-a-dcs-td-dcs-mc .dcs-a-dcs-td-dcs-jg{margin:0;color:#777;font-size:11px}.dcs-a-dcs-td .dcs-a-dcs-re-dcs-qc,.dcs-a-dcs-td .dcs-a-dcs-pc-dcs-qc{height:28px;margin:0;opacity:0.2;padding:0;position:relative;min-width:28px;width:28px;top:auto;right:auto;display:table-cell;vertical-align:middle}.dcs-a-dcs-td .dcs-a-dcs-re-dcs-qc{right:-1px}.dcs-a-dcs-td .dcs-a-dcs-re-dcs-qc div,.dcs-a-dcs-td .dcs-a-dcs-pc-dcs-qc div{margin:auto;margin-top:1px}.dcs-a-dcs-re-dcs-qc{border-radius:3px 0 0 3px}.dcs-a-dcs-pc-dcs-qc{border-radius:0 3px 3px 0}.dcs-a-dcs-re-dcs-qc.dcs-h-dcs-ob-dcs-kd,.dcs-a-dcs-pc-dcs-qc.dcs-h-dcs-ob-dcs-kd{background-color:#f9f9f9}.dcs-a-dcs-b-dcs-zb.dcs-a-dcs-y .dcs-a-dcs-nb-dcs-rd,.dcs-a-dcs-b-dcs-zb.dcs-a-dcs-sh .dcs-a-dcs-nb-dcs-rd{display:block}.dcs-a-dcs-sh-dcs-ch{word-wrap:break-word;color:#15c}.dcs-a-dcs-sh-dcs-ch:hover,.dcs-a-dcs-y:hover .dcs-a-dcs-sh-dcs-ch{text-decoration:underline}.dcs-a-dcs-kh-dcs-nb{position:relative;margin:6px 0;padding:0}.dcs-a-dcs-kh-dcs-nb.dcs-a-dcs-kh-dcs-nb-dcs-hj{margin:0}.dcs-a-dcs-td .dcs-a-dcs-ch-dcs-nb{height:78px;overflow:hidden}.dcs-a-dcs-oe-dcs-yh,.dcs-a-dcs-oe-dcs-vi{color:#15c;display:none;opacity:1;width:100%;outline:none}.dcs-a-dcs-oe-dcs-yh:focus,.dcs-a-dcs-oe-dcs-vi:focus{text-decoration:underline}.dcs-a-dcs-oe-dcs-yh{bottom:0;padding-top:16px;position:absolute;right:0}.dcs-a-dcs-y .dcs-a-dcs-oe-dcs-vi,.dcs-a-dcs-y .dcs-a-dcs-oe-dcs-yh{cursor:pointer;font-size:11px}.dcs-a-dcs-y .dcs-a-dcs-oe-dcs-vi{background:#f5f5f5;padding:2px 0}.dcs-a-dcs-y .dcs-a-dcs-oe-dcs-yh{padding:7px 0 2px 0}.dcs-a-dcs-y .dcs-a-dcs-nb-dcs-ye .dcs-a-dcs-oe-dcs-vi{background:#fff}.dcs-a-dcs-oe-dcs-yh:hover,.dcs-a-dcs-oe-dcs-vi:hover{text-decoration:underline}.dcs-a-dcs-y .dcs-a-dcs-oe-dcs-yh{background:#f5f5f5;-ms-filter:none;filter:none}.dcs-a-dcs-y .dcs-a-dcs-nb-dcs-ye .dcs-a-dcs-oe-dcs-yh{background:#fff}.dcs-a-dcs-y.dcs-a-dcs-b:hover .dcs-a-dcs-oe-dcs-yh{background:#f5f5f5;-ms-filter:none;filter:none}.dcs-a-dcs-y.dcs-a-dcs-b:hover .dcs-a-dcs-nb-dcs-ye .dcs-a-dcs-oe-dcs-yh{background:#fff}.dcs-a-dcs-y.dcs-a-dcs-b-dcs-zb .dcs-a-dcs-oe-dcs-yh,.dcs-a-dcs-y.dcs-a-dcs-b-dcs-zb:hover .dcs-a-dcs-oe-dcs-yh{background:#f5f5f5;-ms-filter:none;filter:none}.dcs-a-dcs-y.dcs-a-dcs-b-dcs-zb .dcs-a-dcs-nb-dcs-ye .dcs-a-dcs-oe-dcs-yh,.dcs-a-dcs-y.dcs-a-dcs-b-dcs-zb:hover .dcs-a-dcs-nb-dcs-ye .dcs-a-dcs-oe-dcs-yh{background:#fff}.dcs-a-dcs-ch-dcs-nb>.dcs-a-dcs-oe-dcs-yh{display:block}.dcs-a-dcs-y.dcs-a-dcs-b-dcs-zb .dcs-a-dcs-oe-dcs-vi{background:#f5f5f5}.dcs-a-dcs-y.dcs-a-dcs-b-dcs-zb .dcs-a-dcs-nb-dcs-ye .dcs-a-dcs-oe-dcs-vi{background:#fff}.dcs-a-dcs-td-dcs-mc{margin:6px 0;height:38px;white-space:nowrap}.dcs-a-dcs-nb-dcs-ye .dcs-a-dcs-td-dcs-mc{margin:0;margin-bottom:8px}.dcs-a-dcs-y-dcs-si .dcs-a-dcs-nb-dcs-ye .dcs-a-dcs-td-dcs-mc{margin:0}.dcs-a-dcs-td-dcs-kg{width:1px;white-space:nowrap}.dcs-a-dcs-y:hover .dcs-a-dcs-pc-dcs-qc,.dcs-a-dcs-y.dcs-a-dcs-b-dcs-zb .dcs-a-dcs-pc-dcs-qc,.dcs-a-dcs-y.dcs-a-dcs-u-dcs-uf .dcs-a-dcs-pc-dcs-qc,.dcs-a-dcs-y:hover .dcs-a-dcs-re-dcs-qc,.dcs-a-dcs-y.dcs-a-dcs-b-dcs-zb .dcs-a-dcs-re-dcs-qc,.dcs-a-dcs-y.dcs-a-dcs-u-dcs-uf .dcs-a-dcs-re-dcs-qc,.dcs-a-dcs-y:hover .dcs-a-dcs-nb-dcs-ib-dcs-ob,.dcs-a-dcs-y.dcs-a-dcs-b-dcs-zb .dcs-a-dcs-nb-dcs-ib-dcs-ob,.dcs-a-dcs-y.dcs-a-dcs-u-dcs-uf .dcs-a-dcs-nb-dcs-ib-dcs-ob,.dcs-a-dcs-y:hover .dcs-a-dcs-te-dcs-bc>.dcs-a-dcs-u-dcs-v,.dcs-a-dcs-y.dcs-a-dcs-b-dcs-zb .dcs-a-dcs-te-dcs-bc>.dcs-a-dcs-u-dcs-v,.dcs-a-dcs-y.dcs-a-dcs-u-dcs-uf .dcs-a-dcs-te-dcs-bc>.dcs-a-dcs-u-dcs-v{opacity:0.7}.dcs-a-dcs-te-dcs-bc .dcs-qb-dcs-tb{z-index:600}.dcs-a-dcs-td-dcs-kg:hover .dcs-a-dcs-pc-dcs-qc,.dcs-a-dcs-td-dcs-kg:hover .dcs-a-dcs-nb-dcs-ib-dcs-ob{border-top-right-radius:0;border-bottom-right-radius:0}.dcs-a-dcs-td-dcs-kg>.dcs-a-dcs-pc-dcs-qc:hover,.dcs-a-dcs-td-dcs-kg>.dcs-a-dcs-nb-dcs-ib-dcs-ob:hover{border-top-right-radius:2px;border-bottom-right-radius:2px}.dcs-a-dcs-nb-dcs-ye .dcs-a-dcs-td-dcs-kg{padding:4px 0 4px 4px}.dcs-a-dcs-re-dcs-qc{margin-right:-1px}.dcs-a-dcs-td-dcs-ef{width:100%;padding-left:10px;vertical-align:top}.dcs-a-dcs-td-dcs-ef-dcs-bc{position:relative}.dcs-a-dcs-td-dcs-ef-dcs-qe{position:absolute;width:100%}.dcs-a-dcs-td-dcs-ef-dcs-qe div{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.dcs-a-dcs-td-dcs-jd-dcs-sg{display:inline-block;max-width:32px}.dcs-a-dcs-td-dcs-mc .dcs-a-dcs-jd{position:relative}.dcs-a-dcs-hg-dcs-ig{width:32px;height:6px}.dcs-a-dcs-td-dcs-mc table{border-spacing:0;width:100%}.dcs-a-dcs-nb-dcs-ib-dcs-ob{display:table-cell;opacity:0.2;padding-left:2px;position:relative;padding:0 4px 0 4px;min-width:50px;height:28px;vertical-align:top}.dcs-a-dcs-td .dcs-a-dcs-nb-dcs-ed{margin-left:0}.dcs-a-dcs-td-dcs-xd{word-wrap:break-word;color:#777;margin:8px -8px 0 -8px;padding:8px 8px 4px 8px;border-color:#e5e5e5;border-top-style:solid;border-top-width:1px;font-size:11px;font-style:italic}.dcs-a-dcs-td .dcs-a-dcs-dc-dcs-n{color:#777;font-style:italic}.dcs-a-dcs-gd{padding:6px}.dcs-a-dcs-gd.dcs-a-dcs-yc-dcs-lg{background-color:#f2f2f2;color:black}.dcs-a-dcs-gd.dcs-a-dcs-yc-dcs-zc{background-color:#4285f4;color:white}.dcs-a-dcs-gd-dcs-jd.dcs-a-dcs-jd{position:relative}.dcs-a-dcs-gd-dcs-bi{padding:1px 1px 1px 10px}.dcs-a-dcs-gd-dcs-yc{font-weight:bold}.dcs-a-dcs-le{background:#e0ecff;border:1px solid #666;color:#00c;font-family:Arial;margin:0px 0px;padding:0px 0px 1px 0px;position:absolute;z-index:900}.dcs-a-dcs-le div{cursor:pointer;margin:2px;padding:0px 10px}.dcs-a-dcs-le div b{color:#00f}.dcs-a-dcs-le .dcs-le-dcs-gc{height:auto}.dcs-a-dcs-le div.dcs-zb{background:#c3d9ff}.dcs-a-dcs-jd{left:0;position:absolute}.dcs-a-dcs-mg-dcs-ng{font:10px/12px Arial;color:#bbb;text-align:right;padding-right:30px}.dcs-a-dcs-mg-dcs-ng a{color:#bbb}.dcs-a-dcs-xh{background:#fff;border:1px solid #c8c8c8;font-family:Arial;margin:0px 0px;padding:0;position:absolute;z-index:900}.dcs-a-dcs-xh div{cursor:pointer}.dcs-a-dcs-xh .dcs-le-dcs-gc{height:auto;padding:0px}.dcs-a-dcs-xh .dcs-le-dcs-zb{background-color:#eee;border-bottom:1px solid #c8c8c8}.dcs-a-dcs-xh div.dcs-zb{background-color:#eee}.dcs-a-dcs-fc-dcs-gc{height:32px;color:rgb(0,0,0);padding:2px}.dcs-a-dcs-fc-dcs-gc .dcs-a-dcs-jd{float:left;left:initial;position:relative;padding-left:4px;padding-right:4px}.dcs-a-dcs-fc-dcs-gc-dcs-xb,.dcs-a-dcs-fc-dcs-gc-dcs-hc{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.dcs-a-dcs-fc-dcs-gc-dcs-hc{color:#777;font-size:0.9em}.dcs-a-dcs-ni-dcs-dg{width:620px}.dcs-a{color:black;font-family:Arial,sans-serif,sans;font-size:13px;white-space:normal}.dcs-a-dcs-hb{background-image:url(//ssl.gstatic.com/docs/common/d-icons20.png);background-repeat:no-repeat}.dcs-a-dcs-ic-dcs-a-dcs-hb-dcs-cd:before{content:url(//ssl.gstatic.com/docs/common/d-icons20.png)}.dcs-a-dcs-ic-dcs-a-dcs-hb-dcs-cd{*background:url(//ssl.gstatic.com/docs/common/d-icons20.png)}.dcs-a-dcs-hb-dcs-ib-dcs-jb{background-position:-38px -83px;height:37px;width:37px;position:absolute}.dcs-a-dcs-hb-dcs-ib-dcs-jb-dcs-kb{background-position:-38px -98px;height:27px;width:27px;position:absolute}.dcs-a-dcs-hb-dcs-ij-dcs-v{background-position:-51px -83px;height:11px;width:12px}.dcs-a-dcs-hb-dcs-ij-dcs-v:hover,.dcs-qb-dcs-tb-dcs-ob-dcs-ce .dcs-a-dcs-hb-dcs-ij-dcs-v{background-position:-38px -83px;height:11px;width:12px}.dcs-a-dcs-hb-dcs-qi{background-position:-5px -70px;height:13px;width:11px}.dcs-a-dcs-hb-dcs-me-dcs-lb{background-position:-43px -3px;height:14px;width:18px}.dcs-a-dcs-hb-dcs-re-dcs-qc-dcs-jb{background-position:-21px 0;height:21px;width:21px}.dcs-a-dcs-hb-dcs-pc-dcs-qc-dcs-rc{background-position:-14px -45px;height:21px;width:21px}.dcs-a-dcs-hb-dcs-yf-dcs-zf-dcs-ag{background-position:-4px 0;height:21px;width:14px}.dcs-a-dcs-hb-dcs-ic-dcs-a-dcs-jc{top:-3px;left:-30px;height:14px;width:18px;position:absolute;clip:rect(0px,70px,20px,40px)}.dcs-a-dcs-hb-dcs-ic-dcs-a-dcs-sd{top:-3px;left:63px;height:14px;width:18px;position:absolute;clip:rect(0px,70px,20px,40px)}.dcs-a-dcs-hb-dcs-jj-dcs-kj-dcs-jb-dcs-lj{background-position:-38px -21px;height:24px;width:24px}.dcs-a-dcs-hb-dcs-jj-dcs-kj-dcs-jb-dcs-ij{background-position:-14px -21px;height:24px;width:24px}.dcs-a-dcs-db{position:relative;zoom:1}.dcs-a-dcs-db.dcs-a-dcs-db-dcs-fg{display:block!important}.dcs-a-dcs-db-dcs-jf-dcs-qe{border-top:7px solid transparent;border-right:8px solid #fff;border-bottom:7px solid transparent;height:0;left:-6px;position:absolute;top:3px}.dcs-a-dcs-db-dcs-jf-dcs-bc{border-top:7px solid transparent;border-right:8px solid #c8c8c8;border-bottom:7px solid transparent;height:0;left:-7px;position:absolute;top:3px}.dcs-a-dcs-db-dcs-sf{border:1px solid #c8c8c8;box-sizing:border-box;-moz-box-sizing:border-box;-ms-box-sizing:border-box;-webkit-box-sizing:border-box;color:#999;font-family:Arial,sans-serif;font-size:13px;margin:0;overflow-x:hidden;overflow-y:hidden;outline-width:0!important;padding:4px;resize:none;width:100%}.dcs-a-dcs-db-dcs-sf:disabled{background-color:#eee!important}*:first-child+html .dcs-a-dcs-db-dcs-sf{width:95%}.dcs-a-dcs-db-dcs-lh{display:none;zoom:1}.dcs-a-dcs-db-dcs-lh-dcs-mh{font-weight:bold}.dcs-a-dcs-db-dcs-fh>.dcs-a-dcs-db-dcs-sf{color:#000}.dcs-a-dcs-db-dcs-fh>.dcs-a-dcs-db-dcs-lh{display:block}#docos-comment-bubble{border:1px solid #eee;box-shadow:0 3px 3px rgba(0,0,0,0.05);background:rgba(255,255,255,0.85);border-radius:100%;position:absolute;top:0;width:40px;text-align:center;height:40px;z-index:-2;cursor:default;opacity:0;transition:opacity .25s ease-in-out,z-index .26s linear .25s}.dcs-a-dcs-lb-dcs-mb-dcs-he-dcs-jc{transform:translate(-50%,-50%)}.dcs-a-dcs-lb-dcs-mb-dcs-he-dcs-sd{transform:translate(-65%,-50%)}#docos-comment-bubble.dcs-a-dcs-ic-dcs-a-dcs-uf{opacity:1;cursor:pointer;z-index:101;transition:opacity .25s ease-in-out}#docos-comment-bubble.dcs-a-dcs-ic-dcs-a-dcs-jh-dcs-j{z-index:-2;opacity:0;top:0;transition:none}.dcs-a-dcs-lb-dcs-mb-dcs-hb{display:inline-block;opacity:0.5;margin-top:13px;margin-left:-3px;transition:opacity .15s ease-in-out}#docos-comment-bubble:hover .dcs-a-dcs-lb-dcs-mb-dcs-hb,#docos-comment-bubble .dcs-a-dcs-lb-dcs-mb-dcs-hb:hover{opacity:1}#docos-comment-bubble:hover{background:rgba(255,255,255,1)}#docos-comment-bubble:focus{outline:0}.dcs-a-dcs-q-dcs-r-dcs-hb{display:inline-block;vertical-align:middle;margin:4px 5px 5px 2px}.dcs-a-dcs-q-dcs-r{text-align:left}.dcs-a-dcs-q-dcs-r-dcs-n{display:inline-block;height:17px}.dcs-a-dcs-q-dcs-r-dcs-mj{visibility:hidden}.dcs-a-dcs-s-dcs-g{width:500px}.dcs-a-dcs-s-dcs-od{padding:0 3px 0 8px}.dcs-a-dcs-s-dcs-rd{padding-left:3px}.dcs-a-dcs-s-dcs-eg{position:absolute;right:20px}.dcs-a-dcs-s-dcs-t{background-color:#c1d9ff;border:0;color:#c1d9ff;height:1px;margin:10px 0 10px 0}.dcs-a-dcs-te-dcs-bc{display:table-cell}.dcs-a-dcs-te-dcs-bc>.dcs-a-dcs-u-dcs-v{border:1px solid transparent;width:14px;height:28px;margin:auto;position:relative;left:-1px;opacity:0.2}.dcs-a-dcs-te-dcs-bc>.dcs-a-dcs-u-dcs-v:hover,.dcs-a-dcs-te-dcs-bc>.dcs-a-dcs-u-dcs-v:focus{border:1px solid #4d90fe;border-top-left-radius:0;border-bottom-left-radius:0}.dcs-a-dcs-te-dcs-bc .dcs-qb-dcs-pi-dcs-tb-dcs-ob-dcs-qe-dcs-cf,.dcs-a-dcs-te-dcs-bc .dcs-qb-dcs-pi-dcs-tb-dcs-ob-dcs-bc-dcs-cf{min-width:14px;margin:0;padding:0}.dcs-a-dcs-te-dcs-bc .dcs-a-dcs-hb{vertical-align:middle;opacity:0.7}.dcs-a-dcs-te-dcs-bc .dcs-qb-dcs-pi-dcs-tb-dcs-ob-dcs-v{display:none}.dcs-a-dcs-ae .dcs-j-dcs-pe-dcs-ae{display:none!important}.dcs-oe-dcs-pe-dcs-ae{display:none}.dcs-a-dcs-ae .dcs-oe-dcs-pe-dcs-ae{display:inline-block!important}.dcs-a-dcs-ib-dcs-mf{border:1px solid rgba(0,0,0,0.2)}.dcs-a-dcs-ib-dcs-xe{-webkit-transition:all 270ms ease-out;-moz-transition:all 270ms ease-out;-o-transition:all 270ms ease-out;transition:all 270ms ease-out;-webkit-transform:scale(0.3);-moz-transform:scale(0.3);-o-transform:scale(0.3);transform:scale(0.3);-webkit-transform-origin:center top;-moz-transform-origin:center top;-o-transform-origin:center top;transform-origin:center top;opacity:0.3}#docos-shadow-wrapper{position:relative}#docos-shadow{background:#000;background:rgba(0,0,0,0.7);color:#fff;position:absolute;z-index:700;left:0;top:0}#docos-shadow,.dcs-a-dcs-ad-dcs-if{height:100%;width:100%}#docos-shadow-description{font-weight:bold}#docos-shadow-confirm,#docos-shadow-delete{margin:2px 7px}.dcs-a-dcs-f .dcs-a-dcs-db-dcs-lh{padding-bottom:6px}.dcs-a-dcs-f .dcs-a-dcs-db-dcs-mh{margin:0 4px 0 0}.dcs-a-dcs-f .dcs-a-dcs-db-dcs-ve{background:none}.dcs-a-dcs-oc{border-top:1px solid #e8e8e8;font-family:Arial,sans-serif;font-size:12px;padding:18px 0 7px 0;position:relative;outline:none;zoom:1}.dcs-a-dcs-oc:last-child{padding-bottom:0}.dcs-a-dcs-oc:last-child .dcs-a-dcs-oc-dcs-zh{padding-bottom:0}.dcs-a-dcs-oc .dcs-a-dcs-b-dcs-vf{min-height:48px}.dcs-a-dcs-nh{margin-right:12px;min-height:51px;padding:0 6px;position:relative;top:-3px}.dcs-a-dcs-b-dcs-x .dcs-a-dcs-nh{background-color:#f6f6f6}.dcs-a-dcs-b-dcs-zb .dcs-a-dcs-nh{background-color:#fffbe1}.dcs-a-dcs-oc-dcs-g{margin-left:60px;position:relative}.dcs-a-dcs-oc-dcs-xc{font-weight:bold}.dcs-a-dcs-oc-dcs-of{color:#333;word-wrap:break-word;top:-7px;zoom:1}.dcs-a-dcs-oc .dcs-a-dcs-hb-dcs-ib-dcs-jb-dcs-kb{display:none;right:5px;top:-12px}.dcs-a-dcs-oc.dcs-a-dcs-b-dcs-x .dcs-a-dcs-hb-dcs-ib-dcs-jb-dcs-kb{display:block}.dcs-a-dcs-oc-dcs-jg,.dcs-a-dcs-oc-dcs-fe-dcs-ge{font-size:11px;color:#999;padding:0}.dcs-a-dcs-oc-dcs-jg,.dcs-a-dcs-oc-dcs-qd-dcs-rd{right:2px}.dcs-a-dcs-oc-dcs-uc{color:#ccc;font-size:12px;line-height:100%;padding:0 2px}.dcs-a-dcs-oc-dcs-zh{padding:4px 0}.dcs-a-dcs-oc-dcs-jg:hover{text-decoration:underline;cursor:pointer}.dcs-a-dcs-oc-dcs-db-dcs-pb{padding-right:6px;margin-left:30px}.dcs-a-dcs-oc-dcs-db-dcs-pb .dcs-a-dcs-db-dcs-sf{background-color:#fff;border:1px solid #c9d4ec;height:23px;font-size:12px}.dcs-a-dcs-oc-dcs-db-dcs-pb.dcs-a-dcs-db-dcs-fh .dcs-a-dcs-db-dcs-sf{background-color:#fff}.dcs-a-dcs-oc-dcs-ed-dcs-pb .dcs-a-dcs-db-dcs-sf{height:36px}.dcs-a-dcs-oc-dcs-mi,.dcs-a-dcs-oc-dcs-c{margin:4px 12px 3px 0}.dcs-a-dcs-oc-dcs-mi{background-color:#eff2f9;-moz-border-radius:0 0 6px 6px;-webkit-border-radius:0 0 6px 6px;border-radius:0 0 6px 6px;padding:6px 0 2px 6px;position:relative;zoom:1}.dcs-a-dcs-b-dcs-x .dcs-a-dcs-oc-dcs-mi{background-color:#f6f6f6}.dcs-a-dcs-oc-dcs-tg{position:absolute;right:0;top:0}.dcs-a-dcs-oc.dcs-a-dcs-b-dcs-x .dcs-a-dcs-oc-dcs-tg{right:33px}.dcs-a-dcs-oc-dcs-z{background-color:#fe8;bottom:0;left:0;padding:2px 0;position:absolute;width:100%}.dcs-a-dcs-z-dcs-mc{font-weight:bold;margin:0 6px;padding:2px 0}.dcs-a-dcs-oc .dcs-a-dcs-ci-dcs-bc{position:absolute;right:-12px;top:3px}.dcs-a-dcs-oc-dcs-qd-dcs-rd{display:inline}.dcs-a-dcs-oc-dcs-qd-dcs-rd>.dcs-a-dcs-b-dcs-qd{font-size:11px;color:#15c}.dcs-a-dcs-oc-dcs-lb-dcs-rd>.dcs-a-dcs-b-dcs-lb,.dcs-a-dcs-oc-dcs-ib-dcs-rd>.dcs-a-dcs-b-dcs-ib{color:#999;line-height:100%}.dcs-a-dcs-oc-dcs-lb-dcs-rd>.dcs-a-dcs-b-dcs-lb:hover,.dcs-a-dcs-oc-dcs-qd-dcs-rd>.dcs-a-dcs-b-dcs-qd:hover,.dcs-a-dcs-oc-dcs-ib-dcs-rd>.dcs-a-dcs-b-dcs-ib:hover{text-decoration:underline;cursor:pointer}.dcs-a-dcs-nh:hover .dcs-a-dcs-b-dcs-lb,.dcs-a-dcs-nh:hover .dcs-a-dcs-b-dcs-ib,.dcs-a-dcs-b-dcs-zb .dcs-a-dcs-b-dcs-lb,.dcs-a-dcs-b-dcs-zb .dcs-a-dcs-b-dcs-ib{color:#15c}.dcs-a-dcs-f-dcs-sc{line-height:140%;outline:none}.dcs-a-dcs-f-dcs-g{position:relative}.dcs-a-dcs-f-dcs-lf{color:#15c;cursor:pointer;font-size:12px;position:absolute;right:0;top:-3px}.dcs-a-dcs-f-dcs-lf:hover{text-decoration:underline}.dcs-a-dcs-se .dcs-a-dcs-f-dcs-lf{color:#999;cursor:default}.dcs-a-dcs-se .dcs-a-dcs-f-dcs-lf:hover{text-decoration:none}.dcs-a-dcs-f-dcs-vd{bottom:-10px;color:#15c;cursor:pointer;font-size:12px;padding-right:5px;padding-top:5px;position:absolute;right:5px;text-decoration:none}.dcs-a-dcs-se .dcs-a-dcs-f-dcs-vd{display:none}.dcs-a-dcs-f-dcs-ud{color:#333;padding:12px 0 12px 20px}.dcs-a-dcs-f-dcs-bh{margin:6px 29px 10px 20px;position:relative;zoom:1}.dcs-a-dcs-f-dcs-bh-dcs-g{margin-left:61px;position:relative;zoom:1}.dcs-a-dcs-f-dcs-ue{font-size:12px;font-weight:bold;margin-bottom:3px;top:-3px}.dcs-a-dcs-f-dcs-m{font-size:1.2em;margin:20px 5px 2px}.dcs-a-dcs-f-dcs-db-dcs-pb{top:-4px}.dcs-a-dcs-f-dcs-db-dcs-pb .dcs-a-dcs-db-dcs-mh{font-weight:bold}.dcs-a-dcs-f-dcs-db-dcs-pb .dcs-a-dcs-db-dcs-sf{font-size:12px;height:30px}.dcs-a-dcs-f .dcs-a-dcs-db-dcs-eb-dcs-fb-dcs-gb,.dcs-a-dcs-f .dcs-a-dcs-db-dcs-gi-dcs-hi-dcs-gb{color:#666}.dcs-a-dcs-f-dcs-ji{background-color:#dd4b39;border:1px solid #602019;border-radius:4px;color:#fff;margin:6px;padding:6px;text-align:center}.dcs-a-dcs-f-dcs-mc{overflow:hidden;padding:10px 29px 10px 20px;background-color:#f5f5f5}.dcs-a-dcs-f-dcs-mc .dcs-a-dcs-o-dcs-p,.dcs-a-dcs-f-dcs-mc .dcs-a-dcs-kc-dcs-lb-dcs-ob,.dcs-a-dcs-f-dcs-mc .dcs-a-dcs-wh-dcs-ob{display:inline-block;float:right}.dcs-a-dcs-f-dcs-mc .dcs-qb-dcs-rb-dcs-tb-dcs-ob,.dcs-a-dcs-f-dcs-mc .dcs-h-dcs-ob{border-color:transparent;background-color:transparent;background-image:none}.dcs-a-dcs-f-dcs-mc .dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-hf,.dcs-a-dcs-f-dcs-mc .dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-zb,.dcs-a-dcs-f-dcs-mc .dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-ce,.dcs-a-dcs-f-dcs-mc .dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-ai,.dcs-a-dcs-f-dcs-mc .dcs-h-dcs-ob-dcs-hf,.dcs-a-dcs-f-dcs-mc .dcs-h-dcs-ob-dcs-zb,.dcs-a-dcs-f-dcs-mc .dcs-h-dcs-ob-dcs-ai{border-color:#c6c6c6;background-color:#f8f8f8;background-image:-webkit-linear-gradient(top,#f8f8f8,#f1f1f1);background-image:-moz-linear-gradient(top,#f8f8f8,#f1f1f1);background-image:-ms-linear-gradient(top,#f8f8f8,#f1f1f1);background-image:-o-linear-gradient(top,#f8f8f8,#f1f1f1);background-image:linear-gradient(top,#f8f8f8,#f1f1f1)}.dcs-a-dcs-f-dcs-mc .dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-v{visibility:hidden}.dcs-a-dcs-f-dcs-mc .dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-hf .dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-v,.dcs-a-dcs-f-dcs-mc .dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-zb .dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-v,.dcs-a-dcs-f-dcs-mc .dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-ce .dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-v,.dcs-a-dcs-f-dcs-mc .dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-ai .dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-v{visibility:visible}.dcs-a-dcs-f-dcs-mc .dcs-qb-dcs-rb-dcs-tb-dcs-ob-dcs-kd .dcs-a-dcs-q-dcs-r-dcs-hb{opacity:0.3}.dcs-a-dcs-f-dcs-mc .dcs-h-dcs-ob-dcs-kd .dcs-a-dcs-kc-dcs-lb-dcs-hb{opacity:0.15}.dcs-a-dcs-f-dcs-mc .dcs-a-dcs-kc-dcs-lb-dcs-ob,.dcs-a-dcs-f-dcs-mc .dcs-a-dcs-wh-dcs-ob{margin-left:12px;margin-right:0}.dcs-a-dcs-dh-dcs-eh{padding:0 29px 0 20px}.dcs-a-dcs-ti-dcs-ui-dcs-mc .dcs-a-dcs-dh-dcs-eh{position:relative;overflow:auto;max-height:450px}.dcs-a-dcs-ti-dcs-ui-dcs-mc .dcs-a-dcs-dh-dcs-eh>.dcs-a-dcs-oc:first-child{border-top-color:transparent}.dcs-a-dcs-kc-dcs-lb-dcs-hb{display:inline-block;vertical-align:middle;margin:4px 5px 5px 2px;opacity:0.65}.dcs-a-dcs-hd{background-color:#eff2f9;color:#666;font-size:12px;padding:6px 6px 0 6px;position:relative;margin-bottom:3px;min-height:24px}.dcs-a-dcs-b-dcs-x .dcs-a-dcs-hd{background-color:#f6f6f6}.dcs-a-dcs-hd-dcs-jd{left:6px}.dcs-a-dcs-hd-dcs-g{padding-left:30px}.dcs-a-dcs-hd-dcs-nc{color:black;font-weight:bold;left:-2px;margin:0 4px;right:-2px}.dcs-a-dcs-hd-dcs-of{color:#333;margin:0;top:-4px;width:100%;word-wrap:break-word}.dcs-a-dcs-hd-dcs-n,.dcs-a-dcs-hd-dcs-jg{position:relative;top:-3px}.dcs-a-dcs-hd-dcs-n{width:100%}.dcs-a-dcs-hd-dcs-jg{color:#999;font-size:11px;white-space:pre}.dcs-a-dcs-oc .dcs-a-dcs-hd .dcs-a-dcs-nb-dcs-rd{display:inline;top:-3px;z-index:-1}.dcs-a-dcs-oc .dcs-a-dcs-hd:hover .dcs-a-dcs-nb-dcs-rd,.dcs-a-dcs-oc .dcs-a-dcs-hd .dcs-a-dcs-nb-dcs-rd-dcs-ai{z-index:auto}.dcs-a-dcs-hd-dcs-ed-dcs-pb .dcs-a-dcs-db-dcs-sf{height:23px}.dcs-a-dcs-oc .dcs-a-dcs-nb-dcs-pf{border-left:1px solid #ccc;font-style:italic;padding:3px 10px 3px 10px;position:relative;zoom:1;word-wrap:break-word}.dcs-a-dcs-nb-dcs-pf-dcs-r{font-size:11px;color:#999;margin-right:2px;padding:0}.dcs-a-dcs-nb-dcs-pf-dcs-ch{overflow:hidden;height:18px}.dcs-a-dcs-nb-dcs-pf-dcs-rh{background:#fff;padding:3px 5px 0 5px;position:absolute;right:0;top:0}.dcs-a-dcs-nb-dcs-pf-dcs-wf,.dcs-a-dcs-nb-dcs-pf-dcs-rh{color:#15c;visibility:hidden}.dcs-a-dcs-b-dcs-zb .dcs-a-dcs-nb-dcs-pf-dcs-wf,.dcs-a-dcs-b-dcs-zb .dcs-a-dcs-nb-dcs-pf-dcs-rh{visibility:visible}.dcs-a-dcs-nb-dcs-pf-dcs-wf{padding-left:3px}.dcs-a-dcs-b-dcs-zb .dcs-a-dcs-nb-dcs-pf-dcs-rh{background:#fffbe1}.dcs-a-dcs-nb-dcs-pf-dcs-wf:hover,.dcs-a-dcs-nb-dcs-pf-dcs-rh:hover{cursor:pointer;text-decoration:underline}.dcs-a-dcs-nh .dcs-a-dcs-dc-dcs-n,.dcs-a-dcs-hd .dcs-a-dcs-dc-dcs-n{color:#999;font-style:italic}.dcs-a-dcs-sf{margin:0;padding:2px;font-family:arial,sans-serif;outline-width:0!important;resize:none}.dcs-a-dcs-nb-dcs-wd,.dcs-a-dcs-nb-dcs-ed{color:#15c;font-size:11px;margin:0 2px}.dcs-a-dcs-nb-dcs-wd:hover,.dcs-a-dcs-nb-dcs-ed:hover{text-decoration:underline;cursor:pointer}.dcs-a-dcs-db-dcs-ve{margin:0 0}.dcs-a-dcs-db-dcs-mh{margin:8px 7px 0 0}.dcs-a-dcs-cc-dcs-fb-dcs-dc-dcs-n-dcs-ec{padding:8px 0 8px 0}.dcs-a-dcs-d{height:100px;overflow:hidden;position:relative}.dcs-a-dcs-gg-dcs-d{height:28px;left:50%;margin-left:sub(0,divide(28px,2));position:absolute;top:divide(sub(100px,28px),2);width:28px}.dcs-a-dcs-gg-dcs-d.dcs-zb{-webkit-animation:container-rotate 1568ms linear infinite;animation:container-rotate 1568ms linear infinite}@-webkit-keyframes container-rotate{to{-webkit-transform:rotate(360deg)}}@keyframes container-rotate{to{transform:rotate(360deg)}}.dcs-d-dcs-e{position:absolute;width:100%;height:100%;opacity:0}.dcs-d-dcs-ne{border-color:#4285f4}.dcs-d-dcs-qh{border-color:#db4437}.dcs-d-dcs-vg{border-color:#f4b400}.dcs-d-dcs-w{border-color:#0f9d58}.dcs-zb .dcs-d-dcs-e.dcs-d-dcs-ne{-webkit-animation:fill-unfill-rotate 5332ms cubic-bezier(0.4,0.0,0.2,1) infinite both,blue-fade-in-out 5332ms cubic-bezier(0.4,0.0,0.2,1) infinite both;animation:fill-unfill-rotate 5332ms cubic-bezier(0.4,0.0,0.2,1) infinite both,blue-fade-in-out 5332ms cubic-bezier(0.4,0.0,0.2,1) infinite both}.dcs-zb .dcs-d-dcs-e.dcs-d-dcs-qh{-webkit-animation:fill-unfill-rotate 5332ms cubic-bezier(0.4,0.0,0.2,1) infinite both,red-fade-in-out 5332ms cubic-bezier(0.4,0.0,0.2,1) infinite both;animation:fill-unfill-rotate 5332ms cubic-bezier(0.4,0.0,0.2,1) infinite both,red-fade-in-out 5332ms cubic-bezier(0.4,0.0,0.2,1) infinite both}.dcs-zb .dcs-d-dcs-e.dcs-d-dcs-vg{-webkit-animation:fill-unfill-rotate 5332ms cubic-bezier(0.4,0.0,0.2,1) infinite both,yellow-fade-in-out 5332ms cubic-bezier(0.4,0.0,0.2,1) infinite both;animation:fill-unfill-rotate 5332ms cubic-bezier(0.4,0.0,0.2,1) infinite both,yellow-fade-in-out 5332ms cubic-bezier(0.4,0.0,0.2,1) infinite both}.dcs-zb .dcs-d-dcs-e.dcs-d-dcs-w{-webkit-animation:fill-unfill-rotate 5332ms cubic-bezier(0.4,0.0,0.2,1) infinite both,green-fade-in-out 5332ms cubic-bezier(0.4,0.0,0.2,1) infinite both;animation:fill-unfill-rotate 5332ms cubic-bezier(0.4,0.0,0.2,1) infinite both,green-fade-in-out 5332ms cubic-bezier(0.4,0.0,0.2,1) infinite both}@-webkit-keyframes fill-unfill-rotate{12.5%{-webkit-transform:rotate(135deg)}25%{-webkit-transform:rotate(270deg)}37.5%{-webkit-transform:rotate(405deg)}50%{-webkit-transform:rotate(540deg)}62.5%{-webkit-transform:rotate(675deg)}75%{-webkit-transform:rotate(810deg)}87.5%{-webkit-transform:rotate(945deg)}to{-webkit-transform:rotate(1080deg)}}@keyframes fill-unfill-rotate{12.5%{transform:rotate(135deg)}25%{transform:rotate(270deg)}37.5%{transform:rotate(405deg)}50%{transform:rotate(540deg)}62.5%{transform:rotate(675deg)}75%{transform:rotate(810deg)}87.5%{transform:rotate(945deg)}to{transform:rotate(1080deg)}}@-webkit-keyframes blue-fade-in-out{from{opacity:1}25%{opacity:1}26%{opacity:0}89%{opacity:0}90%{opacity:1}100%{opacity:1}}@keyframes blue-fade-in-out{from{opacity:1}25%{opacity:1}26%{opacity:0}89%{opacity:0}90%{opacity:1}100%{opacity:1}}@-webkit-keyframes red-fade-in-out{from{opacity:0}15%{opacity:0}25%{opacity:1}50%{opacity:1}51%{opacity:0}}@keyframes red-fade-in-out{from{opacity:0}15%{opacity:0}25%{opacity:1}50%{opacity:1}51%{opacity:0}}@-webkit-keyframes yellow-fade-in-out{from{opacity:0}40%{opacity:0}50%{opacity:1}75%{opacity:1}76%{opacity:0}}@keyframes yellow-fade-in-out{from{opacity:0}40%{opacity:0}50%{opacity:1}75%{opacity:1}76%{opacity:0}}@-webkit-keyframes green-fade-in-out{from{opacity:0}65%{opacity:0}75%{opacity:1}90%{opacity:1}100%{opacity:0}}@keyframes green-fade-in-out{from{opacity:0}65%{opacity:0}75%{opacity:1}90%{opacity:1}100%{opacity:0}}.dcs-d-dcs-th-dcs-uh{position:absolute;box-sizing:border-box;top:0;left:45%;width:10%;height:100%;overflow:hidden;border-color:inherit}.dcs-d-dcs-th-dcs-uh .dcs-d-dcs-ah{width:1000%;left:-450%}.dcs-d-dcs-ah-dcs-ei{display:inline-block;position:relative;width:50%;height:100%;overflow:hidden;border-color:inherit}.dcs-d-dcs-ah-dcs-ei .dcs-d-dcs-ah{width:200%}.dcs-d-dcs-ah{box-sizing:border-box;height:100%;border-width:3px;border-style:solid;border-color:inherit;border-bottom-color:transparent!important;border-radius:50%;-webkit-animation:none;animation:none}.dcs-d-dcs-ah-dcs-ei.dcs-d-dcs-cb .dcs-d-dcs-ah{border-right-color:transparent!important;-webkit-transform:rotate(129deg);transform:rotate(129deg)}.dcs-d-dcs-ah-dcs-ei.dcs-d-dcs-xf .dcs-d-dcs-ah{left:-100%;border-left-color:transparent!important;-webkit-transform:rotate(-129deg);transform:rotate(-129deg)}.dcs-zb .dcs-d-dcs-ah-dcs-ei.dcs-d-dcs-cb .dcs-d-dcs-ah{-webkit-animation:left-spin 1333ms cubic-bezier(0.4,0.0,0.2,1) infinite both;animation:left-spin 1333ms cubic-bezier(0.4,0.0,0.2,1) infinite both}.dcs-zb .dcs-d-dcs-ah-dcs-ei.dcs-d-dcs-xf .dcs-d-dcs-ah{-webkit-animation:right-spin 1333ms cubic-bezier(0.4,0.0,0.2,1) infinite both;animation:right-spin 1333ms cubic-bezier(0.4,0.0,0.2,1) infinite both}@-webkit-keyframes left-spin{from{-webkit-transform:rotate(130deg)}50%{-webkit-transform:rotate(-5deg)}to{-webkit-transform:rotate(130deg)}}@keyframes left-spin{from{transform:rotate(130deg)}50%{transform:rotate(-5deg)}to{transform:rotate(130deg)}}@-webkit-keyframes right-spin{from{-webkit-transform:rotate(-130deg)}50%{-webkit-transform:rotate(5deg)}to{-webkit-transform:rotate(-130deg)}}@keyframes right-spin{from{transform:rotate(-130deg)}50%{transform:rotate(5deg)}to{transform:rotate(-130deg)}}.dcs-d-dcs-cg{position:absolute;top:0;bottom:0;right:0;left:0}</style><script type="text/javascript" charset="UTF-8" src="./An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics_files/api.js" gapi_processed="true"></script><script src="./An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics_files/ga.js"></script></head>
+<body xmlns="http://www.google.com/ns/jotspot" id="body" class=" en_GB            ">
+<div id="sites-page-toolbar" class="sites-header-divider">
+<div xmlns="http://www.w3.org/1999/xhtml" id="sites-status" class="sites-status" style="display:none;"><div id="sites-notice" class="sites-notice" role="status" aria-live="assertive"> </div></div>
+</div>
+<div id="sites-chrome-everything-scrollbar">
+<div id="sites-chrome-everything" class="">
+<div id="sites-chrome-page-wrapper" style="direction: ltr">
+<div id="sites-chrome-page-wrapper-inside">
+<div xmlns="http://www.w3.org/1999/xhtml" id="sites-chrome-header-wrapper" style="">
+<table id="sites-chrome-header" class="sites-layout-hbox" cellspacing="0" style="">
+<tbody><tr class="sites-header-primary-row" id="sites-chrome-userheader">
+<td id="sites-header-title" class="" role="banner" style="height: 20px"><div class="sites-header-cell-buffer-wrapper"><a href="http://www.delphibasics.info/" id="sites-chrome-userheader-logo"><img id="logo-img-id" src="./An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics_files/customLogo.gif" alt="DelphiBasics" class="sites-logo  "></a><h2><a href="http://www.delphibasics.info/" dir="ltr" id="sites-chrome-userheader-title">DelphiBasics</a></h2></div></td><td class="sites-layout-searchbox  "><div class="sites-header-cell-buffer-wrapper"><form id="sites-searchbox-form" action="http://www.delphibasics.info/system/app/pages/search" role="search"><input type="hidden" id="sites-searchbox-scope" name="scope" value="search-site"><input type="text" id="jot-ui-searchInput" name="q" size="20" value="" aria-label="Search this site"><div id="sites-searchbox-button-set" class="goog-inline-block"><div role="button" id="sites-searchbox-select-button" class="goog-inline-block jfk-button jfk-button-standard" tabindex="0" style="-webkit-user-select: none;">Search this site</div><div id="sites-searchbox-select-dropdown" class="goog-inline-block goog-flat-menu-button" role="listbox" aria-expanded="false" tabindex="0" aria-haspopup="true" aria-activedescendant=":0" style="-webkit-user-select: none;"><div class="goog-inline-block goog-flat-menu-button-caption" id=":0" role="option" aria-setsize="3" aria-posinset="1">Search this site</div><div class="goog-inline-block goog-flat-menu-button-dropdown sites-jfk-menu-button-dropdown"> </div></div></div></form></div></td>
+</tr>
+<tr class="sites-header-secondary-row" id="sites-chrome-horizontal-nav">
+<td colspan="2" id="sites-chrome-header-horizontal-nav-container" role="navigation">
+<div class="sites-header-nav"><ul class="sites-header-nav-container-boxes"><li class="unselected"><a class="sites-navigation-link unselected" href="http://www.delphibasics.info/">Home</a></li><li class="unselected"><a class="sites-navigation-link unselected" href="http://delphibasics.informe.com/">Forum</a></li><li class="unselected"><a class="sites-navigation-link unselected" href="http://www.delphibasics.info/home/delphibasicscounterstrikewireleases/archive">Counterstrikewi's Releases</a></li><li class="unselected"><a class="sites-navigation-link unselected" href="http://www.delphibasics.info/home/delphibasicssnippets/archive">Snippets</a></li><li class="unselected"><a class="sites-navigation-link unselected" href="http://www.delphibasics.info/home/delphibasicsprojects/archive">Projects</a></li><li class="unselected"><a class="sites-navigation-link unselected" href="http://www.delphibasics.info/home/delphibasicsprojectreleases/archive">Project Releases</a></li><li class="unselected"><a class="sites-navigation-link unselected" href="http://www.delphibasics.info/home/delphibasicsarticles/archive">Articles</a></li><li class="unselected"><a class="sites-navigation-link unselected" href="http://www.delphibasics.info/home/delphibasicscomedy/archive">Comedy</a></li><li class="unselected"><a class="sites-navigation-link unselected" href="http://www.delphibasics.info/home/delphibasicsteam">Team</a></li><li class="unselected"><a class="sites-navigation-link unselected" href="http://www.delphibasics.info/home/delphibasicsaliases">Aliases</a></li><li class="unselected"><a class="sites-navigation-link unselected" href="http://www.delphibasics.info/system/app/pages/sitemap/hierarchy">Sitemap</a></li></ul><div style="clear: both;"></div></div>
+</td>
+</tr>
+</tbody></table>
+</div>
+<div id="sites-chrome-main-wrapper">
+<div id="sites-chrome-main-wrapper-inside">
+<table id="sites-chrome-main" class="sites-layout-hbox" cellspacing="0" cellpadding="{scmCellpadding}" border="0">
+<tbody><tr>
+<td id="sites-chrome-sidebar-left" class="sites-layout-sidebar-left" style="display: none; width: 150px">
+</td>
+<td id="sites-canvas-wrapper">
+<div id="sites-canvas" role="main">
+<div id="goog-ws-editor-toolbar-container"> </div>
+<div xmlns="http://www.w3.org/1999/xhtml" id="title-crumbs" style="">
+<a href="http://www.delphibasics.info/home" dir="ltr">Delphi Basics  - Free Delphi Source Code - Ultimate Programming Resource</a>‎ &gt; ‎<a href="http://www.delphibasics.info/home/delphibasicsarticles" dir="ltr">Delphi Basics Articles</a>‎ &gt; ‎
+  </div>
+<h3 xmlns="http://www.w3.org/1999/xhtml" id="sites-page-title-header" style="" align="left">
+<span id="sites-page-title" dir="ltr" tabindex="-1" style="outline: none">An In-Depth Look into the Win32 Portable Executable File Format - Part 2</span>
+</h3>
+<span class="announcementsPostTimestamp" id="afterPageTitleHideDuringEdit">
+<script xmlns="http://www.w3.org/1999/xhtml" type="text/javascript">
+      //<![CDATA[
+        function JOT_insertRelDate(timestamp, absTimeStr, isSiteLocale, dir) {
+          var relTimeStr = JOT_formatRelativeToNow(timestamp, isSiteLocale);
+          if (relTimeStr) {
+            if (isSiteLocale) {
+              document.write('<span timestamp="' + timestamp + '" issitelocale="' + isSiteLocale +
+                '" title="' + absTimeStr + '" dir="' + dir + '">' + relTimeStr + '<' + '/span>');
+            } else {
+              document.write('<span timestamp="' + timestamp + '" title="' + absTimeStr +
+              '" dir="' + dir + '">' + relTimeStr + '<' + '/span>');
+            }
+          } else {
+            document.write(absTimeStr);
+          }
+        }
+      //]]>
+</script>
+      
+    
+  
+  posted <span xmlns="http://www.w3.org/1999/xhtml" dir="ltr">15 Mar 2010, 17:04</span> by Delphi Basics
+
+                  
+                      &nbsp;
+                      <span id="sites-announcement-updated-time" class="updatedTime">
+                        [
+  
+  
+  
+  
+  updated <span xmlns="http://www.w3.org/1999/xhtml" dir="ltr">20 Nov 2010, 18:34</span>
+]
+                      </span>
+</span>
+<div id="sites-canvas-main" class="sites-canvas-main">
+<div id="sites-canvas-main-content">
+<table xmlns="http://www.w3.org/1999/xhtml" cellspacing="0" class="sites-layout-name-one-column sites-layout-hbox"><tbody><tr><td class="sites-layout-tile sites-tile-name-content-1"><div dir="ltr">See Part 1 here: <a href="http://www.delphibasics.info/home/delphibasicsarticles/anin-depthlookintothewin32portableexecutablefileformat-part1">An In-Depth Look into the Win32 Portable Executable File Format - Part 1</a> <br><br>Source: <a href="http://msdn.microsoft.com/en-us/magazine/cc301808.aspx" target="_blank">http://msdn.microsoft.com/en-us/magazine/cc301808.aspx</a> <br><br><b>SUMMARY</b> The Win32 Portable Executable 
+File Format (PE) was designed to be a standard executable format for use
+ on all versions of the operating systems on all supported processors. 
+Since its introduction, the PE format has undergone incremental changes,
+ and the introduction of 64-bit Windows has required a few more. Part 1 
+of this series presented an overview and covered RVAs, the data 
+directory, and the headers. This month in Part 2 the various sections of
+ the executable are explored. The discussion includes the exports 
+section, export forwarding, binding, and delayloading. The debug 
+directory, thread local storage, and the resources sections are also 
+covered.<br><br>Last month in <a href="http://www.delphibasics.info/home/delphibasicsarticles/anin-depthlookintothewin32portableexecutablefileformat-part1">Part
+ 1</a> of this article, I began a comprehensive tour of Portable 
+Executable (PE) files. I described the history of PE files and the data 
+structures that make up the headers, including the section table. The PE
+ headers and section table tell you what kind of code and data exists in
+ the executable and where you should look to find it.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This 
+month I'll describe the more commonly encountered sections. If you're not familiar with basic PE file concepts, you should read 
+Part 1 of this article first.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Last month I described how a 
+section is a chunk of code or data that logically belongs together. For 
+example, all the data that comprises an executable's import tables are 
+in a section. Let's look at some of the sections you'll encounter in 
+executables and OBJs. Unless otherwise stated, the section names in <b>Figure&nbsp;1</b>
+ come from Microsoft tools.<br><br><b> Figure 1</b> <b>Section Names</b> <br> <table bgcolor="#336699" border="1" width="500"><tbody><tr> <td bgcolor="#99ccff" valign="top"> <span>Name<br></span> </td>
+<td bgcolor="#99ccff" valign="top"> <span>Description<br></span>
+</td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>.text<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>The default code section.<br></span>
+</td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>.data<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>The default read/write data 
+section. Global variables typically go here.<br></span> </td> </tr> <tr>
+<td bgcolor="#ffffff" valign="top"> <span>.rdata<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>The 
+default read-only data section. String literals and C++/COM vtables are 
+examples of items put into .rdata.  <br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>.idata<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>The 
+imports table. It has become common practice (either explicitly, or via 
+linker default behavior) to merge the .idata section into another 
+section, typically .rdata. By default, the linker only merges the .idata
+ section into another section when creating a release mode executable.<br></span>
+</td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>.edata<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>The exports table. When creating an
+ executable that exports APIs or data, the linker creates an .EXP file. 
+The .EXP file contains an .edata section that's added into the final 
+executable. Like the .idata section, the .edata section is often found 
+merged into the .text or .rdata sections.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>.rsrc<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>The 
+resources. This section is read-only. However, it should not be named 
+anything other than .rsrc, and should not be merged into other sections.<br></span>
+</td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>.bss<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>Uninitialized data. Rarely found in
+ executables created with recent linkers. Instead, the VirtualSize of 
+the executable's .data section is expanded to make enough room for 
+uninitialized data.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>.crt<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>Data added for 
+supporting the C++ runtime (CRT). A good example is the function 
+pointers that are used to call the constructors and destructors of 
+static C++ objects.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>.tls<br></span> </td>
+<td bgcolor="#ffffff" valign="top"> <span>Data for 
+supporting thread local storage variables declared with 
+__declspec(thread). This includes the initial value of the data, as well
+ as additional variables needed by the runtime.<br></span> </td> </tr> <tr>
+<td bgcolor="#ffffff" valign="top"> <span>.reloc<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>The 
+base relocations in an executable. Base relocations are generally only 
+needed for DLLs and not EXEs. In release mode, the linker doesn't emit 
+base relocations for EXE files. Relocations can be removed when linking 
+with the /FIXED switch.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>.sdata<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>"Short"
+ read/write data that can be addressed relative to the global pointer. 
+Used for the IA-64 and other architectures that use a global pointer 
+register. Regular-sized global variables on the IA-64 will go in this 
+section.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top">
+<span>.srdata<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>"Short" read-only data that can be 
+addressed relative to the global pointer. Used on the IA-64 and other 
+architectures that use a global pointer register.<br></span> </td> </tr>
+<tr> <td bgcolor="#ffffff" valign="top"> <span>.pdata<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>The 
+exception table. Contains an array of IMAGE_RUNTIME_FUNCTION_ENTRY 
+structures, which are CPU-specific. Pointed to by the 
+IMAGE_DIRECTORY_ENTRY_EXCEPTION slot in the DataDirectory. Used for 
+architectures with table-based exception handling, such as the IA-64. 
+The only architecture that doesn't use table-based exception handling is
+ the x86.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top">
+<span>.debug$S<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>Codeview format symbols in the OBJ 
+file. This is a stream of variable-length CodeView format symbol 
+records.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top">
+<span>.debug$T<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>Codeview format type records in the
+ OBJ file. This is a stream of variable-length CodeView format type 
+records.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top">
+<span>.debug$P<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>Found in the OBJ file when using 
+precompiled headers.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>.drectve<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>Contains linker 
+directives and is only found in OBJs. Directives are ASCII strings that 
+could be passed on the linker command line. For instance:
+<pre><code>  -defaultlib:LIBC<br></code></pre>
+Directives are separated by a space character.<br></span> </td> </tr> <tr>
+<td bgcolor="#ffffff" valign="top"> <span>.didat<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>Delayload
+ import data. Found in executables built in nonrelease mode. In release 
+mode, the delayload data is merged into another section.</span></td></tr></tbody></table><h3><a name="TOC-The-Exports-Section"></a>The Exports Section</h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When
+ an EXE exports code or data, it's making functions or variables usable 
+by other EXEs. To keep things simple, I'll refer to exported functions 
+and exported variables by the term "symbols." At a minimum, to export 
+something, the address of an exported symbol needs to be obtainable in a
+ defined manner. Each exported symbol has an ordinal number associated 
+with it that can be used to look it up. Also, there is almost always an 
+ASCII name associated with the symbol. Traditionally, the exported 
+symbol name is the same as the name of the function or variable in the 
+originating source file, although they can also be made to differ.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Typically,
+ when an executable imports a symbol, it uses the symbol name rather 
+than its ordinal. However, when importing by name, the system just uses 
+the name to look up the export ordinal of the desired symbol, and 
+retrieves the address using the ordinal value. It would be slightly 
+faster if an ordinal had been used in the first place. Exporting and 
+importing by name is solely a convenience for programmers.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The 
+use of the ORDINAL keyword in the Exports section of a .DEF file tells 
+the linker to create an import library that forces an API to be imported
+ by ordinal, not by name.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I'll begin with the 
+IMAGE_EXPORT_DIRECTORY structure, which is shown in <b>Figure&nbsp;2</b>.<br><br><b> Figure 2</b> <b>IMAGE_EXPORT_DIRECTORY Structure 
+Members</b> <br> <table bgcolor="#336699" border="1" width="500"><tbody><tr>
+<td bgcolor="#99ccff" valign="top"> <span>Size<br></span>
+</td> <td bgcolor="#99ccff" valign="top"> <span>Member<br></span>
+</td> <td bgcolor="#99ccff" valign="top"> <span>Description
+ <br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>DWORD<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>Characteristics<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>Flags for the 
+exports. Currently, none are defined.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>DWORD<br></span> </td>
+<td bgcolor="#ffffff" valign="top"> <span>TimeDateStamp<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>The 
+time/date that the exports were created. This field has the same 
+definition as the IMAGE_NT_HEADERS.FileHeader. TimeDateStamp (number of 
+seconds since 1/1/1970 GMT).<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>WORD<br></span> </td>
+<td bgcolor="#ffffff" valign="top"> <span>MajorVersion<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>The 
+major version number of the exports. Not used, and set to 0.<br></span> </td>
+</tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>WORD<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>MinorVersion<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>The 
+minor version number of the exports. Not used, and set to 0.<br></span> </td>
+</tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>DWORD<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>Name<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>A 
+relative virtual address (RVA) to an ASCII string with the DLL name 
+associated with these exports (for example, KERNEL32.DLL).<br></span> </td>
+</tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>DWORD<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>Base<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>This 
+field contains the starting ordinal value to be used for this 
+executable's exports. Normally, this value is 1, but it's not required 
+to be so. When looking up an export by ordinal, the value of this field 
+is subtracted from the ordinal, with the result used as a zero-based 
+index into the Export Address Table (EAT).<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>DWORD<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>NumberOfFunctions<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>The 
+number of entries in the EAT. Note that some entries may be 0, 
+indicating that no code/data is exported with that ordinal value.<br></span>
+</td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>DWORD<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>NumberOfNames<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>The number of 
+entries in the Export Names Table (ENT). This value will always be less 
+than or equal to the NumberOf-Functions field. It will be less when 
+there are symbols exported by ordinal only. It can also be less if there
+ are numeric gaps in the assigned ordinals. This field is also the size 
+of the export ordinal table (below).<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>DWORD<br></span> </td>
+<td bgcolor="#ffffff" valign="top"> <span>AddressOfFunctions<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>The 
+RVA of the EAT. The EAT is an array of RVAs. Each nonzero RVA in the 
+array corresponds to an exported symbol.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>DWORD<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>AddressOfNames<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>The 
+RVA of the ENT. The ENT is an array of RVAs to ASCII strings. Each ASCII
+ string corresponds to a symbol exported by name. This table is sorted 
+so that the ASCII strings are in order. This allows the loader to do a 
+binary search when looking for an exported symbol. The sorting of the 
+names is binary (like the C++ RTL strcmp function provides), rather than
+ a locale-specific alphabetic ordering.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>DWORD<br></span> </td>
+<td bgcolor="#ffffff" valign="top"> <span>AddressOfNameOrdinals<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>The 
+RVA of the export ordinal table. This table is an array of WORDs. This 
+table maps an array index from the ENT into the corresponding export 
+address table entry.</span></td></tr></tbody></table><br>The exports directory points to three arrays and a table of ASCII 
+strings. The only required array is the Export Address Table (EAT), 
+which is an array of function pointers that contain the address of an 
+exported function. An export ordinal is simply an index into this array 
+(see <b>Figure&nbsp;3</b>).<br><br><div style="display:block;text-align:left"><div style="display:block;text-align:left"><a href="http://www.delphibasics.info/home/delphibasicsarticles/anin-depthlookintothewin32portableexecutablefileformat-part2/Figure3.png?attredirects=0" imageanchor="1"><img border="0" src="./An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics_files/Figure3.png"></a></div><br></div><br><b>Figure 3</b> <b>The 
+IMAGE_EXPORT_DIRECTORY Structure</b><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let's go through an 
+example to show exports at work. <b>Figure&nbsp;4</b>
+ shows some of the exports from KERNEL32.DLL.<br><b> Figure 4</b> <b>KERNEL32 Exports</b> <br> <pre><code>exports table:<br>  Name:            KERNEL32.dll<br>  Characteristics: 00000000<br>  TimeDateStamp:   3B7DDFD8 -&gt; Fri Aug 17 23:24:08 2001<br>  Version:         0.00<br>  Ordinal base:    00000001<br>  # of functions:  000003A0<br>  # of Names:      000003A0<br><br>  Entry Pt  Ordn  Name<br>  00012ADA     1  ActivateActCtx<br>  000082C2     2  AddAtomA<br>•••remainder of exports omitted<br></code></pre>Let's say you've called 
+GetProcAddress on the AddAtomA API in KERNEL32. The system begins by 
+locating KERNEL32's IMAGE_EXPORT_DIRECTORY. From that, it obtains the 
+start address of the Export Names Table (ENT). Knowing that there are 
+0x3A0 entries in the array, it does a binary search of the names until 
+it finds the string "AddAtomA".<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let's say that the loader finds
+ AddAtomA to be the second array entry. The loader then reads the 
+corresponding second value from the export ordinal table. This value is 
+the export ordinal of AddAtomA. Using the export ordinal as an index 
+into the EAT (and taking into account the Base field value), it turns 
+out that AddAtomA is at a relative virtual address (RVA) of 0x82C2. 
+Adding 0x82C2 to the load address of KERNEL32 yields the actual address 
+of AddAtomA.<br><br> <h3><a name="TOC-Export-Forwarding"></a>Export Forwarding</h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A particularly 
+slick feature of exports is the ability to "forward" an export to 
+another DLL. For example, in Windows NT®, Windows® 2000, and Windows XP,
+ the KERNEL32 HeapAlloc function is forwarded to the RtlAllocHeap 
+function exported by NTDLL. Forwarding is performed at link time by a 
+special syntax in the EXPORTS section of the .DEF file. Using HeapAlloc 
+as an example, KERNEL32's DEF file would contain:<pre><code>   EXPORTS<br>   •••<br>   HeapAlloc = NTDLL.RtlAllocHeap<br></code></pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;How can you tell if a function is forwarded rather 
+than exported normally? It's somewhat tricky. Normally, the EAT contains
+ the RVA of the exported symbol. However, if the function's RVA is 
+inside the exports section (as given by the VirtualAddress and Size 
+fields in the DataDirectory), the symbol is forwarded.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When a 
+symbol is forwarded, its RVA obviously can't be a code or data address 
+in the current module. Instead, the RVA points to an ASCII string of the
+ DLL and symbol name to which it is forwarded. In the prior example, it 
+would be NTDLL.RtlAllocHeap.<br> <h3><a name="TOC-The-Imports-Section"></a>The Imports Section</h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The 
+opposite of exporting a function or variable is importing it. In keeping
+ with the prior section, I'll use the term "symbol" to collectively 
+refer to imported functions and imported variables.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The anchor 
+of the imports data is the IMAGE_IMPORT_DESCRIPTOR structure. The 
+DataDirectory entry for imports points to an array of these structures. 
+There's one IMAGE_IMPORT_DESCRIPTOR for each imported executable. The 
+end of the IMAGE_IMPORT_DESCRIPTOR array is indicated by an entry with 
+fields all set to 0. <b>Figure&nbsp;5</b>
+ shows the contents of an IMAGE_IMPORT_DESCRIPTOR.<br><b> <br>Figure 5</b> <b>IMAGE_IMPORT_DESCRIPTOR Structure</b>
+<br> <table bgcolor="#336699" border="1" width="500"><tbody><tr> <td bgcolor="#99ccff" valign="top"> <span>Size<br></span> </td>
+<td bgcolor="#99ccff" valign="top"> <span>Member<br></span>
+</td> <td bgcolor="#99ccff" valign="top"> <span>Description<br></span>
+</td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>DWORD<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>OriginalFirstThunk<br></span> </td>
+<td bgcolor="#ffffff" valign="top"> <span>This field 
+is badly named. It contains the RVA of the Import Name Table (INT). This
+ is an array of IMAGE_THUNK_DATA structures. This field is set to 0 to 
+indicate the end of the array of IMAGE_IMPORT_DESCRIPTORs.<br></span> </td>
+</tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>DWORD<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>TimeDateStamp<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>This 
+is 0 if this executable is not bound against the imported DLL. When 
+binding in the old style (see the section on Binding), this field 
+contains the time/date stamp (number of seconds since 1/1/1970 GMT) when
+ the binding occurred. When binding in the new style, this field is set 
+to -1.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>DWORD<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>ForwarderChain<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>This is the 
+Index of the first forwarded API. Set to -1 if no forwarders. Only used 
+for old-style binding, which could not handle forwarded APIs 
+efficiently.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>DWORD<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>Name<br></span> </td>
+<td bgcolor="#ffffff" valign="top"> <span>The RVA of 
+the ASCII string with the name of the imported DLL.<br></span> </td> </tr>
+<tr> <td bgcolor="#ffffff" valign="top"> <span>DWORD<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>FirstThunk<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>Contains
+ the RVA of the Import Address Table (IAT). This is array of 
+IMAGE_THUNK_DATA structures.</span></td></tr></tbody></table><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Each 
+IMAGE_IMPORT_DESCRIPTOR typically points to two essentially identical 
+arrays. These arrays have been called by several names, but the two most
+ common names are the Import Address Table (IAT) and the Import Name 
+Table (INT). <b>Figure&nbsp;6</b> shows an executable importing some APIs 
+from USER32.DLL.<br><br><div style="display:block;text-align:left"><a href="http://www.delphibasics.info/home/delphibasicsarticles/anin-depthlookintothewin32portableexecutablefileformat-part2/Figure3.png?attredirects=0" imageanchor="1"><img border="0" src="./An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics_files/Figure3.png"></a></div><br><b>Figure 6</b> <b>Two Parallel Arrays of 
+Pointers</b><br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Both arrays have elements of type 
+IMAGE_THUNK_DATA, which is a pointer-sized union. Each IMAGE_THUNK_DATA 
+element corresponds to one imported function from the executable. The 
+ends of both arrays are indicated by an IMAGE_THUNK_DATA element with a 
+value of zero. The IMAGE_THUNK_DATA union is a DWORD with these 
+interpretations:<pre><code>DWORD Function;       // Memory address of the imported function<br>DWORD Ordinal;        // Ordinal value of imported API<br>DWORD AddressOfData;  // RVA to an IMAGE_IMPORT_BY_NAME with<br>                      // the imported API name<br>DWORD ForwarderString;// RVA to a forwarder string<br></code></pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The IMAGE_THUNK_DATA structures within the IAT lead a
+ dual-purpose life. In the executable file, they contain either the 
+ordinal of the imported API or an RVA to an IMAGE_IMPORT_BY_NAME 
+structure. The IMAGE_IMPORT_BY_NAME structure is just a WORD, followed 
+by a string naming the imported API. The WORD value is a "hint" to the 
+loader as to what the ordinal of the imported API might be. When the 
+loader brings in the executable, it overwrites each IAT entry with the 
+actual address of the imported function. This a key point to understand 
+before proceeding. I highly recommend reading Russell Osterlund's 
+article in this issue which describes the steps that the Windows loader 
+takes.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Before the executable is loaded, is there a way you can 
+tell if an IMAGE_THUNK_DATA structure contains an import ordinal, as 
+opposed to an RVA to an IMAGE_IMPORT_BY_NAME structure? The key is the 
+high bit of the IMAGE_THUNK_DATA value. If set, the bottom 31 bits (or 
+63 bits for a 64-bit executable) is treated as an ordinal value. If the 
+high bit isn't set, the IMAGE_THUNK_ DATA value is an RVA to the 
+IMAGE_IMPORT_BY_NAME.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The other array, the INT, is essentially 
+identical to the IAT. It's also an array of IMAGE_THUNK_DATA structures.
+ The key difference is that the INT isn't overwritten by the loader when
+ brought into memory. Why have two parallel arrays for each set of APIs 
+imported from a DLL? The answer is in a concept called binding. When the
+ binding process rewrites the IAT in the file (I'll describe this 
+process later), some way of getting the original information needs to 
+remain. The INT, which is a duplicate copy of the information, is just 
+the ticket.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An INT isn't required for an executable to load. 
+However, if not present, the executable cannot be bound. The Microsoft 
+linker seems to always emit an INT, but for a long time, the Borland 
+linker (TLINK) did not. The Borland-created files could not be bound.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In
+ early Microsoft linkers, the imports section wasn't all that special to
+ the linker. All the data that made up an executable's imports came from
+ import libraries. You could see this for yourself by running Dumpbin or
+ PEDUMP on an import library. You'd find sections with names like 
+.idata$3 and .idata$4. The linker simply followed its rules for 
+combining sections, and all the structures and arrays magically fell 
+into place. A few years back, Microsoft introduced a new import library 
+format that creates significantly smaller import libraries at the cost 
+of the linker taking a more active role in creating the import data.<br><h3><a name="TOC-Binding"></a>Binding</h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When an executable is bound (via the Bind 
+program, for instance), the IMAGE_THUNK_DATA structures in the IAT are 
+overwritten with the actual address of the imported function. The 
+executable file on disk has the actual in-memory addresses of APIs in 
+other DLLs in its IAT. When loading a bound executable, the Windows 
+loader can bypass the step of looking up each imported API and writing 
+it to the IAT. The correct address is already there! This only happens 
+if the stars align properly, however. My May
+ 2000 column contains some benchmarks on just how much load-time 
+speed increase you can get from binding executables.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;You 
+probably have a healthy skepticism about the safety of executable 
+binding. After all, what if you bind your executable and the DLLs that 
+it imports change? When this happens, all the addresses in the IAT are 
+invalid. The loader checks for this situation and reacts accordingly. If
+ the addresses in the IAT are stale, the loader still has all the 
+necessary information from the INT to resolve the addresses of the 
+imported APIs.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Binding your programs at installation time is 
+the best possible scenario. The BindImage action of the Windows 
+installer will do this for you. Alternatively, IMAGEHLP.DLL provides the
+ BindImageEx API. Either way, binding is good idea. If the loader 
+determines that the binding information is current, executables load 
+faster. If the binding information becomes stale, you're no worse off 
+than if you hadn't bound in the first place.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;One of the key 
+steps in making binding effective is for the loader to determine if the 
+binding information in the IAT is current. When an executable is bound, 
+information about the referenced DLLs is placed into the executable. The
+ loader checks this information to make a quick determination of the 
+binding validity. This information wasn't added with the first 
+implementation of binding. Thus, an executable can be bound in the old 
+way or the new way. The new way is what I'll describe here.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The
+ key data structure in determining the validity of bound imports is an 
+IMAGE_BOUND_IMPORT_DESCRIPTOR. A bound executable contains a list of 
+these structures. Each IMAGE_BOUND_IMPORT_DESCRIPTOR structure 
+represents the time/date stamp of one imported DLL that has been bound 
+against. The RVA of the list is given by the 
+IMAGE_DIRECTORY_ENTRY_BOUND_IMPORT element in the DataDirectory. The 
+elements of the IMAGE_BOUND_IMPORT_DESCRIPTOR are:<br> <ul><li>TimeDateStamp,
+ a DWORD that contains the time/date stamp of the imported DLL.<br> </li><li>OffsetModuleName,
+ a WORD that contains an offset to a string with the name of the 
+imported DLL. This field is an offset (not an RVA) from the first 
+IMAGE_BOUND_IMPORT_DESCRIPTOR.<br> </li><li>NumberOfModuleForwarderRefs,
+ a WORD that contains the number of IMAGE_BOUND_FORWARDER_REF structures
+ that immediately follow this structure. These structures are identical 
+to the IMAGE_BOUND_IMPORT_DESCRIPTOR except that the last WORD (the 
+NumberOfModuleForwarderRefs) is reserved.<br></li></ul>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In a simple
+ world, the IMAGE_BOUND_IMPORT_DESCRIPTORs for each imported DLL would 
+be a simple array. But, when binding against an API that's forwarded to 
+another DLL, the validity of the forwarded DLL has to be checked too. 
+Thus, the IMAGE_BOUND_FORWARDER_REF structures are interleaved with the 
+IMAGE_BOUND_IMPORT_DESCRIPTORs.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let's say you linked against 
+HeapAlloc, which is forwarded to RtlAllocateHeap in NTDLL. Then you ran 
+BIND on your executable. In your EXE, you'd have an 
+IMAGE_BOUND_IMPORT_DESCRIPTOR for KERNEL32.DLL, followed by an 
+IMAGE_BOUND_FORWARDER_REF for NTDLL.DLL. Immediately following that 
+might be additional IMAGE_ BOUND_IMPORT_DESCRIPTORs for other DLLs you 
+imported and bound against.<br> <h3><a name="TOC-Delayload-Data"></a>Delayload Data</h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Earlier I 
+described how delayloading a DLL is a hybrid approach between an 
+implicit import and explicitly importing APIs via LoadLibrary and 
+GetProcAddress. Now let's take a look at the data structures and see how
+ delayloading works.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Remember that delayloading is not an 
+operating system feature. It's implemented entirely by additional code 
+and data added by the linker and runtime library. As such, you won't 
+find many references to delayloading in WINNT.H. However, you can see 
+definite parallels between the delayload data and regular imports data.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The
+ delayload data is pointed to by the IMAGE_DIRECTORY_ENTRY_DELAY_IMPORT 
+entry in the DataDirectory. This is an RVA to an array of ImgDelayDescr 
+structures, defined in DelayImp.H from Visual C++. Figure&nbsp;7
+ shows the contents. There's one ImgDelayDescr for each delayload 
+imported DLL.<br><b> <br>Figure 7</b> <b>ImgDelayDescr Structure</b> <br>
+<table bgcolor="#336699" border="1" width="500"><tbody><tr> <td bgcolor="#99ccff" valign="top"> <span>Size<br></span> </td>
+<td bgcolor="#99ccff" valign="top"> <span>Member<br></span>
+</td> <td bgcolor="#99ccff" valign="top"> <span>Description<br></span>
+</td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>DWORD<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>grAttrs<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>The attributes 
+for this structure. Currently, the only flag defined is dlattrRva (1), 
+indicating that the address fields in the structure should be treated as
+ RVAs, rather than virtual addresses.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>RVA<br></span> </td>
+<td bgcolor="#ffffff" valign="top"> <span>rvaDLLName<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>An RVA
+ to a string with the name of the imported DLL. This string is passed to
+ LoadLibrary.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>RVA<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>rvaHmod<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>An RVA
+ to an HMODULE-sized memory location. When the Delayloaded DLL is 
+brought into memory, its HMODULE is stored at this location.<br></span> </td>
+</tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>RVA<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>rvaIAT<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>An RVA
+ to the Import Address Table for this DLL. This is the same format as a 
+regular IAT.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>RVA<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>rvaINT<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>An RVA
+ to the Import Name Table for this DLL. This is the same format as a 
+regular INT.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>RVA<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>rvaBoundIAT<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>An RVA
+ of the optional bound IAT. An RVA to a bound copy of an Import Address 
+Table for this DLL. This is the same format as a regular IAT. Currently,
+ this copy of the IAT is not actually bound, but this feature may be 
+added in future versions of the BIND program.<br></span> </td> </tr> <tr>
+<td bgcolor="#ffffff" valign="top"> <span>RVA<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>rvaUnloadIAT<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>An RVA
+ of the optional copy of the original IAT. An RVA to an unbound copy of 
+an Import Address Table for this DLL. This is the same format as a 
+regular IAT. Currently always set to 0.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>DWORD<br></span> </td>
+<td bgcolor="#ffffff" valign="top"> <span>dwTimeStamp<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>The 
+date/time stamp of the delayload imported DLL. Normally set to 0.</span></td></tr></tbody></table><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The key thing to glean from ImgDelayDescr is that
+ it contains the addresses of an IAT and an INT for the DLL. These 
+tables are identical in format to their regular imports equivalent, only
+ they're written to and read by the runtime library code rather than the
+ operating system. When you call an API from a delayloaded DLL for the 
+first time, the runtime calls LoadLibrary (if necessary), and then 
+GetProcAddress. The resulting address is stored in the delayload IAT so 
+that future calls go directly to the API.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;There is a bit of 
+goofiness about the delayload data that needs explanation. In its 
+original incarnation in Visual C++ 6.0, all ImgDelayDescr fields 
+containing addresses used virtual addresses, rather than RVAs. That is, 
+they contained actual addresses where the delayload data could be found.
+ These fields are DWORDs, the size of a pointer on the x86.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Now
+ fast-forward to IA-64 support. All of a sudden, 4 bytes isn't enough to
+ hold a complete address. Ooops! At this point, Microsoft did the 
+correct thing and changed the fields containing addresses to RVAs. As 
+shown in Figure&nbsp;7,
+ I've used the revised structure definitions and names.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;There 
+is still the issue of determining whether an ImgDelayDescr is using RVAs
+ or virtual addresses. The structure has a field to hold flag values. 
+When the "1" bit of the grAttrs field is on, the structure members 
+should be treated as RVAs. This is the only option starting with Visual 
+Studio® .NET and the 64-bit compiler. If that bit in grAttrs is off, the
+ ImgDelayDescr fields are virtual addresses.<br><br> <h3><a name="TOC-The-Resources-Section"></a>The Resources 
+Section</h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Of all the sections within a PE, the resources are the
+ most complicated to navigate. Here, I'll describe just the data 
+structures that are used to get to the raw resource data such as icons, 
+bitmaps, and dialogs. I won't go into the actual format of the resource 
+data since it's beyond the scope of this article.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The resources
+ are found in a section called .rsrc. The IMAGE_DIRECTORY_ENTRY_RESOURCE
+ entry in the DataDirectory contains the RVA and size of the resources. 
+For various reasons, the resources are organized in a manner similar to a
+ file system—with directory and leaf nodes.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The resource 
+pointer from the DataDirectory points to a structure of type 
+IMAGE_RESOURCE_DIRECTORY. The IMAGE_RESOURCE_DIRECTORY structure 
+contains unused Characteristic, TimeDateStamp, and version number 
+fields. The only interesting fields in an IMAGE_RESOURCE_DIRECTORY are 
+the NumberOfNamedEntries and the NumberOfIdEntries.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Following 
+each IMAGE_RESOURCE_DIRECTORY structure is an array of 
+IMAGE_RESOURCE_DIRECTORY_ENTRY structures. Adding the 
+NumberOfNamedEntries and NumberOfIdEntries fields from the 
+IMAGE_RESOURCE_DIRECTORY yields the count of 
+IMAGE_RESOURCE_DIRECTORY_ENTRYs. (If all these data structure names are 
+painful for you to read, let me tell you, it's also awkward writing 
+about them!)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A directory entry points to either another 
+resource directory or to the data for an individual resource. When the 
+directory entry points to another resource directory, the high bit of 
+the second DWORD in the structure is set and the remaining 31 bits are 
+an offset to the resource directory. The offset is relative to the 
+beginning of the resource section, not an RVA.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When a directory
+ entry points to an actual resource instance, the high bit of the second
+ DWORD is clear. The remaining 31 bits are the offset to the resource 
+instance (for example, a dialog). Again, the offset is relative to the 
+resource section, not an RVA.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Directory entries can be named or
+ identified by an ID value. This is consistent with resources in an .RC 
+file where you can specify a name or an ID for a resource instance. In 
+the directory entry, when the high bit of the first DWORD is set, the 
+remaining 31 bits are an offset to the string name of the resource. If 
+the high bit is clear, the bottom 16 bits contain the ordinal 
+identifier.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enough theory! Let's look at an actual resource 
+section and decipher what it means. <b>Figure&nbsp;8</b>
+ shows abbreviated PEDUMP output for the resources in ADVAPI32.DLL.<br><br><b> Figure 8</b> <b>Resources from ADVAPI32.DLL</b> <br>
+<pre><code>Resources (RVA: 6B000)<br>ResDir (0) Entries:03 (Named:01, ID:02) TimeDate:00000000<br>    <br>    ResDir (MOFDATA) Entries:01 (Named:01, ID:00) TimeDate:00000000<br>        ResDir (MOFRESOURCENAME) Entries:01 (Named:00, ID:01) TimeDate:00000000<br>            ID: 00000409  DataEntryOffs: 00000128<br>            DataRVA: 6B6F0  DataSize: 190F5  CodePage: 0<br>    <br>    ResDir (STRING) Entries:01 (Named:00, ID:01) TimeDate:00000000<br>        ResDir (C36) Entries:01 (Named:00, ID:01) TimeDate:00000000<br>            ID: 00000409  DataEntryOffs: 00000138<br>            DataRVA: 6B1B0  DataSize: 0053C  CodePage: 0<br>    <br>    ResDir (RCDATA) Entries:01 (Named:00, ID:01) TimeDate:00000000<br>        ResDir (66) Entries:01 (Named:00, ID:01) TimeDate:00000000<br>            ID: 00000409  DataEntryOffs: 00000148<br>            DataRVA: 85908  DataSize: 0005C  CodePage: 0<br></code></pre>Each
+ line that starts with "ResDir" corresponds to an 
+IMAGE_RESOURCE_DIRECTORY structure. Following "ResDir" is the name of 
+the resource directory, in parentheses. In this example, there are 
+resource directories named 0, MOFDATA, MOFRESOURCENAME, STRING, C36, 
+RCDATA, and 66. Following the name is the combined number of directory 
+entries (both named and by ID). In this example, the topmost directory 
+has three immediate directory entries, while all the other directories 
+contain a single entry.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In everyday use, the topmost directory 
+is analogous to the root directory of a file system. Each directory 
+entry below the "root" is always a directory in its own right. Each of 
+these second-level directories corresponds to a resource type (strings 
+tables, dialogs, menus, and so on). Underneath each of the second-level 
+"resource type" directories, you'll find third-level subdirectories.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;There's
+ a third-level subdirectory for each resource instance. For example, if 
+there were five dialogs, there would be a second-level DIALOG directory 
+with five directory entries beneath it. Each of the five directory 
+entries would themselves be a directory. The name of the directory entry
+ corresponds to the name or ID of the resource instance. Under each of 
+these directory entries is a single item which contains the offset to 
+the resource data. Simple, no?<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you learn more efficiently by
+ reading code, be sure to check out the resource dumping code in PEDUMP 
+(see the February 2002 code download for this article). Besides 
+displaying all the resource directories and their entries, it also dumps
+ out several of the more common types of resource instances such as 
+dialogs.<br> <h3><a name="TOC-Base-Relocations"></a>Base Relocations</h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In many locations in an 
+executable, you'll find memory addresses. When an executable is linked, 
+it's given a preferred load address. These memory addresses are only 
+correct if the executable loads at the preferred load address specified 
+by the ImageBase field in the IMAGE_FILE_HEADER structure.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If 
+the loader needs to load the DLL at another address, all the addresses 
+in the executable will be incorrect. This entails extra work for the 
+loader. The May 2000 Under The Hood column (mentioned earlier) describes
+ the performance hit when DLLs have the same preferred load addresses 
+and how the REBASE tool can help.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The base relocations tell the
+ loader every location in the executable that needs to be modified if 
+the executable doesn't load at the preferred load address. Luckily for 
+the loader, it doesn't need to know any details about how the address is
+ being used. It just knows that there's a list of locations that need to
+ be modified in some consistent way.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Let's look at an x86-based
+ example to make this clear. Say you have the following instruction, 
+which loads the value of a local variable (at address 0x0040D434) into 
+the ECX register:<pre><code>00401020: 8B 0D 34 D4 40 00  mov ecx,dword ptr [0x0040D434]<br></code></pre>The instruction is at address 0x00401020 and is six bytes 
+long. The first two bytes (0x8B 0x0D) make up the opcode of the 
+instruction. The remaining four bytes hold a DWORD address (0x0040D434).
+ In this example, the instruction is from an executable with a preferred
+ load address of 0x00400000. The global variable is therefore at an RVA 
+of 0xD434.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If the executable does load at 0x00400000, the 
+instruction can run exactly as is. But let's say that the executable 
+somehow gets loaded at address of 0x00500000. If this happens, the last 
+four bytes of the instruction need to be changed to 0x0050D434.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;How
+ can the loader make this change? The loader compares the preferred and 
+actual load addresses and calculates a delta. In this case, the delta 
+value is 0x00100000. This delta can be added to the value of the 
+DWORD-sized address to come up with the new address of the variable. In 
+the previous example, there would be a base relocation for address 
+0x00401022, which is the location of the DWORD in the instruction.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In
+ a nutshell, base relocations are just a list of locations in an 
+executable where a delta value needs to be added to the existing 
+contents of memory. The pages of an executable are brought into memory 
+only as they're needed, and the format of the base relocations reflects 
+this. The base relocations reside in a section called .reloc, but the 
+correct way to find them is from the DataDirectory using the 
+IMAGE_DIRECTORY_ENTRY_BASERELOC entry.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Base relocations are a 
+series of very simple IMAGE_BASE_RELOCATION structures. The 
+VirtualAddress field contains the RVA of the memory range to which the 
+relocations belong. The SizeOfBlock field indicates how many bytes make 
+up the relocation information for this base, including the size of the 
+IMAGE_BASE_RELOCATION structure.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Immediately following the 
+IMAGE_BASE_RELOCATION structure is a variable number of WORD values. The
+ number of WORDs can be deduced from the SizeOfBlock field. Each WORD 
+consists of two parts. The top 4 bits indicate the type of relocation, 
+as given by the IMAGE_REL_BASED_<i>xxx</i> values in WINNT.H. The bottom
+ 12 bits are an offset, relative to the VirtualAddress field, where the 
+relocation should be applied.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In the previous example of base 
+relocations, I simplified things a bit. There are actually multiple 
+types of base relocations and methods for how they're applied. For x86 
+executables, all base relocations are of type IMAGE_REL_BASED_HIGHLOW. 
+You will often see a relocation of type IMAGE_REL_BASED_ABSOLUTE at the 
+end of a group of relocations. These relocations do nothing, and are 
+there just to pad things so that the next IMAGE_BASE_RELOCATION is 
+aligned on a 4-byte boundary.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For IA-64 executables, the 
+relocations seem to always be of type IMAGE_REL_BASED_DIR64. As with x86
+ relocations, there will often be IMAGE_REL_BASED_ABSOLUTE relocations 
+used for padding. Interestingly, although pages in IA-64 EXEs are 8KB, 
+the base relocations are still done in 4KB chunks.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In Visual 
+C++ 6.0, the linker omits relocations for EXEs when doing a release 
+build. This is because EXEs are the first thing brought into an address 
+space, and therefore are essentially guaranteed to load at the preferred
+ load address. DLLs aren't so lucky, so base relocations should always 
+be left in, unless you have a reason to omit them with the /FIXED 
+switch. In Visual Studio .NET, the linker omits base relocations for 
+debug and release mode EXE files.<br><br> <h3><a name="TOC-The-Debug-Directory"></a>The Debug Directory</h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When
+ an executable is built with debug information, it's customary to 
+include details about the format of the information and where it is. The
+ operating system doesn't require this to run the executable, but it's 
+useful for development tools. An EXE can have multiple forms of debug 
+information; a data structure known as the debug directory indicates 
+what's available.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The DebugDirectory is found via the 
+IMAGE_DIRECTORY_ENTRY_DEBUG slot in the DataDirectory. It consists of an
+ array of IMAGE_DEBUG_DIRECTORY structures (see <b>Figure&nbsp;9</b>),
+ one for each type of debug information. The number of elements in the 
+debug directory can be calculated using the Size field in the 
+DataDirectory.<br><br><b> Figure 9</b> <b>Fields of IMAGE_DEBUG_DIRECTORY</b>
+<br> <table bgcolor="#336699" border="1" width="350"><tbody><tr> <td bgcolor="#99ccff" valign="top"> <span>Size<br></span> </td>
+<td bgcolor="#99ccff" valign="top"> <span>Member<br></span>
+</td> <td bgcolor="#99ccff" valign="top"> <span>Description<br></span>
+</td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>DWORD<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>Characteristics<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>Unused and set 
+to 0.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>DWORD<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>TimeDateStamp<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>The time/date 
+stamp of this debug information (number of seconds since 1/1/1970, GMT).<br></span>
+</td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>WORD <br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>MajorVersion<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>The major version
+ of this debug information. Unused.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>WORD <br></span> </td>
+<td bgcolor="#ffffff" valign="top"> <span>MinorVersion<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>The 
+minor version of this debug information. Unused.<br></span> </td> </tr> <tr>
+<td bgcolor="#ffffff" valign="top"> <span>DWORD<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>Type<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>The 
+type of the debug information. The following types are the most commonly
+ encountered:
+<pre><code>IMAGE_DEBUG_TYPE_COFF<br>IMAGE_DEBUG_TYPE_CODEVIEW	// Including PDB files<br>IMAGE_DEBUG_TYPE_FPO		// Frame pointer omission<br>IMAGE_DEBUG_TYPE_MISC	// IMAGE_DEBUG_MISC<br>IMAGE_DEBUG_TYPE_OMAP_TO_SRC<br>IMAGE_DEBUG_TYPE_OMAP_FROM_SRC<br>IMAGE_DEBUG_TYPE_BORLAND	// Borland format<br></code></pre></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top">
+<span>DWORD<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>SizeOfData<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>The size of the 
+debug data in this file. Doesn't count the size of external debug files 
+such as .PDBs.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>DWORD<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>AddressOfRawData<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>The 
+RVA of the debug data, when mapped into memory. Set to 0 if the debug 
+data isn't mapped in.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>DWORD<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>PointerToRawData<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>The 
+file offset of the debug data (not an RVA).</span></td></tr></tbody></table><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;By far, the most prevalent form of debug 
+information today is the PDB file. The PDB file is essentially an 
+evolution of CodeView-style debug information. The presence of PDB 
+information is indicated by a debug directory entry of type 
+IMAGE_DEBUG_TYPE_CODEVIEW. If you examine the data pointed to by this 
+entry, you'll find a short CodeView-style header. The majority of this 
+debug data is just a path to the external PDB file. In Visual Studio 
+6.0, the debug header began with an NB10 signature. In Visual Studio 
+.NET, the header begins with an RSDS.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In Visual Studio 6.0, 
+COFF debug information can be generated with the /DEBUGTYPE:COFF linker 
+switch. This capability is gone in Visual Studio .NET. Frame Pointer 
+Omission (FPO) debug information comes into play with optimized x86 
+code, where the function may not have a regular stack frame. FPO data 
+allows the debugger to locate local variables and parameters.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The
+ two types of OMAP debug information exist only for Microsoft programs. 
+Microsoft has an internal tool that reorganizes the code in executable 
+files to minimize paging. (Yes, more than the Working Set Tuner can do.)
+ The OMAP information lets tools convert between the original addresses 
+in the debug information and the new addresses after having been moved.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Incidentally,
+ DBG files also contain a debug directory like I just described. DBG 
+files were prevalent in the Windows NT 4.0 era, and they contained 
+primarily COFF debug information. However, they've been phased out in 
+favor of PDB files in Windows XP.<br> <h3><a name="TOC-The-.NET-Header"></a>The .NET Header</h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Executables
+ produced for the Microsoft .NET environment are first and foremost PE 
+files. However, in most cases normal code and data in a .NET file are 
+minimal. The primary purpose of a .NET executable is to get the 
+.NET-specific information such as metadata and intermediate language 
+(IL) into memory. In addition, a .NET executable links against 
+MSCOREE.DLL. This DLL is the starting point for a .NET process. When a 
+.NET executable loads, its entry point is usually a tiny stub of code. 
+That stub just jumps to an exported function in MSCOREE.DLL (_CorExeMain
+ or _CorDllMain). From there, MSCOREE takes charge, and starts using the
+ metadata and IL from the executable file. This setup is similar to the 
+way apps in Visual Basic (prior to .NET) used MSVBVM60.DLL. The starting
+ point for .NET information is the IMAGE_COR20_HEADER structure, 
+currently defined in CorHDR.H from the .NET Framework SDK and more 
+recent versions of WINNT.H. The IMAGE_COR20_HEADER is pointed to by the 
+IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR entry in the DataDirectory.<b> Figure&nbsp;10</b>
+ shows the fields of an IMAGE_COR20_HEADER. The format of the metadata, 
+method IL, and other things pointed to by the IMAGE_COR20_HEADER will be
+ described in a subsequent article.<br><br><b> Figure 10</b> <b>IMAGE_COR20_HEADER Structure</b>
+<br> <table bgcolor="#336699" border="1" width="350"><tbody><tr> <td bgcolor="#99ccff" valign="top"> <span>Type<br></span> </td>
+<td bgcolor="#99ccff" valign="top"> <span>Member<br></span>
+</td> <td bgcolor="#99ccff" valign="top"> <span>Description<br></span>
+</td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>DWORD<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>cb<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>Size of the 
+header in bytes.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>WORD<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>MajorRuntimeVersion<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>The 
+minimum version of the runtime required to run this program. For the 
+first release of .NET, this value is 2.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>WORD<br></span> </td>
+<td bgcolor="#ffffff" valign="top"> <span>MinorRuntimeVersion<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>The 
+minor portion of the version. Currently 0.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>IMAGE_DATA_DIRECTORY<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>MetaData<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>The 
+RVA to the metadata tables.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>DWORD<br></span> </td>
+<td bgcolor="#ffffff" valign="top"> <span>Flags<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>Flag 
+values containing attributes for this image. These values are currently 
+defined as:
+<pre><code>COMIMAGE_FLAGS_ILONLY // Image contains only IL code that<br>                      // is not required to run on a specific CPU.<br>COMIMAGE_FLAGS_32BITREQUIRED  // Only runs in 32-bit processes.<br>COMIMAGE_FLAGS_IL_LIBRARY<br>STRONGNAMESIGNED      // Image is signed with hash data<br>COMIMAGE_FLAGS_TRACKDEBUGDATA // Causes the JIT/runtime to<br>                              // keep debug information<br>                              // around for methods.<br><br></code></pre> </span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>DWORD<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>EntryPointToken<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>Token 
+for the MethodDef of the entry point for the image. The .NET runtime 
+calls this method to begin managed execution in the file.<br></span> </td>
+</tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>IMAGE_DATA_DIRECTORY<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>Resources<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>The 
+RVA and size of the .NET resources.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>IMAGE_DATA_DIRECTORY<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>StrongNameSignature<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>The 
+RVA of the strong name hash data.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>IMAGE_DATA_DIRECTORY<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>CodeManagerTable<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>The 
+RVA of the code manager table. A code manager contains the code required
+ to obtain the state of a running program (such as tracing the stack and
+ track GC references).<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>IMAGE_DATA_DIRECTORY<br></span> </td>
+<td bgcolor="#ffffff" valign="top"> <span>VTableFixups<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>The 
+RVA of an array of function pointers that need fixups. This is for 
+support of unmanaged C++ vtables.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>IMAGE_DATA_DIRECTORY<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>ExportAddressTableJumps<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>The 
+RVA to an array of RVAs where export JMP thunks are written. These 
+thunks allow managed methods to be exported so that unmanaged code can 
+call them.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>IMAGE_DATA_DIRECTORY<br></span> </td>
+<td bgcolor="#ffffff" valign="top"> <span>ManagedNativeHeader<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>For 
+internal use of the .NET runtime in memory. Set to 0 in the executable.</span></td></tr></tbody></table> <h3><a name="TOC-TLS-Initialization"></a>TLS Initialization</h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;When
+ using thread local variables declared with __declspec(thread), the 
+compiler puts them in a section named .tls. When the system sees a new 
+thread starting, it allocates memory from the process heap to hold the 
+thread local variables for the thread. This memory is initialized from 
+the values in the .tls section. The system also puts a pointer to the 
+allocated memory in the TLS array, pointed to by FS:[2Ch] (on the x86 
+architecture).<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The presence of thread local storage (TLS) data 
+in an executable is indicated by a nonzero IMAGE_DIRECTORY_ENTRY_TLS 
+entry in the DataDirectory. If nonzero, the entry points to an 
+IMAGE_TLS_DIRECTORY structure, shown in <b>Figure&nbsp;11</b>.<br><br><b> Figure 11</b> <b>IMAGE_TLS_DIRECTORY Structure</b>
+<br><br> <table bgcolor="#336699" border="1" width="500"><tbody><tr> <td bgcolor="#99ccff" valign="top"> <span>Size<br></span> </td>
+<td bgcolor="#99ccff" valign="top"> <span>Member<br></span>
+</td> <td bgcolor="#99ccff" valign="top"> <span>Description<br></span>
+</td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>DWORD <br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>StartAddressOfRawData<br></span> </td>
+<td bgcolor="#ffffff" valign="top"> <span>The 
+beginning address of a range of memory used to initialize a new thread's
+ TLS data in memory.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>DWORD<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>EndAddressOfRawData<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>The 
+ending address of the range of memory used to initialize a new thread's 
+TLS data in memory.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>DWORD<br></span> </td> <td bgcolor="#ffffff" valign="top"> <span>AddressOfIndex<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>When 
+the executable is brought into memory and a .tls section is present, the
+ loader allocates a TLS handle via TlsAlloc. It stores the handle at the
+ address given by this field. The runtime library uses this index to 
+locate the thread local data.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>DWORD<br></span> </td>
+<td bgcolor="#ffffff" valign="top"> <span>AddressOfCallBacks<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>Address
+ of an array of PIMAGE_TLS_CALLBACK function pointers. When a thread is 
+created or destroyed, each function in the list is called. The end of 
+the list is indicated by a pointer-sized variable set to 0. In normal 
+Visual C++ executables, this list is empty.<br></span> </td> </tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>DWORD<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>SizeOfZeroFill<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>The 
+size in bytes of the initialization data, beyond the initialized data 
+delimited by the StartAddressOfRawData and EndAddressOfRawData fields. 
+All per-thread data after this range is initialized to 0.<br></span> </td>
+</tr> <tr> <td bgcolor="#ffffff" valign="top"> <span>DWORD<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>Characteristics<br></span>
+</td> <td bgcolor="#ffffff" valign="top"> <span>Reserved.
+ Currently set to 0.</span></td></tr></tbody></table><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;It's
+ important to note that the addresses in the IMAGE_TLS_DIRECTORY 
+structure are virtual addresses, not RVAs. Thus, they will get modified 
+by base relocations if the executable doesn't load at its preferred load
+ address. Also, the IMAGE_TLS_DIRECTORY itself is not in the .tls 
+section; it resides in the .rdata section.<br> <h3><a name="TOC-Program-Exception-Data"></a>Program Exception 
+Data</h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Some architectures (including the IA-64) don't use 
+frame-based exception handling, like the x86 does; instead, they used 
+table-based exception handling in which there is a table containing 
+information about every function that might be affected by exception 
+unwinding. The data for each function includes the starting address, the
+ ending address, and information about how and where the exception 
+should be handled. When an exception occurs, the system searches through
+ the tables to locate the appropriate entry and handles it. The 
+exception table is an array of IMAGE_RUNTIME_FUNCTION_ENTRY structures. 
+The array is pointed to by the IMAGE_DIRECTORY_ENTRY_EXCEPTION entry in 
+the DataDirectory. The format of the IMAGE_RUNTIME_FUNCTION_ENTRY 
+structure varies from architecture to architecture. For the IA-64, the 
+layout looks like this:<pre><code>DWORD BeginAddress;<br>DWORD EndAddress;<br>DWORD UnwindInfoAddress;<br></code></pre>The format of the UnwindInfoAddress data isn't given in 
+WINNT.H. However, the format can be found in Chapter 11 of the "IA-64
+ Software Conventions and Runtime Architecture Guide" from Intel.<br><h3><a name="TOC-Wrap-up"></a>Wrap-up</h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The Portable Executable format is a 
+well-structured and relatively simple executable format. It's 
+particularly nice that PE files can be mapped directly into memory so 
+that the data structures on disk are the same as those Windows uses at 
+runtime. I've also been surprised at how well the PE format has held up 
+with all the various changes that have been thrown at it in the past 10 
+years, including the transition to 64-bit Windows and .NET.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Although
+ I've covered many aspects of PE files, there are still topics that I 
+haven't gotten to. There are flags, attributes, and data structures that
+ occur infrequently enough that I decided not to describe them here. 
+However, I hope that this "big picture" introduction to PE files has 
+made the Microsoft PE specifications easier for you to understand.<br></div></td></tr></tbody></table>
+</div> 
+</div> 
+<div id="sites-canvas-bottom-panel">
+<div id="sites-attachments-container">
+</div>
+<a xmlns="http://www.w3.org/1999/xhtml" name="page-comments"></a>
+<div xmlns="http://www.w3.org/1999/xhtml" id="COMP_page-comments"><div class="sites-comment-docos-wrapper"><div class="sites-comment-docos"><div class="sites-comment-docos-background"></div><div class="sites-comment-docos-header"><div class="sites-comment-docos-header-title">Comments</div></div><div id="sites-comment-docos-pane" class="sites-comment-docos-pane" dir="ltr" style="text-align: left;"><div class="dcs-a dcs-a-dcs-f-dcs-sc dcs-a-dcs-ae" tabindex="0"><div class="dcs-a-dcs-f-dcs-g"><div class="dcs-a-dcs-f-dcs-bh dcs-j-dcs-pe-dcs-ae"><img class="dcs-a-dcs-jd g-hovercard" width="48" height="48" alt="" id="dcs-img-0" src="./An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics_files/silhouette96.png" data-userid="ANONYMOUS_105250506097979753968"><div class="dcs-a-dcs-f-dcs-bh-dcs-g"><div class="dcs-a-dcs-f-dcs-ue dcs-qb-dcs-hh-dcs-ih g-hovercard" data-userid="ANONYMOUS_105250506097979753968">Anonymous</div><div class="dcs-a-dcs-db dcs-a-dcs-f-dcs-db-dcs-pb"><textarea class="dcs-a-dcs-db-dcs-sf" autocomplete="false" x-webkit-speech="" speech="" role="combobox" aria-autocomplete="list" aria-label="Comment draft"></textarea><div class="dcs-a-dcs-db-dcs-jf-dcs-bc"></div><div class="dcs-a-dcs-db-dcs-jf-dcs-qe"></div><div class="dcs-a-dcs-db-dcs-eb-dcs-fb-dcs-gb" style="display: none">Your +mention will add people to this discussion and send an email.</div><div class="dcs-a-dcs-db-dcs-gi-dcs-hi-dcs-gb" style="display: none">Making sure that people you've mentioned have access…</div><div class="dcs-a-dcs-db-dcs-lh"><div role="button" class="dcs-qb-dcs-hh-dcs-ih dcs-h-dcs-ob dcs-h-dcs-ob-dcs-dc dcs-a-dcs-db-dcs-mh" tabindex="0" title="Post comment" style="-webkit-user-select: none;"><span class="dcs-a-dcs-db-dcs-lh-dcs-mh">Comment</span></div><div role="button" class="dcs-qb-dcs-hh-dcs-ih dcs-h-dcs-ob dcs-h-dcs-ob-dcs-nd dcs-a-dcs-db-dcs-ve" tabindex="0" title="Discard comment" style="-webkit-user-select: none;">Cancel</div></div></div></div></div><div class="dcs-a-dcs-f-dcs-ud dcs-oe-dcs-pe-dcs-ae dcs-qb-dcs-hh-dcs-ih">You do not have permission to add comments.</div><div class="dcs-a-dcs-ae dcs-a dcs-a-dcs-dh-dcs-eh"></div></div><div></div></div></div></div></div></div>
+</div>
+</div> 
+</td> 
+</tr>
+</tbody></table> 
+</div> 
+</div> 
+<div id="sites-chrome-footer-wrapper">
+<div id="sites-chrome-footer-wrapper-inside">
+<div id="sites-chrome-footer">
+<div xmlns="http://www.w3.org/1999/xhtml" class="sites-subfooter"><div class="sites-subfooter-content"><div dir="ltr"><div style="text-align:left"><span style="line-height:15px;font-size:x-small"><div style="display:block;text-align:left">Request to be a link partner in the <a href="http://delphibasics.informe.com/" target="_blank">forum</a></div></span></div><div style="text-align:center"><a href="http://www.delphibasics.info/config/smile.gif?attredirects=0" imageanchor="1"><img border="0" src="./An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics_files/smile.gif"></a>&nbsp;<a href="http://www.delphibasics.info/home/DelphiBasics.gif?attredirects=0" target="_blank"><img border="0" src="./An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics_files/DelphiBasics.gif"></a>&nbsp;<a href="http://www.torry.net/" target="_blank"><img border="0" src="./An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics_files/torrey.gif"></a>&nbsp;<a href="http://www.hackhound.org/" target="_blank"><img border="0" src="./An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics_files/hackhound.gif.png"></a>&nbsp;<a href="http://viotto-security.net/" target="_blank"><img border="0" src="./An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics_files/ViottoSecurity.gif"></a>&nbsp;<a href="http://www.ic0de.org/" imageanchor="1" target="_blank"><img border="0" src="./An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics_files/ic0de.png"></a>&nbsp;<a href="http://www.programmingpages.com/?r=delphibasicsinfo" style="text-align:left" target="_blank"><img alt="Programming Pages" border="0" src="./An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics_files/ProgrammingPages.gif"></a>&nbsp;<a href="http://www.delphidabbler.com/?from=delphibasics" target="_blank"><img border="0" src="./An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics_files/DelphiDabbler.png"></a>&nbsp;<a href="http://www.freedomain.co.nr/" target="_blank"><img border="0" src="./An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics_files/co.nr.png"></a>&nbsp;<img alt="pasarkode.com" border="0" src="./An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics_files/logopk.png"></div><div style="text-align:center"><div style="display:block;text-align:left"><div style="display:block;text-align:left"></div></div></div><div style="text-align:center"><img alt="IP" src="./An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics_files/saved_resource"></div><div style="text-align:center"><a href="http://www.hackhound.org/" target="_blank"></a></div></div></div></div>
+</div>
+</div>
+</div>
+</div> 
+</div> 
+<div id="sites-chrome-adminfooter-container">
+<div xmlns="http://www.w3.org/1999/xhtml" class="sites-adminfooter" role="navigation"><p><a class="sites-system-link" href="http://www.delphibasics.info/system/app/pages/reportAbuse" target="_blank">Report Abuse</a><span aria-hidden="true">|</span><span class="sites-system-link">Powered By</span> <b class="powered-by"><a href="http://sites.google.com/">Google Sites</a></b></p></div>
+</div>
+</div> 
+</div> 
+<div id="sites-chrome-onebar-footer">
+</div>
+<script xmlns="http://www.w3.org/1999/xhtml" type="text/javascript">
+    window.jstiming.load.tick('sjl');
+  </script>
+<script xmlns="http://www.w3.org/1999/xhtml" src="./An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics_files/jot_min_announcements_view__en_gb.js"></script>
+<script xmlns="http://www.w3.org/1999/xhtml" type="text/javascript">
+                JOT_postEvent('moduleLoad');
+              </script>
+<script xmlns="http://www.w3.org/1999/xhtml" type="text/javascript">
+    window.jstiming.load.tick('jl');
+  </script>
+<script xmlns="http://www.w3.org/1999/xhtml">
+      
+          sites.core.Analytics.createTracker();
+          sites.core.Analytics.trackPageview();
+        
+    </script>
+<script xmlns="http://www.w3.org/1999/xhtml" type="text/javascript">
+                    sites.Searchbox.initialize(
+                        'sites-searchbox-select-button',
+                        {"object":[{"action":"/system/app/pages/search","id":"search-site","label":"Search this site"},{"action":"/system/app/pages/customSearch","id":"search-web","label":"Search web"}]}['object'],
+                        'search-site',
+                        {"label":"Configure search options...","url":"/system/app/pages/admin/settings"});
+                  </script>
+<script xmlns="http://www.w3.org/1999/xhtml" type="text/javascript">
+      gsites.HoverPopupMenu.createSiteDropdownMenus('sites-header-nav-dropdown', false);
+    </script>
+<script xmlns="http://www.w3.org/1999/xhtml" type="text/javascript">
+              new sites.CommentPane('//docs.google.com/comments/d/AAHRpnXt_Mp5R2w3D84n3sOb0JtfMKwl4GP80CWzZzyilr_GT3qFEXF_GljUoW3x8pV5xWd1tDOC38l_4YWPNyKUFRCH4TchljZ5kJA3bUqpiGqGk-gNjG842Z7K9n77Atnnl3_6GK9kd/api/js?anon=true',
+                  false, false);
+            </script>
+<script xmlns="http://www.w3.org/1999/xhtml" type="text/javascript">
+  setTimeout(function() {
+    var fingerprint = gsites.date.TimeZone.getFingerprint([1109635200000, 1128902400000, 1130657000000, 1143333000000, 1143806400000, 1145000000000, 1146380000000, 1152489600000, 1159800000000, 1159500000000, 1162095000000, 1162075000000, 1162105500000]);
+    gsites.Xhr.send('http://www.delphibasics.info/_/tz', null, null, 'GET', null, null, { afjstz: fingerprint });
+  }, 500);
+</script>
+<script xmlns="http://www.w3.org/1999/xhtml">
+                    window.onload = function() {
+                      if (false) {
+                        JOT_setMobilePreview();
+                      }
+                      var loadTimer = window.jstiming.load;
+                      loadTimer.tick("ol");
+                      loadTimer["name"] = "load," + webspace.page.type + ",user_page";
+                      window.jstiming.report(loadTimer, {}, 'http://csi.gstatic.com/csi');
+                    }
+                  </script>
+<script xmlns="http://www.w3.org/1999/xhtml" type="text/javascript">
+        JOT_insertAnalyticsCode(false,
+            false);
+      </script>
+<script xmlns="http://www.w3.org/1999/xhtml" type="text/javascript">
+    var maestroRunner = new gsites.pages.view.SitesMaestroRunner(
+        webspace, "en_GB");
+    maestroRunner.initListeners();
+    maestroRunner.installEditRender();
+  </script>
+<script xmlns="http://www.w3.org/1999/xhtml" type="text/javascript" defer="true">
+  //<![CDATA[
+    // Decorate any fastUI buttons on the page with a class of 'goog-button'.
+    if (webspace.user.hasWriteAccess) {
+      JOT_decorateButtons();
+    }
+
+    // Fires delayed events.
+    (function() {
+      JOT_fullyLoaded = true;
+      var delayedEvents = JOT_delayedEvents;
+      for (var x = 0; x < delayedEvents.length; x++) {
+        var event = delayedEvents[x];
+        JOT_postEvent(event.eventName, event.eventSrc, event.payload);
+      }
+      JOT_delayedEvents = null;
+      JOT_postEvent('pageLoaded');
+    })();
+  //]]>
+</script>
+<script xmlns="http://www.w3.org/1999/xhtml" type="text/javascript">
+    JOT_postEvent('decorateGvizCharts');
+  </script>
+<script type="text/javascript">
+          JOT_setupPostRenderingManager();
+        </script>
+<script type="text/javascript">
+          JOT_postEvent('renderPlus', null, 'sites-chrome-main');
+        </script>
+<div id="server-timer-div" style="display:none"> </div>
+<script type="text/javascript">
+          window.jstiming.load.tick('render');
+          JOT_postEvent('usercontentrendered', this);
+        </script>
+
+
+<div style="display: none;"><iframe name="xpcpeerwM3g" id="xpcpeerwM3g" src="./An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics_files/xpc.html" style="height: 100%; width: 100%;"></iframe></div><iframe name="oauth2relay412822784" id="oauth2relay412822784" src="./An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics_files/postmessageRelay.html" tabindex="-1" style="width: 1px; height: 1px; position: absolute; top: -100px;"></iframe><iframe id="apiproxy01a3027fc089a59265c64774d3330855e21a77a20.6658148032147437" name="apiproxy01a3027fc089a59265c64774d3330855e21a77a20.6658148032147437" src="./An In-Depth Look into the Win32 Portable Executable File Format - Part 2 - DelphiBasics_files/proxy.html" tabindex="-1" style="width: 1px; height: 1px; position: absolute; top: -100px;"></iframe></body></html>
